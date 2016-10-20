@@ -39,26 +39,40 @@ let draw_part p =
     open_graph ""; set_window_title "Concept";
     draw_all_parts g
 
+  (* Use to compare Location types *)
+  let loc_equal loc1 loc2 =
+    String.equal loc1.name loc2.name
+
+  (* Find a Location within a certain tolerance from its position *)
   let rec find_loc_near point g' g =
     let close_enough = 25 in
     match g' with
-    | [] -> let status = wait_next_event [Button_down] in
+    | [] -> let status = wait_next_event [Button_down;Button_up] in
             let point' = (status.mouse_x, status.mouse_y) in
             find_loc_near point' g g
     | (Node loc)::_ when (abs (loc.x - (fst point)) < close_enough )
                       && (abs (loc.y - (snd point)) < close_enough ) -> loc
     |  _::t -> find_loc_near point t g
 
+  (* Create a Road between two Locations *)
   let make_road loc1 loc2 =
     {loc1=loc1; loc2=loc2; cost = abs (loc1.x-loc2.x + loc1.x-loc2.y)}
 
+  (* Gets a Location from a mouse event *)
+  let get_loc g =
+    let status = wait_next_event [Button_down;Button_up] in
+    let point = (status.mouse_x, status.mouse_y) in
+    find_loc_near point g g
+
+  (* Gets a Location different from [loc] *)
+  let rec get_dif_loc loc g =
+    let new_loc = get_loc g in
+    if loc_equal new_loc loc then (print_string "Equal";get_dif_loc loc g) else (print_string "Not Equal";new_loc)
+
+  (* Add a Road to the graph [g] *)
   let add_road g =
-    let status1 = wait_next_event [Button_down] in
-    let point1 = (status1.mouse_x, status1.mouse_y) in
-    let loc1 = find_loc_near point1 g g in
-    let status2 = wait_next_event [Button_down] in
-    let point2 = (status2.mouse_x, status2.mouse_y) in
-    let loc2 = find_loc_near point2 g g in
+    let loc1 = get_loc g in
+    let loc2 = get_dif_loc loc1 g in
     let road = make_road loc1 loc2 in
     (Edge road)::g
 
