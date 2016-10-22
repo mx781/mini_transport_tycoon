@@ -1,5 +1,3 @@
-Module Engine.ml = struct
-
 
 
   type r_type =
@@ -15,16 +13,18 @@ Module Engine.ml = struct
   }
 
   type location = {
-    id: int;
+    l_id: int;
     location: float * float;
     gen_resources: resource list;
-    des_resources: (resource*float) list (*float is price*)
+    des_resources: (resource*float*float) list
+    (*snd des_resources is current price, last float is "natural" price
+     * (the natural price increases strategy element)*)
   }
 
   (* Arbitrary ordering means we could make this a list of locations, but it
    * shouldn't hurt to have these in case we ever want directed routes *)
   type connection = {
-    id: int;
+    c_id: int;
     l_start: location;
     l_end: location;
     age: int; (*In game steps, useful for breakdowns etc.*)
@@ -43,7 +43,7 @@ Module Engine.ml = struct
    * Not entirely sure of the value drivers add/how that system will look in game.
    * Open to changes here.*)
   type vehicle = {
-    id: int;
+    v_id: int;
     t : v_type;
     speed : float;
     capacity: int;
@@ -59,7 +59,7 @@ Module Engine.ml = struct
     | AI of int (*AI skill level*)
 
   type player = {
-    id : int;
+    p_id : int;
     t : p_type;
     money: float;
     vehicles: vehicle list;
@@ -74,17 +74,41 @@ Module Engine.ml = struct
       (useful for changes that do not happen every frame)*)
   }
 
+  let update_price (rsrc,p,np) =
+    let p' = if (Random.float 60.0 > 1.0)
+    then p
+    else
+    let () = print_endline (string_of_float p) in
+    if (Random.float 1.0 <  0.5 +. (0.25*.(1.0 -. (p/.np)))) || p <= (np/.15.0)
+         then p +. np/.(Random.float 100.0 +. 15.0)
+         else p -. np/.(Random.float 100.0 +. 15.0)
+    in
+    (rsrc,p',np)
+
+
+
+  let update_location loc =
+    {
+     l_id = loc.l_id;
+     location = loc.location;
+     gen_resources = loc.gen_resources;
+     des_resources = List.map update_price loc.des_resources;
+    }
+
+
   let rec main_loop st =
     Unix.sleepf 0.016;
-    print_endline (string_of_int st.game_age);
+  (*   print_endline (string_of_int st.game_age); *)
+    let new_locations = List.map update_location st.locations in
     let st' = {vehicles = st.vehicles;
-              locations = st.locations;
+              locations = new_locations;
               players = st.players;
               game_age = st.game_age + 1} in
     main_loop st'
 
+  let testing_state =
+    {vehicles = [];
+     locations = [{l_id = 1; location = (0.4,6.5); gen_resources = []; des_resources = [({t = Lumber; quantity = 10},80.0,80.0);({t = Oil; quantity = 20},10.0,400.0)]}];
+     players = [];
+     game_age = 0}
 
-
-
-
-end
