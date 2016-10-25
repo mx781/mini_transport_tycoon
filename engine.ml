@@ -108,7 +108,7 @@
 
   let testing_state =
     {vehicles = [];
-     locations = [{l_id = 1; location = (0.4,6.5); gen_resources = []; des_resources = [({t = Lumber; quantity = 10},80.0,80.0);({t = Oil; quantity = 20},10.0,400.0)]}];
+     locations = [{l_id = 1; location = (0.4,6.5); gen_resources = []; des_resources = [({t = Lumber; quantity = 10},80.0,80.0)]}];
      players = [];
      game_age = 0}
 
