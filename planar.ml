@@ -4,15 +4,6 @@
 (*  Copyright (C) 2004-2007                                               *)
 (*  Sylvain Conchon, Jean-Christophe Filliatre and Julien Signoles        *)
 (*                                                                        *)
-(*  This software is free software; you can redistribute it and/or        *)
-(*  modify it under the terms of the GNU Library General Public           *)
-(*  License version 2, with the special exception on linking              *)
-(*  described in file LICENSE.                                            *)
-(*                                                                        *)
-(*  This software is distributed in the hope that it will be useful,      *)
-(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
-(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *)
-(*                                                                        *)
 (**************************************************************************)
 
 open Printf
@@ -36,6 +27,7 @@ let () =
   use mouse to select two vertices (blue = source, green = destination)
   keys are
     - `r' generates a new random graph
+    - `z' buy route
     - `d' runs DFS
     - `b' runs BFS
     - `p' runs Dijkstra's shortest path
@@ -54,16 +46,15 @@ module Int = struct
   let equal = (=)
   let default = 0
 end
-module G = Imperative.Digraph.AbstractLabeled(IntInt)(Int)
+module G = Imperative.Graph.AbstractLabeled(IntInt)(Int)
 open G
 
 let n_ = ref 30
-let prob_ = ref 0.5
+let prob_ = ref 0.0
 let n = !n_
 let prob = !prob_
 
 let round f = truncate (f +. 0.5)
-let pi = 4.0 *. atan 1.0
 
 module Point = struct
   type point = V.t
@@ -118,10 +109,10 @@ let read_graph f =
     Triangulation.iter (fun v1 v2 -> add_edge v1 v2; add_edge v2 v1) t;
     g
 
-(* a random digraph with n vertices *)
+(* a random graph with n vertices *)
 let () = Random.self_init ()
 module R = Rand.Planar.I(G)
-let new_graph () = R.graph ~xrange:(20,780) ~yrange:(20,580) ~prob n
+let new_graph () = R.graph ~xrange:(20,1180) ~yrange:(20,880) ~prob n
 let g = ref (new_graph ())
 
 let () = printf "nb edges : %d\n" (G.nb_edges !g); flush stdout
@@ -136,31 +127,21 @@ let dump_graph () =
 (* let () = g := read_graph "tmp/carron.txt" *)
 
 open Graphics
-let () = open_graph " 800x600"
+let () = open_graph " 1200x900"
 
-let vertex_radius = 5
+let vertex_radius = 10
 
-let draw_arrow ?(color=black) ?(width=1) (xu,yu) (xv,yv) =
+let draw_arrow ?(color=blue) ?(width=3) (xu,yu) (xv,yv) =
   set_color color;
   set_line_width width;
   let dx = float (xv - xu) in
   let dy = float (yv - yu) in
-  let alpha = atan2 dy dx in
   let r = sqrt (dx *. dx +. dy *. dy) in
-  let ra = float vertex_radius *. 1.5 in
-  let d = float vertex_radius +. 3. in
+  let d = float vertex_radius +. 0. in
   let xs, ys = float xu +. d *. dx /. r, float yu +. d *. dy /. r in
   let xd, yd = float xv -. d *. dx /. r, float yv -. d *. dy /. r in
-  let coords theta =
-    round (xd +. ra *. cos (pi +. alpha +. theta)),
-    round (yd +. ra *. sin (pi +. alpha +. theta))
-  in
   moveto (round xs) (round ys);
-  lineto (round xd) (round yd);
-  let x1,y1 = coords (pi /. 6.) in
-  moveto (round xd) (round yd); lineto x1 y1;
-  let x2,y2 = coords (-. pi /. 6.) in
-  moveto (round xd) (round yd); lineto x2 y2
+  lineto (round xd) (round yd)
 
 let color_vertex v color =
   let x,y = G.V.label v in
@@ -181,12 +162,12 @@ let draw_selection () = match !selection with
 
 let draw_graph () =
   clear_graph ();
-  set_color red;
+  set_color black;
   set_line_width 1;
   G.iter_vertex
     (fun v ->
        let (x,y) = G.V.label v in
-       draw_circle x y vertex_radius)
+       fill_circle x y vertex_radius)
     !g;
   set_color black;
   G.iter_edges
@@ -247,8 +228,28 @@ let dijkstra () = match !selection with
       with Not_found ->
   printf "no path (%2.2f s)\n" !t_; flush stdout
       end
-  | _ ->
-     ()
+  | _ -> ()
+
+  let buy_route () = match !selection with
+  | Two (v1, v2) ->
+      printf "buying route... "; flush stdout;
+      let t_ = ref 0.0 in
+      begin try
+      (* add_edge !g v1 v2; *)
+  let (p,l),t = utime (Dij.shortest_path !g v1) v2 in
+  t_ := t;
+  List.iter
+    (fun e ->
+       let v1 = G.E.src e in
+       let v2 = G.E.dst e in
+       draw_arrow ~color:red ~width:3 (G.V.label v1) (G.V.label v2))
+    p;
+  ignore (Graphics.wait_next_event [ Key_pressed; Button_down ]);
+  draw_graph ()
+      with Not_found ->
+  printf "no path (%2.2f s)\n" !t_; flush stdout
+      end
+  | _ -> ()
 
 
 let draw_iteration f =
@@ -266,11 +267,12 @@ let () =
   try
     let () = draw_graph () in
     while true do
-      let st = Graphics.wait_next_event [ Key_pressed; Button_down ] in
+      let st = Graphics.wait_next_event [Key_pressed; Button_down ] in
       if st.keypressed then match st.key with
   | 'q' -> raise Exit
   | 'r' -> g := new_graph (); selection := No; draw_graph ()
   | 'p' -> dijkstra ()
+  | 'z' -> buy_route ()
   | 'd' -> dfs ()
   | 'b' -> bfs ()
   | 'x' -> dump_graph ()
