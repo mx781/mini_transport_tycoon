@@ -6,11 +6,11 @@ type r_type =
     | Produce
 
 
-  type good = {
-    t : r_type;
-    quantity : int;
-    origin : location
-  }
+type good = {
+  t : r_type;
+  quantity : int;
+  origin : location
+}
 
 type goods_profile = {
   resource: r_type;

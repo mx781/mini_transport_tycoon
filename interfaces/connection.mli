@@ -8,9 +8,11 @@
   }
 
 
-(*Forms a new connection from one particular location to another particular location*)
+(* Forms a new connection from one particular location to
+ * another particular location*)
 val form_connection: location -> location -> Ograph (?)
 
 
-(* Takes in a connection and updates the connection based on the input processes and the age.*)
+(* Takes in a connection and updates the connection based on the input
+ * processes and the age.*)
 val update: process list -> connection list-> connection list

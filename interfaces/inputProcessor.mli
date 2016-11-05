@@ -1,11 +1,11 @@
 type process =
-  |AddVehicle of int * int
-  |CheckLocation of int * int
-  |AddRoad of int * int
-  |Pause
-  |EndGame
-  |CheckVehicleStatus of int * int
-  |None (*If the action done is irrelevant*)
+  | AddVehicle of int * int
+  | CheckLocation of int * int
+  | AddRoad of int * int
+  | Pause
+  | EndGame
+  | CheckVehicleStatus of int * int
+  | None (*If the action done is irrelevant*)
 
 
 (*Processes_input (master). Using the information from the input it returns a relevant process that is used to update whatever needs to be updated. The actual updating is done in the main loop.*)

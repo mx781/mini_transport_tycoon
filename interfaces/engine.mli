@@ -13,7 +13,7 @@
 
 
 (*Takes in a string representing the file name of the game to be loaded and played, loads the file to obtain the corresponding game_state, and enters the main loop to begin playing the game. *)
-Init_game: string -> ()
+val init_game: string -> ()
 
 
 (*main_loop is the main REPL for the game. It takes in a game_state and updates everything within the game_state (location, vehicles, players) so that the game updates by one game_step, evaluating to the updated game_state.*)
