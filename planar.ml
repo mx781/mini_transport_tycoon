@@ -52,7 +52,7 @@ module G = Imperative.Graph.AbstractLabeled(IntInt)(Int)
 open G
 
 let n_ = ref 30
-let prob_ = ref 0.0
+let prob_ = ref 0.2
 let n = !n_
 let prob = !prob_
 
