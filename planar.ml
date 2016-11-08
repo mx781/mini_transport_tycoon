@@ -39,11 +39,13 @@ let () =
 
 module IntInt = struct
   type t = int * int
+  let color = Graphics.red
 end
 module Int = struct
   type t = int
   let compare = compare
   let equal = (=)
+  let color = Graphics.black
   let default = 0
 end
 module G = Imperative.Graph.AbstractLabeled(IntInt)(Int)
@@ -157,22 +159,18 @@ let selection = ref No
 
 let draw_selection () = match !selection with
   | No -> ()
-  | One v1 -> color_vertex v1 blue
-  | Two (v1, v2) -> color_vertex v1 blue; color_vertex v2 green
+  | One v1 -> color_vertex v1 red
+  | Two (v1, v2) -> color_vertex v1 red; color_vertex v2 red
 
 let draw_graph () =
   clear_graph ();
   set_color black;
   set_line_width 1;
   G.iter_vertex
-    (fun v ->
-       let (x,y) = G.V.label v in
-       fill_circle x y vertex_radius)
+    (fun v -> let (x,y) = G.V.label v in fill_circle x y vertex_radius)
     !g;
-  set_color black;
   G.iter_edges
-    (fun v1 v2 -> draw_arrow (G.V.label v1) (G.V.label v2))
-    !g;
+    (fun v1 v2 -> draw_arrow (G.V.label v1) (G.V.label v2)) !g;
   draw_selection ()
 
 let distance (x1,y1) (x2,y2) =
@@ -194,8 +192,7 @@ let select () =
      select_vertex v; draw_graph (); raise Exit
    end)
       !g
-  with Exit ->
-    ()
+  with Exit -> ()
 
 module W = struct
   type edge = G.E.t
