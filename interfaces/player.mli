@@ -10,7 +10,12 @@
 }
 
 
-(*Takes in a player and a process and decides if the player is making any changes to the game in this game_step. For human players this is whether or not any valid key or mouse input was received in this game_state, and for AI players this is if they “decide” to make any move in this game_step. After determining if there is a change, update_player evaluates to a game_state representing the updated game after the move, if any, was made.*)
+(* Takes in a player and a process and decides if the player is making any
+ * changes to the game in this game_step. For human players this is whether
+ * or not any valid key or mouse input was received in this game_state, and
+ * for AI players this is if they “decide” to make any move in this game_step.
+ * After determining if there is a change, update_player evaluates to a
+ * game_state representing the updated game after the move, if any, was made.*)
 val update: player -> process -> player
 
 
