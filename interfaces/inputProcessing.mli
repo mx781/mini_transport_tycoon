@@ -1,14 +1,23 @@
+open GameElements
+
 type process =
-  | AddVehicle of int * int
-  | CheckLocation of int * int
-  | AddRoad of int * int
+  | CheckVehicleStatus of vehicles
+  | BuyVehicle of vehicle
+  | SellVehicle of vehicle
+  | SetVehicleDestination of vehicle (*with updated destinations*)
+  | CheckLocation of location
+  | AddRoad of connection
+  | DeleteRoad of connection
+  | PurchaseRoad of connection (*Purchase rights to a road that is preexisting*)
+  | CheckRoad of connection
   | Pause
   | EndGame
-  | CheckVehicleStatus of int * int
-  | None (*If the action done is irrelevant*)
+  | None
 
 
-(*Processes_input (master). Using the information from the input it returns a relevant process that is used to update whatever needs to be updated. The actual updating is done in the main loop.*)
+(* Processes_input (master). Using the information from the input it returns a
+ * relevant process that is used to update whatever needs to be updated.
+ * The actual updating is done in the main loop.*)
 val process_input : status -> process
 
 
