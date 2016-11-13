@@ -51,8 +51,8 @@ end
 module G = Imperative.Graph.AbstractLabeled(IntInt)(Int)
 open G
 
-let n_ = ref 30
-let prob_ = ref 0.2
+let n_ = ref 20
+let prob_ = ref 0.8
 let n = !n_
 let prob = !prob_
 
@@ -248,6 +248,27 @@ let dijkstra () = match !selection with
       end
   | _ -> ()
 
+let make_route () = match !selection with
+  | Two (v1, v2) ->
+      printf "making route... "; flush stdout;
+      let t_ = ref 0.0 in
+      begin try
+      add_edge !g v1 v2;
+  let (p,l),t = utime (Dij.shortest_path !g v1) v2 in
+  t_ := t;
+  List.iter
+    (fun e ->
+       let v1 = G.E.src e in
+       let v2 = G.E.dst e in
+       draw_arrow ~color:red ~width:3 (G.V.label v1) (G.V.label v2))
+    p;
+  ignore (Graphics.wait_next_event [ Key_pressed; Button_down ]);
+  draw_graph ()
+      with Not_found ->
+  printf "no path (%2.2f s)\n" !t_; flush stdout
+      end
+  | _ -> ()
+
 
 let draw_iteration f =
   let pause () = for i = 1 to 10000000 do () done in
@@ -270,6 +291,7 @@ let () =
   | 'r' -> g := new_graph (); selection := No; draw_graph ()
   | 'p' -> dijkstra ()
   | 'z' -> buy_route ()
+  | 'm' -> make_route ()
   | 'd' -> dfs ()
   | 'b' -> bfs ()
   | 'x' -> dump_graph ()
