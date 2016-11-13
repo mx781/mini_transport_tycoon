@@ -126,7 +126,7 @@ let rec main_loop st =
   let start_t = Sys.time() in
   GameGraphics.draw_game_state st;
   let processes = [] in
-  let new_vehicles = v_update st.vehicles in
+  let new_vehicles = update_vehicles st.vehicles in
   let st' = { vehicles = new_vehicles;
               graph = st.graph;
               players = st.players;

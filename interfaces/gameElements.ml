@@ -1,3 +1,5 @@
+open Graph
+
 type r_type =
     | Lumber
     | Iron
@@ -5,6 +7,14 @@ type r_type =
     | Electronics
     | Produce
 
+type v_type =
+    |Car
+    |Truck
+
+type v_status =
+  | Waiting
+  | Driving
+  | Broken (*Equivalent to waiting but inaccessible*)
 
 type good = {
   t : r_type;
@@ -13,7 +23,7 @@ type good = {
 
 type goods_profile = {
   resource: r_type;
-  steps_to_inc: int; (*how many game_steps before incrementing current by 1*)
+  steps_to_inc: int;
   current: int;
   capacity: int;
   price: int;
@@ -21,21 +31,11 @@ type goods_profile = {
 }
 
 type location = {
-  l_id: int;
-  loc: int * int;
+  id: int;
+  location: int * int;
   accepts: goods_profile list;
   produces: goods_profile list;
 }
-
-type v_type =
-  | Car
-  | Truck
-
-
-type v_status =
-  | Waiting
-  | Driving
-  | Broken (*Equivalent to waiting but inaccessible*)
 
 type vehicle = {
   v_owner_id: int;
@@ -58,19 +58,18 @@ type connection = {
   c_owner_id: int;
   l_start: location;
   l_end: location;
-  length: int;
   age: int; (*In game steps, useful for breakdowns etc.*)
-  speed: int; (*speed of vehicle on road*)
+  speed: int -> int; (*speed of vehicle on road*)
+  length: int;
 }
-
 
 module Location = struct
   type t = location
-  let equal l1 l2 = l1.l_id = l2.l_id
+  let equal l1 l2 = l1.id = l2.id
   let hash = Hashtbl.hash
   let compare e1 e2 =
-    if e1.l_id > e2.l_id then 1
-    else if e1.l_id = e2.l_id then 0
+    if e1.id > e2.id then 1
+    else if e1.id = e2.id then 0
     else (~-1)
 end
 
@@ -82,49 +81,26 @@ module Connection = struct
     else (~-1)
   let equal e1 e2 = e1.l_start = e2.l_start && e1.l_end = e2.l_end
   let hash = Hashtbl.hash
-  let default = {
-    c_owner_id = 4;
-    l_start= {l_id = 0;
-              loc = (2,2);
-              accepts= [];
-              produces= [];};
-    l_end =  {l_id = 0;
-              loc = (2,2);
-              accepts= [];
-              produces= [];};
-    length= 2;
-    age= 0;
-    speed= 3;
-  }
+  let default = failwith "something about default connections; talk to Dan"
 end
 
-module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
-
-
-type game_state = {
-  vehicles : vehicle list;
-  graph: Map.t;
-  players : Player.player list;
-  game_age : int;
-  paused: bool;
-}
+module Map = Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
 let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = loc1; l_end = loc2;
-    age = 0; speed = 5; length = 5} in (*Placeholder*)
+    age = 0; speed = (fun x -> 5); length = 5} in (*Placeholder*)
   let start_loc = loc1 in
   let end_loc = loc2 in
   Map.add_edge_e map (loc1, new_connect, loc2)
 
-let route_vehicle l v v_list =
-  let new_v = {v with destination = [l.l_id]} in
+let update_connections c c_list = failwith "unimplemented"
+
+let update_vehicles l v v_list =
+  let new_v = {v with destination = [l.id]} in
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
-let update_vehicles v_lst =
-  v_lst
+let check_vehicle_status vehicle = failwith "unimplemented"
 
-let update_connections c_lst =
-  c_lst
+let update_locations l l_list = failwith "unimplemented"
 
-let update_locations l_lst =
-  l_lst
+let location_info l = failwith "unimplemented"

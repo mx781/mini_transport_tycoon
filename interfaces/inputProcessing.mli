@@ -20,10 +20,8 @@ type process =
  * The actual updating is done in the main loop.*)
 val process_input : status -> process
 
-
 (*Pauses the game*)
 val pause: unit -> unit
-
 
 (*Ends the game*)
 val end_game: unit -> unit

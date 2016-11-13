@@ -1,4 +1,4 @@
-#load "graphics.cma"
+(* #load "graphics.cma" *)
 open Graphics
 
 type location =
