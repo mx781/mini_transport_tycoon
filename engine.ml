@@ -119,11 +119,31 @@
  open Player
 
 let prob = 0.0
-let new_graph () = Map.empty
+let new_graph () =
+  let v1 = {l_id = 0;
+  loc = (45,345);
+  accepts= [];
+  produces= [];} in
+  let v2 = {l_id = 1;
+  loc = (455,41);
+  accepts= [];
+  produces= [];} in
+  let m1 = Map.add_vertex (Map.empty) (v1) in
+  let m2 = Map.add_vertex m1 (v2) in
+  let m3 = Map.add_edge_e m2
+  (v1,{
+    c_owner_id = 4;
+    l_start= v1;
+    l_end =  v2;
+    length= 2;
+    age= 0;
+    speed= 3;
+  },v2) in m3
+
 
 
 let rec main_loop st =
-  let start_t = Sys.time() in
+  let start_t = Sys.time () in
   GameGraphics.draw_game_state st;
   let processes = [] in
   let new_vehicles = update_vehicles st.vehicles in
@@ -132,8 +152,8 @@ let rec main_loop st =
               players = st.players;
               paused = st.paused;
               game_age = st.game_age + 1;} in
-  let time_elapsed = Sys.time() -. start_t in
-  let sleep_time = if (0.016 -. start_t) > 0.0 then (0.016 -. start_t) else 0.0 in
+  let time_elapsed = Sys.time () -. start_t in
+  let sleep_time = if (0.016 -. time_elapsed) > 0.0 then (0.016 -. time_elapsed) else 0.0016 in
   Unix.sleepf sleep_time;
   main_loop st'
 

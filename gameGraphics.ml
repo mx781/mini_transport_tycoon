@@ -16,9 +16,9 @@ let draw_line ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
 
 let draw_ograph grph : unit =
   GameElements.Map.iter_vertex
-    (fun v -> let (x,y) = (GameElements.Map.V.label v).loc in fill_circle x y vertex_size) grph
-  (* GameElements.Map.iter_edges
-    (fun v1 v2 -> draw_line (GameElements.Map.V.label) (GameElements.Map.V.label.loc v2)) grph  *)
+    (fun v -> let (x,y) = (GameElements.Map.V.label v).loc in fill_circle x y vertex_size) grph;
+  GameElements.Map.iter_edges
+    (fun v1 v2 -> draw_line (GameElements.Map.V.label v1).loc  (GameElements.Map.V.label v2).loc) grph
 
 (* let draw_edge ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
   set_color color;
