@@ -71,13 +71,13 @@ val form_connection: location -> location -> Ograph (?)
 
 (* Takes in a connection and updates the connection based on the input
  * processes and the age.*)
-val update: process list -> connection list-> connection list
+val update: connection list-> connection list
 
 
 (* Takes in a vehicle and updates the location (if the vehicle is driving) based
  * on the input processes, the age, and possibly the destination list of the
  * vehicle.*)
-val update: process list -> vehicle list -> vehicle list
+val update: vehicle list -> vehicle list
 
 
 (* Checks the status of a vehicle; returning the destination and the
@@ -90,7 +90,7 @@ val check_vehicle_status : vehicle -> unit
  * based on the input processes. Here “update” means generating available
  * resources, fluctuating the asking and selling price for each resource, a
  * and fluctuating the amount of a resource demanded. *)
-val update: process list -> location -> location
+val update: location list -> location
 
 
 (* Returns the characteristics associated with a given location (such as the

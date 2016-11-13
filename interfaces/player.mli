@@ -16,7 +16,7 @@
  * for AI players this is if they “decide” to make any move in this game_step.
  * After determining if there is a change, update_player evaluates to a
  * game_state representing the updated game after the move, if any, was made.*)
-val update: player -> process -> player
+val update: player list -> player list
 
 
 (*AI function: take_action takes in the game_state; in response to the

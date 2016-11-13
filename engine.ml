@@ -1,4 +1,4 @@
-
+(*
 
   type r_type =
     | Lumber
@@ -112,3 +112,40 @@
      players = [];
      game_age = 0}
 
+ *)
+
+ open Graph
+ open GameElements
+ open Player
+
+
+
+ type game_state = {
+  vehicles : vehicle list;
+  graph: Map.t;
+  players : player list;
+  game_age : int;
+  paused: bool;
+}
+
+
+
+let rec main_loop st =
+  let start_t = Sys.time() in
+  draw_game_state gs;
+  let processes = [] in
+  let new_vehicles = v_update st.vehicles in
+  let st' = { vehicles = new_vehicles;
+              graph = st.graph;
+              players = st.players;
+              paused = st.paused;
+              game_age = st.game_age + 1;} in
+  let time_elapsed = Sys.time() -. start_t in
+  let sleep_time = if (0.016 -. start_t) > 0.0 then (0.016 -. start_t) else 0.0 in
+  Unix.sleepf sleep_time;
+  main_loop st'
+
+
+let init_game fname = main_loop
+  { vehicles= []; graph = newgraph () ; players = [];
+    game_age = 0; paused = false;}
