@@ -2,3 +2,4 @@ _build/*
 *.byte
 .DS_Store
 *~
+interfaces/_build/*

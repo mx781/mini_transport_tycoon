@@ -1,4 +1,5 @@
-open OGraph
+open gameElements
+
 
 type game_state = {
   vehicles : vehicle list;
@@ -16,7 +17,7 @@ type game_state = {
 (* Takes in a string representing the file name of the game to be loaded and
  * played, loads the file to obtain the corresponding game_state, and enters
  * the main loop to begin playing the game. *)
-val init_game: string -> ()
+val init_game: string -> unit
 
 
 (* main_loop is the main REPL for the game. It takes in a game_state and
