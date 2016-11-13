@@ -118,21 +118,13 @@
  open GameElements
  open Player
 
-
-
- type game_state = {
-  vehicles : vehicle list;
-  graph: Map.t;
-  players : player list;
-  game_age : int;
-  paused: bool;
-}
-
+let prob = 0.0
+let new_graph () = Map.empty
 
 
 let rec main_loop st =
   let start_t = Sys.time() in
-  draw_game_state gs;
+  GameGraphics.draw_game_state st;
   let processes = [] in
   let new_vehicles = v_update st.vehicles in
   let st' = { vehicles = new_vehicles;
@@ -146,6 +138,8 @@ let rec main_loop st =
   main_loop st'
 
 
-let init_game fname = main_loop
-  { vehicles= []; graph = newgraph () ; players = [];
+let init_game fname =
+  GameGraphics.open_screen ();
+  main_loop
+  { vehicles= []; graph = new_graph () ; players = [];
     game_age = 0; paused = false;}

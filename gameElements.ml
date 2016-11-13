@@ -21,8 +21,7 @@ type goods_profile = {
 }
 
 type location = {
-  l_x: int;
-  l_y: int;
+  loc: int * int;
   accepts: goods_profile list;
   produces: goods_profile list;
 }
@@ -63,19 +62,11 @@ type connection = {
   speed: int; (*speed of vehicle on road*)
 }
 
-let v_update v_lst =
-  v_lst
-
-let c_update c_lst =
-  c_lst
-
-let l_update l_lst =
-  l_lst
 
 module Location = struct
   type t = location
 
-  let equal l1 l2 = (l1.l_x = l1.l_x && l2.l_y = l2.l_y)
+  let equal (l1:location) (l2:location) =  true
   let hash l = 1
   let compare l1 l2 = 1
 
@@ -86,8 +77,27 @@ module Connection = struct
 
   let compare c1 c2 =
     if c1.length > c2.length then 1 else if c1.length = c2.length then 0 else -1
-  let default = {c_owner_id=0;l_start={l_x = 0;l_y = 0;accepts= [];produces = []};l_end={l_x = 0;l_y = 0;accepts= [];produces = []};length =0;age =0;speed=0}
+  let default =  {c_owner_id=0;l_start = {loc=(1,1);accepts= [];produces = []};l_end={loc=(1,1);accepts= [];produces = []} ;length =0;age =0;speed=0}
 
 end
 
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
+(* module RandGraph = Graph.Rand.Planar.P(Map) *)
+
+
+type game_state = {
+  vehicles : vehicle list;
+  graph: Map.t;
+  players : Player.player list;
+  game_age : int;
+  paused: bool;
+}
+
+let v_update v_lst =
+  v_lst
+
+let c_update c_lst =
+  c_lst
+
+let l_update l_lst =
+  l_lst
