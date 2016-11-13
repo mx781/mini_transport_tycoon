@@ -1,8 +1,0 @@
-"Rule: ocaml dependencies ml (%=planar )": "\002*\014\002\159\190z\240&\012\247e\220\023\221\151"
-"Rule: ocaml: cmo* -> byte (%=ograph )": "\145\240\248\179\247\004\b\132I\147\208\130\199\025\026\128"
-"Resource: /home/ubuntu/CS3110_Final/ograph.ml": "\024\206>uv\173\228n\197\026\031F\214\130L\029"
-"Rule: ocaml dependencies ml (%=ograph )": "\227\1658\027\141\204c\000d\131\149\234\187\186\255h"
-"Resource: /home/ubuntu/CS3110_Final/planar.ml": "|\007\162\004\142\169\028\141\t\171\219/\143\2379c"
-"Rule: ocaml: ml -> cmo & cmi (%=planar )": "\198\131\205\199\023\137\012\134\127\203q~\146\229\157\154"
-"Rule: ocaml: ml -> cmo & cmi (%=ograph )": "ZJ\241\187/\251\205\222k\246\016x\131}\149}"
-"Rule: ocaml: cmo* -> byte (%=planar )": "w\222\154e\242H\145`b\012U\155\195\217\024\158"
