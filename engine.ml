@@ -133,14 +133,14 @@ let new_graph () =
   let m3 = Map.add_edge_e m2
   (v1,{
     c_owner_id = 4;
-    l_start= v1;
-    l_end =  v2;
+    l_start= 1;
+    l_end =  2;
     length= 2;
     age= 0;
     speed= 3;
   },v2) in m3
 
-
+let fps = 30.0
 
 let rec main_loop st =
   let start_t = Sys.time () in
@@ -153,7 +153,9 @@ let rec main_loop st =
               paused = st.paused;
               game_age = st.game_age + 1;} in
   let time_elapsed = Sys.time () -. start_t in
-  let sleep_time = if (0.016 -. time_elapsed) > 0.0 then (0.016 -. time_elapsed) else 0.0016 in
+  print_endline (string_of_float time_elapsed);
+  let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0 then ((1.0 /. fps) -. time_elapsed) else 0.0 in
+  print_endline (string_of_float sleep_time);
   Unix.sleepf sleep_time;
   main_loop st'
 
@@ -161,5 +163,19 @@ let rec main_loop st =
 let init_game fname =
   GameGraphics.open_screen ();
   main_loop
-  { vehicles= []; graph = new_graph () ; players = [];
+  { vehicles=
+  [{v_owner_id= 2;
+  t = Car;
+  speed = 10.0;
+  capacity= 100;
+  cargo= {
+  t = Oil;
+  quantity = 5;
+  };
+  age= 56;
+  status= Driving;
+  x= 224;
+  y= 122;
+  destination= [5];}];
+  graph = new_graph () ; players = [];
     game_age = 0; paused = false;}

@@ -23,11 +23,8 @@ type connection
 
 (* Takes in a connection and updates the connection based on the input
  * processes and the age.*)
-<<<<<<< HEAD
-val update: connection list-> connection list
-=======
 val update_connections: connection -> connection list-> connection list
->>>>>>> e3e0f33d69ad0dc892a6faa1ec7c4805d6aeee42
+
 
 
 (* Takes in a vehicle and updates the location (if the vehicle is driving) based
