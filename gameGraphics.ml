@@ -16,9 +16,15 @@ let draw_line ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
 
 let draw_ograph grph : unit =
   GameElements.Map.iter_vertex
-    (fun v -> let (x,y) = (GameElements.Map.V.label v).loc in fill_circle x y vertex_size) grph;
+    (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x, (GameElements.Map.V.label v).l_y) in fill_circle (int_of_float x) (int_of_float y) vertex_size) grph;
   GameElements.Map.iter_edges
-    (fun v1 v2 -> draw_line (GameElements.Map.V.label v1).loc  (GameElements.Map.V.label v2).loc) grph
+    (fun v1 v2 -> draw_line
+      (int_of_float ((GameElements.Map.V.label v1).l_x),
+      int_of_float ((GameElements.Map.V.label v1).l_y))
+      (int_of_float ((GameElements.Map.V.label v2).l_x),
+      int_of_float ((GameElements.Map.V.label v2).l_y))
+     )  grph
+
 
 (* let draw_edge ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
   set_color color;
@@ -31,7 +37,7 @@ let draw_vertex ?(color=black) ?(radius=10) (x,y) =
   fill_circle x y radius *)
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
-  fill_circle v.x v.y car_size
+  fill_circle (int_of_float v.x) (int_of_float v.y) car_size
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   match vs with

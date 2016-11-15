@@ -121,11 +121,13 @@
 let prob = 0.0
 let new_graph () =
   let v1 = {l_id = 0;
-  loc = (45,345);
+  l_x = 45.0;
+  l_y = 230.0;
   accepts= [];
   produces= [];} in
   let v2 = {l_id = 1;
-  loc = (455,41);
+  l_x = 210.0;
+  l_y = 340.0;
   accepts= [];
   produces= [];} in
   let m1 = Map.add_vertex (Map.empty) (v1) in
@@ -135,9 +137,9 @@ let new_graph () =
     c_owner_id = 4;
     l_start= 1;
     l_end =  2;
-    length= 2;
+    length= 2.0;
     age= 0;
-    speed= 3;
+    speed= 3.0;
   },v2) in m3
 
 let fps = 30.0
@@ -146,7 +148,7 @@ let rec main_loop st =
   let start_t = Sys.time () in
   GameGraphics.draw_game_state st;
   let processes = [] in
-  let new_vehicles = update_vehicles st.vehicles in
+  let new_vehicles = update_vehicles st.vehicles st.graph in
   let st' = { vehicles = new_vehicles;
               graph = st.graph;
               players = st.players;
@@ -166,7 +168,7 @@ let init_game fname =
   { vehicles=
   [{v_owner_id= 2;
   t = Car;
-  speed = 10.0;
+  speed = 1.0;
   capacity= 100;
   cargo= {
   t = Oil;
@@ -174,8 +176,8 @@ let init_game fname =
   };
   age= 56;
   status= Driving;
-  x= 224;
-  y= 122;
-  destination= [5];}];
+  x= 224.0;
+  y= 122.0;
+  destination= [1];}];
   graph = new_graph () ; players = [];
     game_age = 0; paused = false;}
