@@ -176,7 +176,6 @@ let init_game fname =
   status= Driving;
   x= 224;
   y= 122;
-  destination= [5];
-  predicted_travel_time = None}];
+  destination= [5];}];
   graph = new_graph () ; players = [];
     game_age = 0; paused = false;}

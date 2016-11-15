@@ -51,7 +51,6 @@ type vehicle = {
  * vehicle. The head of the list gives the current destination while the last id
  * gives the final destination. *)
   destination: int list;
-  predicted_travel_time : int option (*None if the car is not moving*)
 }
 
 type connection = {
