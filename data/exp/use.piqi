@@ -1,0 +1,19 @@
+.import [ .module exp ]
+
+.alias [
+    .name gprof
+    .type exp/goodsprofile
+    .ocaml-type "Piqirun_custom.gprof"
+    .ocaml-name "gprof"
+]
+
+.record [
+    .name gamestate
+    .field [
+        .name profile
+        .type gprof
+    ]
+]
+
+.custom-field ocaml-name
+.custom-field ocaml-type

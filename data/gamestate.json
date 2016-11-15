@@ -1,0 +1,95 @@
+{
+    "vehicles": [
+        {
+            "owner": 1,
+            "t": {"Car": true},
+            "speed": 3.2,
+            "capacity": 100,
+            "cargo": {
+                "t": {"Lumber": true},
+                "quant": 100
+            },
+            "age": 200,
+            "status": {"Driving": true},
+            "x": 320,
+            "y": 112,
+            "destination": [123,21,123,21],
+            "predtraveltime": {"Some": 21}
+        }
+    ],
+    "gameage": 3293222,
+    "paused": true,
+    "players": [
+        {
+            "pid": 1,
+            "ptype": {"Human": true},
+            "money": 3200
+        },
+        {
+            "pid": 2,
+            "ptype": {"AI": 3},
+            "money": 3200
+        }
+    ],
+    "graph": {
+        "directed": false,
+        "type": "2D undirected graph",
+        "label": "Game map",
+        "metadata": {
+            "var": "dummy value"
+        },
+        "nodes": [
+            {
+                "id": 1,
+                "type": "node type",
+                "label": "node label(1)",
+                "metadata": {
+                    "id": 1,
+                    "locationx": 321,
+                    "locationy": 600,
+                    "accepts": [],
+                    "produces": [
+                        {
+                            "resource": {"Lumber": true},
+                            "stepstoinc": 3202,
+                            "current": 200,
+                            "capacity": 500,
+                            "price": 25,
+                            "naturalprice": 21
+                        }
+                    ]
+                }
+            },
+            {
+                "id": 2,
+                "type": "regular node",
+                "label": "node label(2)",
+                "metadata": {
+                    "id": 2,
+                    "locationx": 12,
+                    "locationy": 440,
+                    "accepts": [],
+                    "produces": []
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": 1,
+                "relation": "regular connection",
+                "destination": 2,
+                "directed": false,
+                "label": "edge label(1-2)",
+                "metadata": {
+                    "owner": 1,
+                    "lstart": 1,
+                    "lend": 2,
+                    "age": 3220,
+                    "speedi": 13,
+                    "speedj": 2,
+                    "length": 521
+                }
+            }
+        ]
+    }
+}

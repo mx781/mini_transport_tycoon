@@ -1,0 +1,44 @@
+OCAMLMAKEFILE := OCamlMakefile
+
+
+RESULT = io_json_xml_pb
+
+
+SOURCES = \
+	$(PIQI_ML_FILES1) \
+	piqirun_custom.ml \
+	$(PIQI_ML_FILES2) \
+
+
+export OCAMLPATH := ../..:$(OCAMLPATH)
+PACKS = piqirun.ext
+
+
+PIQI_FILES = player.piqi gameelements.piqi graph.piqi gamestate.piqi
+PIQI_ML_FILES1 = player_piqi.ml player_piqi_ext.ml gameelements_piqi.ml gameelements_piqi_ext.ml graph_piqi.ml graph_piqi_ext.ml
+PIQI_ML_FILES2 = gamestate_piqi.ml gamestate_piqi_ext.ml
+PIQI_ML_FILES = $(PIQI_ML_FILES1) $(PIQI_ML_FILES2)
+
+
+PRE_TARGETS = $(PIQI_ML_FILES)
+
+
+PIQIC = piqic-ocaml
+PIQIC_FLAGS = --multi-format
+
+
+all: native-code #byte-code debug-code
+
+
+$(PIQI_ML_FILES): $(PIQI_FILES)
+	set -e; \
+	for i in $^; do \
+		$(PIQIC) $(PIQIC_FLAGS) $$i ; \
+	done
+
+
+clean::
+	rm -f *.tmp.ml
+
+
+include $(OCAMLMAKEFILE)

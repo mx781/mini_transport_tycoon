@@ -56,8 +56,8 @@ type vehicle = {
 
 type connection = {
   c_owner_id: int;
-  l_start: location;
-  l_end: location;
+  l_start: int;
+  l_end: int;
   length: int;
   age: int; (*In game steps, useful for breakdowns etc.*)
   speed: int; (*speed of vehicle on road*)

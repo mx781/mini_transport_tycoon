@@ -1,0 +1,189 @@
+%.ocaml-module "Gameelements_piqi"
+
+% ********** VARIANTS ********** %
+.variant [
+    .name rtype
+    .option [ .name Lumber ]
+    .option [ .name Iron ]
+    .option [ .name Oil ]
+    .option [ .name Electronics ]
+    .option [ .name Produce ]
+]
+
+.variant [
+    .name vtype
+    .option [ .name Car ]
+    .option [ .name Truck ]
+]
+
+.variant [
+    .name vstatus
+    .option [ .name Waiting ]
+    .option [ .name Driving ]
+    .option [ .name Broken ]
+]
+
+.variant [
+    .name traveltime
+    .option [ .name None]
+    .option [ .name Some .type int]
+]
+
+% ********** GOODS ********** %
+.record [
+    .name good
+    .field [
+        .name t
+        .type rtype
+    ]
+    .field [
+        .name quant
+        .type int
+    ]
+]
+.record [
+    .name goodsprofile
+    .field [
+        .name resource
+        .type rtype
+    ]
+    .field [
+        .name stepstoinc
+        .type int
+    ]
+    .field [
+        .name current
+        .type int
+    ]
+    .field [
+        .name capacity
+        .type int
+    ]
+    .field [
+        .name price
+        .type int
+    ]
+    .field [
+        .name naturalprice
+        .type int
+    ]
+]
+.list [
+    .name gplist
+    .type goodsprofile
+]
+
+% ********** LOCATIONS ********** %
+.record [
+    .name location
+    .field [
+        .name id
+        .type int
+    ]
+    % location tuple split into locationx and locationy
+    .field [
+        .name locationx
+        .type int
+    ]
+    .field [
+        .name locationy
+        .type int
+    ]
+    .field [
+        .name accepts
+        .type gplist
+    ]
+    .field [
+        .name produces
+        .type gplist
+    ]
+]
+.list [
+    .name destlist
+    .type int
+]
+
+% ********** CONNECTIONS ********** %
+.record [
+    .name connection
+    .field [
+        .name owner
+        .type int
+    ]
+    .field [
+        .name lstart
+        .type int
+    ]
+    .field [
+        .name lend
+        .type int
+    ]
+    .field [
+        .name age
+        .type int
+    ]
+    %*********** TODO: speed is defined as a function -- need to flesh it out as vars
+    .field [
+        .name speedi
+        .type int
+    ]
+    .field [
+        .name speedj
+        .type int
+    ]
+    .field [
+        .name length
+        .type int
+    ]
+]
+
+% ********** VEHICLES ********** %
+.record [
+    .name vehicle
+    .field [
+        .name owner
+        .type int
+    ]
+    .field [
+        .name t
+        .type vtype
+    ]
+    .field [
+        .name speed
+        .type float
+    ]
+    .field [
+        .name capacity
+        .type int
+    ]
+    .field [
+        .name cargo
+        .type good
+    ]
+    .field [
+        .name age
+        .type int
+    ]
+    .field [
+        .name status
+        .type vstatus
+    ]
+    .field [
+        .name x
+        .type int
+    ]
+    .field [
+        .name y
+        .type int
+    ]
+    .field [
+        .name destination
+        .type destlist
+    ]
+    .field [
+        .name predtraveltime
+        .type traveltime
+    ]
+]
+
+.custom-field ocaml-module

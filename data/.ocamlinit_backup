@@ -1,0 +1,21 @@
+
+
+
+print_string "Loading DataProcessing components...";;
+
+#require "piqilib";;
+#load "piqilib.cma";;
+#require "piqirun";;
+#load "piqirun.cmo";;
+#load "piqirun_ext.cmo";;
+#use "player_piqi.ml";;
+#use "player_piqi_ext.ml";;
+#use "gameelements_piqi.ml";;
+#use "gameelements_piqi_ext.ml";;
+#use "graph_piqi.ml";;
+#use "graph_piqi_ext.ml";;
+#use "piqirun_custom.ml";;
+#use "gamestate_piqi.ml";;
+#use "gamestate_piqi_ext.ml";;
+#use "dataProcessing.ml";;
+print_endline " Done!";;

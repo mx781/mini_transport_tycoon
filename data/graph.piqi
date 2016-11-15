@@ -1,0 +1,104 @@
+%.ocaml-module "Graph_piqi"
+
+.import [ .module gameelements]
+
+% TODO: graph-level metadata - define later as needed
+.record [
+    .name metadata
+    .field [
+        .name var
+        .type string
+    ]
+]
+
+% ********** NODES ********** %
+.record [
+    .name node
+    .field [
+        .name id
+        .type int
+    ]
+    .field [
+        .name type
+        .type string
+    ]
+    .field [
+        .name label
+        .type string
+    ]
+    .field [
+        .name metadata
+        .type gameelements/location
+    ]
+]
+.list [
+    .name nodelist
+    .type node
+]
+
+% ********** EDGES ********** %
+
+.record [
+    .name edge
+    .field [
+        .name source
+        .type int
+    ]
+    .field [
+        .name relation
+        .type string
+    ]
+    .field [
+        .name destination
+        .type int
+    ]
+    .field [
+        .name directed
+        .type bool
+    ]
+    .field [
+        .name label
+        .type string
+    ]
+    .field [
+        .name metadata
+        .type gameelements/connection
+    ]
+]
+.list [
+    .name edgelist
+    .type edge
+]
+
+% ********** GRAPH ********** %
+
+.record [
+    .name graph
+    .field [
+        .name directed
+        .type bool
+    ]
+    .field [
+        .name type
+        .type string
+    ]
+    .field [
+        .name label
+        .type string
+    ]
+    .field [
+        .name metadata
+        .type metadata
+    ]
+    .field [
+        .name nodes
+        .type nodelist
+    ]
+    .field [
+        .name edges
+        .type edgelist
+    ]
+]
+
+.custom-field ocaml-module
+.custom-field ocaml-name

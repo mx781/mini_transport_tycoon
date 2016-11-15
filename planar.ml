@@ -114,7 +114,7 @@ let read_graph f =
 (* a random graph with n vertices *)
 let () = Random.self_init ()
 module R = Rand.Planar.I(G)
-let new_graph () = R.graph ~xrange:(20,1180) ~yrange:(20,880) ~prob n
+let new_graph () = R.graph ~xrange:(20,420) ~yrange:(20,460) ~prob n
 let g = ref (new_graph ())
 
 let () = printf "nb edges : %d\n" (G.nb_edges !g); flush stdout
@@ -129,7 +129,7 @@ let dump_graph () =
 (* let () = g := read_graph "tmp/carron.txt" *)
 
 open Graphics
-let () = open_graph " 1200x900"
+let () = open_graph " 640x480"
 
 let vertex_radius = 10
 
