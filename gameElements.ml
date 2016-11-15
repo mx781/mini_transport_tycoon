@@ -84,14 +84,8 @@ module Connection = struct
   let hash = Hashtbl.hash
   let default = {
     c_owner_id = 4;
-    l_start= {l_id = 0;
-              loc = (2,2);
-              accepts= [];
-              produces= [];};
-    l_end =  {l_id = 0;
-              loc = (2,2);
-              accepts= [];
-              produces= [];};
+    l_start= 0;
+    l_end =  1;
     length= 2;
     age= 0;
     speed= 3;
@@ -110,7 +104,7 @@ type game_state = {
 }
 
 let form_connection map player_id loc1 loc2 =
-  let new_connect = {c_owner_id = player_id; l_start = loc1; l_end = loc2;
+  let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
     age = 0; speed = 5; length = 5} in (*Placeholder*)
   let start_loc = loc1 in
   let end_loc = loc2 in
