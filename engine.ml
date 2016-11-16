@@ -126,8 +126,13 @@ let new_graph () =
   accepts= [];
   produces= [];} in
   let v2 = {l_id = 1;
-  l_x = 210.0;
-  l_y = 340.0;
+  l_x = 10.0;
+  l_y = 300.0;
+  accepts= [];
+  produces= [];} in
+  let v3 = {l_id = 2;
+  l_x = 450.0;
+  l_y = 200.0;
   accepts= [];
   produces= [];} in
   let m1 = Map.add_vertex (Map.empty) (v1) in
@@ -140,7 +145,17 @@ let new_graph () =
     length= 2.0;
     age= 0;
     speed= 3.0;
-  },v2) in m3
+  },v2) in
+  let m4 = Map.add_vertex m3 (v3) in
+ let m5 = Map.add_edge_e m4
+  (v1,{
+    c_owner_id = 4;
+    l_start= 1;
+    l_end =  2;
+    length= 2.0;
+    age= 0;
+    speed= 3.0;
+  },v3) in m5
 
 let fps = 30.0
 
@@ -178,6 +193,32 @@ let init_game fname =
   status= Driving;
   x= 224.0;
   y= 122.0;
-  destination= [1];}];
+  destination= [1];};
+  {v_owner_id= 1;
+  t = Truck;
+  speed = 2.0;
+  capacity= 100;
+  cargo= {
+  t = Oil;
+  quantity = 5;
+  };
+  age= 5;
+  status= Driving;
+  x= 24.0;
+  y= 302.0;
+  destination= [2];};
+  {v_owner_id= 1;
+  t = Truck;
+  speed = 1.4;
+  capacity= 100;
+  cargo= {
+  t = Oil;
+  quantity = 5;
+  };
+  age= 5;
+  status= Driving;
+  x= 450.0;
+  y= 12.0;
+  destination= [0];}];
   graph = new_graph () ; players = [];
     game_age = 0; paused = false;}

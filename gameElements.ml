@@ -123,8 +123,10 @@ let update_vehicle graph v =
   print_endline (string_of_float dest_x);
   let dest_y = dest.l_y in
   print_endline (string_of_float dest_y);
-  let new_x = v.x +. (v.speed *. (cos (atan ((v.y -. dest_y)/.(dest_x -. v.x))))) in
-  let new_y = v.y +. (v.speed *. (sin (atan ((v.y -. dest_y)/.(dest_x -. v.x))))) in
+  let delta_x = (dest_x -. v.x) in
+  let delta_y = (dest_y -. v.y) in
+  let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
+  let new_y = v.y +. (v.speed *. (sin (atan2 delta_y delta_x))) in
   {
   v_owner_id = v.v_owner_id;
   t = v.t;
