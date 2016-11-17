@@ -177,16 +177,11 @@ let rec main_loop st =
   main_loop st'
 
 
-let init_game fname =
-  GameGraphics.open_screen ();
+let init_game fname scale =
+  GameGraphics.open_screen scale;
   main_loop
-  { vehicles=
-  [{v_owner_id= 2;
-  t = Car;
-  speed = 1.0;
-  capacity= 100;
-  cargo= {
-  t = Oil;
+  { vehicles= [{v_owner_id= 2; t = Car; speed = 1.0; capacity= 100; cargo= {
+                 t = Oil;
   quantity = 5;
   };
   age= 56;
@@ -196,7 +191,7 @@ let init_game fname =
   destination= [1];};
   {v_owner_id= 1;
   t = Truck;
-  speed = 2.0;
+  speed = 5.0;
   capacity= 100;
   cargo= {
   t = Oil;
@@ -208,7 +203,7 @@ let init_game fname =
   y= 302.0;
   destination= [2];};
   {v_owner_id= 1;
-  t = Truck;
+  t = Car;
   speed = 1.4;
   capacity= 100;
   cargo= {
