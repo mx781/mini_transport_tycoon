@@ -144,7 +144,6 @@ let new_graph () =
     l_end =  2;
     length= 2.0;
     age= 0;
-    speed= 3.0;
   },v2) in
   let m4 = Map.add_vertex m3 (v3) in
  let m5 = Map.add_edge_e m4
@@ -154,7 +153,6 @@ let new_graph () =
     l_end =  2;
     length= 2.0;
     age= 0;
-    speed= 3.0;
   },v3) in m5
 
 let fps = 30.0
@@ -180,8 +178,14 @@ let rec main_loop st =
 let init_game fname scale =
   GameGraphics.open_screen scale;
   main_loop
-  { vehicles= [{v_owner_id= 2; t = Car; speed = 1.0; capacity= 100; cargo= {
-                 t = Oil;
+  { vehicles=
+  [{v_loc = None;
+  v_owner_id= 2;
+  t = Car;
+  speed = 1.0;
+  capacity= 100;
+  cargo= Some {
+  t = Oil;
   quantity = 5;
   };
   age= 56;
@@ -189,11 +193,12 @@ let init_game fname scale =
   x= 224.0;
   y= 122.0;
   destination= [1];};
-  {v_owner_id= 1;
+  {v_loc = None;
+  v_owner_id= 1;
   t = Truck;
   speed = 5.0;
   capacity= 100;
-  cargo= {
+  cargo= Some {
   t = Oil;
   quantity = 5;
   };
@@ -202,11 +207,12 @@ let init_game fname scale =
   x= 24.0;
   y= 302.0;
   destination= [2];};
-  {v_owner_id= 1;
-  t = Car;
+  {v_loc = None;
+  v_owner_id= 1;
+  t = Truck;
   speed = 1.4;
   capacity= 100;
-  cargo= {
+  cargo= Some {
   t = Oil;
   quantity = 5;
   };

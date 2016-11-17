@@ -23,6 +23,7 @@ type connection
 
 (* Takes in a connection and updates the connection based on the input
  * processes and the age.*)
+
 val update_connections: connection -> connection list-> connection list
 
 
