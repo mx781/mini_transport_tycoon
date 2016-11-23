@@ -195,7 +195,7 @@ let init_game fname scale =
   status= Driving;
   x= 224.0;
   y= 122.0;
-  destination= [1];};
+  destination= [1;0;2;0];};
   {v_loc = None;
   v_owner_id= 1;
   t = Truck;
@@ -209,7 +209,7 @@ let init_game fname scale =
   status= Driving;
   x= 24.0;
   y= 302.0;
-  destination= [2];};
+  destination= [2;1;2];};
   {v_loc = None;
   v_owner_id= 1;
   t = Truck;
@@ -223,6 +223,6 @@ let init_game fname scale =
   status= Driving;
   x= 450.0;
   y= 12.0;
-  destination= [0];}];
+  destination= [0;1;2;0];}];
   graph = new_graph () ; players = [];
     game_age = 0; paused = false;}

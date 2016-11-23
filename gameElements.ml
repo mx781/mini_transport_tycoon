@@ -134,17 +134,18 @@ let update_driving_v graph v =
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
-  print_endline (string_of_float dest_x);
   let dest_y = dest.l_y in
-  print_endline (string_of_float dest_y);
   let delta_x = (dest_x -. v.x) in
   let delta_y = (dest_y -. v.y) in
   let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
   let new_y = v.y +. (v.speed *. (sin (atan2 delta_y delta_x))) in
-  let new_status =
+  let (new_status, new_destination) =
     if (((v.x -. dest_x)*.(v.x -. dest_x)) +. ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
-    then Waiting
-    else if Random.float 1.0 < breakdown_chance then Broken else Driving in
+    then
+      match v.destination with
+        | h::[] -> (Waiting,[])
+        | h::h2::t -> (Driving,h2::t)
+    else if Random.float 1.0 < breakdown_chance then (Broken,v.destination) else (Driving,v.destination) in
   {
   v_owner_id = v.v_owner_id;
   t = v.t;
@@ -155,7 +156,7 @@ let update_driving_v graph v =
   status= new_status;
   x = new_x;
   y = new_y;
-  destination = v.destination;
+  destination = new_destination;
   v_loc = None;
   }
 
