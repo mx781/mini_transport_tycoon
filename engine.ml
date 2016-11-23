@@ -143,8 +143,8 @@ let new_graph () =
     l_start= 1;
     l_end =  2;
     length= 2.0;
-    age= 0;
-    speed= 3.0;
+    c_age= 0;
+    c_speed= 3.0;
   },v2) in
   let m4 = Map.add_vertex m3 (v3) in
  let m5 = Map.add_edge_e m4
@@ -153,8 +153,8 @@ let new_graph () =
     l_start= 1;
     l_end =  2;
     length= 2.0;
-    age= 0;
-    speed= 3.0;
+    c_age= 0;
+    c_speed= 3.0;
   },v3) in m5
 
 let fps = 30.0

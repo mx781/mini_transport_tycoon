@@ -59,8 +59,8 @@ type connection = {
   l_start: int;
   l_end: int;
   length: float;
-  age: int; (*In game steps, useful for breakdowns etc.*)
-  speed: float; (*speed of vehicle on road*)
+  c_age: int; (*In game steps, useful for breakdowns etc.*)
+  c_speed: float; (*speed of vehicle on road*)
 }
 
 
@@ -87,8 +87,8 @@ module Connection = struct
     l_start= 0;
     l_end =  1;
     length= 2.0;
-    age= 0;
-    speed= 3.0;
+    c_age= 0;
+    c_speed= 3.0;
   }
 end
 
@@ -103,9 +103,11 @@ type game_state = {
   paused: bool;
 }
 
+let breakdown_chance = 0.0001
+
 let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
-    age = 0; speed = 5.0; length = 5.0} in (*Placeholder*)
+    c_age = 0; c_speed = 5.0; length = 5.0} in (*Placeholder*)
   let start_loc = loc1 in
   let end_loc = loc2 in
   Map.add_edge_e map (loc1, new_connect, loc2)
@@ -114,9 +116,7 @@ let route_vehicle l v v_list =
   let new_v = {v with destination = [l.l_id]} in
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
-
-(*Currently only works for driving vehicles*)
-let update_vehicle graph v =
+let update_driving_v graph v =
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
@@ -127,18 +127,33 @@ let update_vehicle graph v =
   let delta_y = (dest_y -. v.y) in
   let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
   let new_y = v.y +. (v.speed *. (sin (atan2 delta_y delta_x))) in
+  let new_status =
+    if (((v.x -. dest_x)*.(v.x -. dest_x)) +. ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
+    then Waiting
+    else if Random.float 1.0 < breakdown_chance then Broken else Driving in
   {
   v_owner_id = v.v_owner_id;
   t = v.t;
   speed = v.speed;
   capacity = v.capacity;
   cargo = v.cargo; (*For single resource type this will only have one element *)
-  age= v.age; (*In game steps, useful for breakdowns etc.*)
-  status= v.status;
+  age= v.age + 1; (*In game steps, useful for breakdowns etc.*)
+  status= new_status;
   x = new_x;
   y = new_y;
   destination = v.destination;
   }
+
+let update_waiting v =
+  {v with age = v.age + 1}
+
+(*Currently only works for driving vehicles*)
+let update_vehicle graph v =
+  match v.status with
+    | Driving -> update_driving_v graph v
+    | Waiting -> update_waiting v
+    | Broken -> update_waiting v
+
 
 let update_vehicles v_lst graph =
  List.map (update_vehicle graph) v_lst
