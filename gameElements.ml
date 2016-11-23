@@ -16,8 +16,8 @@ type goods_profile = {
   steps_to_inc: int; (*how many game_steps before incrementing current by 1*)
   current: int;
   capacity: int;
-  price: int;
-  natural_price: int;
+  price: float;
+  natural_price: float;
 }
 
 type location = {
@@ -130,7 +130,6 @@ let route_vehicle l v v_list =
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
 let update_driving_v graph v =
-
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
@@ -145,6 +144,7 @@ let update_driving_v graph v =
       match v.destination with
         | h::[] -> (Waiting,[])
         | h::h2::t -> (Driving,h2::t)
+        | _ -> failwith "unexpected vehicle destination pattern"
     else if Random.float 1.0 < breakdown_chance then (Broken,v.destination) else (Driving,v.destination) in
   {
   v_owner_id = v.v_owner_id;
@@ -177,8 +177,28 @@ let update_vehicles v_lst graph =
 let update_connections c_lst =
   c_lst
 
-let update_locations l_lst =
-  l_lst
+let new_gp g_a gp =
+  { gp with
+  current = min
+    (gp.current + (if g_a mod gp.steps_to_inc = 0 then 1 else 0)) (gp.capacity);
+  price = max (gp.price +. if g_a mod gp.steps_to_inc = 0
+    then (0.02*. ((Random.float gp.natural_price) -. gp.natural_price))
+    else 0.0) 1.0;
+  }
+
+let update_location age l =
+  { l with
+  accepts= List.map (new_gp age) l.accepts;
+  produces= List.map (new_gp age) l.produces;
+  }
+
+let rec add_vertices m locs =
+  match locs with
+    | [] -> m
+    | h::t -> (add_vertices (Map.add_vertex m h) t)
+
+let update_locations graph g_age =
+  Map.map_vertex (update_location g_age) graph
 
 (*Gets the price of a good according to location*)
 let rec find_good_price g_p (resource:good) =
@@ -207,7 +227,7 @@ let sell_cargo vehicle player money graph =
     (match vehicle.v_loc with
     |None -> failwith "trying to sell cargo when not at final loc, TALK TO DAN"
     |Some loc -> find_good_price (get_loc loc graph).accepts the_good) in
-  (new_vehicle, (money + the_price))
+  (new_vehicle, (money +. the_price))
 
 
 (*UPDATES: Changed vehicle types to contain capacity + speed, since

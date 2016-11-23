@@ -123,7 +123,16 @@ let new_graph () =
   let v1 = {l_id = 0;
   l_x = 450.0;
   l_y = 430.0;
-  accepts= [];
+  accepts= [
+  {
+  resource= Iron;
+  steps_to_inc= 50; (*how many game_steps before incrementing current by 1*)
+  current= 20;
+  capacity= 40;
+  price= 1.4;
+  natural_price= 1.4;
+}
+];
   produces= [];} in
   let v2 = {l_id = 1;
   l_x = 150.0;
@@ -166,8 +175,9 @@ let rec main_loop st =
     GameGraphics.draw_game_state st;
     let processes = [] in
     let new_vehicles = update_vehicles st.vehicles st.graph in
+    let new_graph = update_locations st.graph st.game_age in
     let st' = { vehicles = new_vehicles;
-                graph = st.graph;
+                graph = new_graph;
                 players = st.players;
                 paused = st.paused;
                 game_age = st.game_age + 1;} in
