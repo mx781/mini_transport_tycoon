@@ -10,4 +10,7 @@ let () =
   print_endline "\t (3) for a large display.\n";
   print_string  "> ";
   let scale = read_line () in
-  Engine.init_game file_name scale
+  try
+    Engine.init_game file_name scale
+  with
+  | _ -> Engine.init_game "default.json" "2"

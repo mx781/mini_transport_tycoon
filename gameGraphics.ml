@@ -66,8 +66,25 @@ let rec draw_players (ps:Player.player list) : unit =
   | p::t -> draw_players t; draw_player_info p
   | [] -> ()
 
+let button_size = 50
+
+let draw_buttons () =
+  moveto (!scale*10) (!scale*110);
+  draw_string "Buy Car";
+  draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
+  moveto (!scale*10) (!scale*160);
+  draw_string "Buy Truck";
+  draw_rect (!scale*0) (!scale*150) (!scale*button_size) (!scale*button_size);
+  moveto (!scale*10) (!scale*210);
+  draw_string "Pause";
+  draw_rect (!scale*0) (!scale*200) (!scale*button_size) (!scale*button_size);
+  moveto (!scale*10) (!scale*260);
+  draw_string "Save and Quit";
+  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size)
+
 let draw_game_state gs : unit =
   clear_graph ();
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
-  draw_players gs.players
+  draw_players gs.players;
+  draw_buttons ()

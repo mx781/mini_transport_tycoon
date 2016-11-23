@@ -121,17 +121,17 @@
 let prob = 0.0
 let new_graph () =
   let v1 = {l_id = 0;
-  l_x = 45.0;
-  l_y = 230.0;
+  l_x = 450.0;
+  l_y = 430.0;
   accepts= [];
   produces= [];} in
   let v2 = {l_id = 1;
-  l_x = 10.0;
+  l_x = 150.0;
   l_y = 300.0;
   accepts= [];
   produces= [];} in
   let v3 = {l_id = 2;
-  l_x = 450.0;
+  l_x = 430.0;
   l_y = 200.0;
   accepts= [];
   produces= [];} in
@@ -158,21 +158,28 @@ let new_graph () =
 let fps = 30.0
 
 let rec main_loop st =
-  let start_t = Sys.time () in
-  GameGraphics.draw_game_state st;
-  let processes = [] in
-  let new_vehicles = update_vehicles st.vehicles st.graph in
-  let st' = { vehicles = new_vehicles;
-              graph = st.graph;
-              players = st.players;
-              paused = st.paused;
-              game_age = st.game_age + 1;} in
-  let time_elapsed = Sys.time () -. start_t in
-  print_endline (string_of_float time_elapsed);
-  let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0 then ((1.0 /. fps) -. time_elapsed) else 0.0 in
-  print_endline (string_of_float sleep_time);
-  Unix.sleepf sleep_time;
-  main_loop st'
+  try
+    let start_t = Sys.time () in
+    GameGraphics.draw_game_state st;
+    let processes = [] in
+    let new_vehicles = update_vehicles st.vehicles st.graph in
+    let st' = { vehicles = new_vehicles;
+                graph = st.graph;
+                players = st.players;
+                paused = st.paused;
+                game_age = st.game_age + 1;} in
+    let time_elapsed = Sys.time () -. start_t in
+    (* print_endline (string_of_float time_elapsed); *)
+    let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0 then ((1.0 /. fps) -. time_elapsed) else 0.0 in
+    (* print_endline (string_of_float sleep_time); *)
+    Unix.sleepf sleep_time;
+    main_loop st'
+  with _ -> print_endline
+  "###########################################################################";
+  print_endline
+  "##                             Game Over                                 ##";
+  print_endline
+  "###########################################################################"
 
 
 let init_game fname scale =

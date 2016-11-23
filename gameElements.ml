@@ -124,9 +124,9 @@ let update_vehicle graph v =
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
-  print_endline (string_of_float dest_x);
+  (* print_endline (string_of_float dest_x); *)
   let dest_y = dest.l_y in
-  print_endline (string_of_float dest_y);
+  (* print_endline (string_of_float dest_y); *)
   let delta_x = (dest_x -. v.x) in
   let delta_y = (dest_y -. v.y) in
   let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
