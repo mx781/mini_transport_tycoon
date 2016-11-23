@@ -1,43 +1,55 @@
 open Graphics
 open GameElements
 open Player
+open Png
+(* open Images
+open OImages *)
+
+let vertex_color = black
+let default_color = 0xD3D3D3
+let car_color = red
+let vertex_size = 5
+let car_size = 6
+let scale =  ref 2
+(* let carpic = Image.load "car.png" [] *)
+let round flt = int_of_float (flt +. 0.5)
 
 
-let vertex_size = 10
-let car_size = 5
+let open_screen size =
+  scale := (int_of_string size);
+  let display = string_of_int (400 * !scale) ^ "x" ^ string_of_int (300 * !scale) in
+  open_graph (" " ^ display)
 
-let open_screen () = open_graph ""
-
-let draw_line ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
+let draw_line ?(color=default_color) ?(width=2) (x1,y1) (x2,y2) =
   set_color color;
-  set_line_width width;
+  set_line_width (!scale * width);
   moveto x1 y1;
   lineto x2 y2
 
 let draw_ograph grph : unit =
-  GameElements.Map.iter_vertex
-    (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x, (GameElements.Map.V.label v).l_y) in fill_circle (int_of_float x) (int_of_float y) vertex_size) grph;
   GameElements.Map.iter_edges
     (fun v1 v2 -> draw_line
-      (int_of_float ((GameElements.Map.V.label v1).l_x),
-      int_of_float ((GameElements.Map.V.label v1).l_y))
-      (int_of_float ((GameElements.Map.V.label v2).l_x),
-      int_of_float ((GameElements.Map.V.label v2).l_y))
-     )  grph
+      ((round ((GameElements.Map.V.label v1).l_x) / 2 * !scale),
+      (round ((GameElements.Map.V.label v1).l_y)/ 2 * !scale))
+      ((round ((GameElements.Map.V.label v2).l_x)/ 2 * !scale),
+      (round ((GameElements.Map.V.label v2).l_y)/ 2 * !scale))
+     )  grph;
 
-
-(* let draw_edge ?(color=black) ?(width=3) (x1,y1) (x2,y2) =
-  set_color color;
-  set_line_width width;
-  moveto x1 y1;
-  lineto x2 y2
-
-let draw_vertex ?(color=black) ?(radius=10) (x,y) =
-  set_color color;
-  fill_circle x y radius *)
+  set_color vertex_color;
+  GameElements.Map.iter_vertex
+    (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x,
+                          (GameElements.Map.V.label v).l_y) in
+     fill_circle ((round x)/ 2 * !scale) ((round y)/ 2 * !scale) (!scale * vertex_size)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
-  fill_circle (int_of_float v.x) (int_of_float v.y) car_size
+  set_color car_color;
+  set_color (match v.t with
+            | GameElements.Car -> car_color
+            | GameElements.Truck -> blue);
+  let x = (round (v.x *. (float_of_int !scale)/.2.)) in
+  let y = (round (v.y *. (float_of_int !scale)/.2.)) in
+  let size = (!scale * car_size) in
+  fill_rect x y size size
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   match vs with

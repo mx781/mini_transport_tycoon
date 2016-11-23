@@ -32,18 +32,18 @@ type v_type =
   | Car
   | Truck
 
-
 type v_status =
   | Waiting
   | Driving
   | Broken (*Equivalent to waiting but inaccessible*)
+  (* | ToDrop Selling something *)
 
 type vehicle = {
   v_owner_id: int;
-  t : v_type;
   speed : float;
-  capacity: int;
-  cargo: good; (*For single resource type this will only have one element *)
+  capacity : int;
+  t : v_type;
+  cargo: good option; (*For single resource type this will only have one element *)
   age: int; (*In game steps, useful for breakdowns etc.*)
   status: v_status;
   x: float;
@@ -52,6 +52,7 @@ type vehicle = {
  * vehicle. The head of the list gives the current destination while the last id
  * gives the final destination. *)
   destination: int list;
+  v_loc: int option;
 }
 
 type connection = {
@@ -85,7 +86,7 @@ module Connection = struct
   let default = {
     c_owner_id = 4;
     l_start= 0;
-    l_end =  1;
+    l_end =  0;
     length= 2.0;
     c_age= 0;
     c_speed= 3.0;
@@ -105,11 +106,23 @@ type game_state = {
 
 let breakdown_chance = 0.0001
 
-let form_connection map player_id loc1 loc2 =
+(* let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
     c_age = 0; c_speed = 5.0; length = 5.0} in (*Placeholder*)
   let start_loc = loc1 in
-  let end_loc = loc2 in
+  let end_loc = loc2 in *)
+
+(*Gets a location from an id *)
+let get_loc id graph =
+  let vertex_lst = Map.fold_vertex (fun v lst -> if v.l_id = id then v :: lst else lst) graph [] in
+  match vertex_lst with
+  |h :: t -> h
+  |[] -> failwith "trying to get a vertex that doesn't exist; TALK TO DAN"
+
+(*Forms a new connection based on location*)
+let form_connection map player_id loc1 loc2 =
+  let new_connect = {c_owner_id = player_id; l_start = loc1.l_id; l_end = loc2.l_id;
+    c_age = 0; c_speed = 1.0; length = 5.0} in (*Placeholder*)
   Map.add_edge_e map (loc1, new_connect, loc2)
 
 let route_vehicle l v v_list =
@@ -117,6 +130,7 @@ let route_vehicle l v v_list =
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
 let update_driving_v graph v =
+
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
@@ -142,6 +156,7 @@ let update_driving_v graph v =
   x = new_x;
   y = new_y;
   destination = v.destination;
+  v_loc = None;
   }
 
 let update_waiting v =
@@ -163,3 +178,38 @@ let update_connections c_lst =
 
 let update_locations l_lst =
   l_lst
+
+(*Gets the price of a good according to location*)
+let rec find_good_price g_p (resource:good) =
+  match g_p with
+  |h :: t ->
+    if h.resource = resource.t then h.price else find_good_price t resource
+  |[] -> failwith "trying to sell good at wrong loc, TALK TO DAN"
+
+
+(*Buys the vehicle associated with a player and adds it to v_list*)
+let buy_vehicle vehicle player location v_list spd cpt =
+  let new_vehicle = {v_owner_id = player; t = vehicle; cargo = None;
+    status = Waiting; x = location.l_x; y = location.l_y; destination = [];
+    speed = spd; age = 0; capacity = cpt; v_loc = None} in
+  new_vehicle :: v_list
+
+(*Sells cargo at given location given a vehicle. Returns a tuple containing
+ *the new vehicle and the new money value*)
+let sell_cargo vehicle player money graph =
+  let new_vehicle = {vehicle with cargo = None; status = Waiting} in
+  let the_good =
+    match vehicle.cargo with
+    |Some good -> good
+    |None -> failwith "cannot sell cargo if it does not exist, TALK TO DAN" in
+  let the_price =
+    (match vehicle.v_loc with
+    |None -> failwith "trying to sell cargo when not at final loc, TALK TO DAN"
+    |Some loc -> find_good_price (get_loc loc graph).accepts the_good) in
+  (new_vehicle, (money + the_price))
+
+
+(*UPDATES: Changed vehicle types to contain capacity + speed, since
+  those should be connected with the vehicle
+  -Gave vehicle location option*)
+
