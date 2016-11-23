@@ -133,7 +133,14 @@ let new_graph () =
   natural_price= 1.4;
 }
 ];
-  produces= [];} in
+  produces= [{
+  resource= Oil;
+  steps_to_inc= 100; (*how many game_steps before incrementing current by 1*)
+  current= 100;
+  capacity= 140;
+  price= 3.4;
+  natural_price= 4.4;
+}];} in
   let v2 = {l_id = 1;
   l_x = 150.0;
   l_y = 300.0;
