@@ -4,16 +4,25 @@ open Player
 
 let vertex_color = black
 let default_color = 0xD3D3D3
-let car_color = red
 let vertex_size = 5
-let car_size = 6
 let scale =  ref 2
 
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image
 
-let car_img = get_img "images/car.png"
-let truck_img = get_img "images/truck.png"
+
+let _ = open_graph " 380x380"
+let start_screen = get_img "images/start.png" |> make_image
+let car_img = get_img "images/car.png" |> make_image
+let truck_img = get_img "images/truck.png" |> make_image
+let save = get_img "images/car.png" |> make_image
+let pause = get_img "images/truck.png" |> make_image
+let buycar = get_img "images/truck.png" |> make_image
+let buytruck = get_img "images/truck.png" |> make_image
+let bg = get_img "images/bg.png" |> make_image
+
+let draw_start () =
+  draw_image start_screen 0 0
 
 let round flt =
   int_of_float (flt +. 0.5)
@@ -21,7 +30,9 @@ let round flt =
 let open_screen size =
   scale := (int_of_string size);
   let display = string_of_int (400 * !scale) ^ "x" ^ string_of_int (300 * !scale) in
-  open_graph (" " ^ display)
+  (* open_graph (" " ^ display) *)
+  resize_window (400* !scale) (300* !scale)
+
 
 let draw_line ?(color=default_color) ?(width=2) (x1,y1) (x2,y2) =
   set_color color;
@@ -45,16 +56,12 @@ let draw_ograph grph : unit =
      fill_circle ((round x)/ 2 * !scale) ((round y)/ 2 * !scale) (!scale * vertex_size)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
-  set_color car_color;
   let pic = (match v.t with
             | GameElements.Car -> car_img
             | GameElements.Truck -> truck_img) in
   let x = (round (v.x *. (float_of_int !scale)/.2.)) in
   let y = (round (v.y *. (float_of_int !scale)/.2.)) in
-  let size = (!scale * car_size) in
-
-  Graphics.draw_image (pic |> make_image) x y
-  (* fill_rect x y size size *)
+  Graphics.draw_image pic x y
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   match vs with
@@ -71,15 +78,18 @@ let rec draw_players (ps:Player.player list) : unit =
   | p::t -> draw_players t; draw_player_info p
   | [] -> ()
 
-let button_size = 50
+let button_size = open_graph ""; 50
+
+let _ = close_graph
+
 
 let draw_buttons () =
-  let spacing = 500 in
-  draw_image (get_img "images/car.png" |> make_image) 0 200;
-  draw_image (get_img "images/truck.png"|> make_image) 0 (200-spacing);
-  draw_image (get_img "images/car.png"|> make_image) 0 (200-2*spacing);
-  draw_image (get_img "images/car.png"|> make_image) 0 (200-3*spacing)
-(*   moveto (!scale*10) (!scale*110);
+(*   let spacing = 100 in
+  draw_image (save ) 0 400;
+  draw_image (pause ) 0 (400-spacing);
+  draw_image (buycar ) 0 (400-2*spacing);
+  draw_image (buytruck) 0 (400-3*spacing) *)
+  moveto (!scale*10) (!scale*110);
   draw_string "Buy Car";
   draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*160);
@@ -91,10 +101,13 @@ let draw_buttons () =
   moveto (!scale*10) (!scale*260);
   draw_string "Save and Quit";
   draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size)
- *)
+
+
+
 let draw_game_state gs : unit =
-  clear_graph ();
+  (* clear_graph (); *)
+  draw_image (bg)  0 0;
+  draw_players gs.players;
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
-  draw_players gs.players;
-  draw_buttons ()
+  draw_buttons ();

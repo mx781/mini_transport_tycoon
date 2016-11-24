@@ -194,13 +194,12 @@ let rec main_loop st =
     (* print_endline (string_of_float sleep_time); *)
     Unix.sleepf sleep_time;
     main_loop st'
-  with e -> print_endline
+  with _ -> print_endline
   "###########################################################################";
   print_endline
   "##                             Game Over                                 ##";
   print_endline
-  "###########################################################################";
-  raise e
+  "###########################################################################"
 
 
 let init_game fname scale =
