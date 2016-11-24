@@ -1,5 +1,5 @@
 main:
-	ocamlbuild -pkgs graphics,camlimages.all,ocamlgraph,unix main.byte && ./main.byte
+	ocamlbuild -pkgs graphics,camlimages.graphics,camlimages.png,ocamlgraph,unix main.byte && ./main.byte
 
 
 planar:
