@@ -1,9 +1,8 @@
 open Graphics
 open GameElements
 open Player
-open Png
-(* open Images
-open OImages *)
+open Images
+open Graphic_image
 
 let vertex_color = black
 let default_color = 0xD3D3D3
@@ -11,7 +10,10 @@ let car_color = red
 let vertex_size = 5
 let car_size = 6
 let scale =  ref 2
-(* let carpic = Image.load "car.png" [] *)
+let carpic =  Images.load "car.png" []
+let car_img = carpic |> array_of_image
+let truckpic =  Images.load "truck.png" []
+let truck_img = truckpic |> array_of_image
 let round flt = int_of_float (flt +. 0.5)
 
 
@@ -43,13 +45,15 @@ let draw_ograph grph : unit =
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
   set_color car_color;
-  set_color (match v.t with
-            | GameElements.Car -> car_color
-            | GameElements.Truck -> blue);
+  let pic = (match v.t with
+            | GameElements.Car -> car_img
+            | GameElements.Truck -> truck_img) in
   let x = (round (v.x *. (float_of_int !scale)/.2.)) in
   let y = (round (v.y *. (float_of_int !scale)/.2.)) in
   let size = (!scale * car_size) in
-  fill_rect x y size size
+
+  Graphics.draw_image (pic |> make_image) x y
+  (* fill_rect x y size size *)
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   match vs with
