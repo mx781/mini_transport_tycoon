@@ -1,8 +1,6 @@
 open Graphics
 open GameElements
 open Player
-open Images
-open Graphic_image
 
 let vertex_color = black
 let default_color = 0xD3D3D3
@@ -10,12 +8,15 @@ let car_color = red
 let vertex_size = 5
 let car_size = 6
 let scale =  ref 2
-let carpic =  Images.load "car.png" []
-let car_img = carpic |> array_of_image
-let truckpic =  Images.load "truck.png" []
-let truck_img = truckpic |> array_of_image
-let round flt = int_of_float (flt +. 0.5)
 
+let get_img img =
+  Images.load img [] |> Graphic_image.array_of_image
+
+let car_img = get_img "images/car.png"
+let truck_img = get_img "images/truck.png"
+
+let round flt =
+  int_of_float (flt +. 0.5)
 
 let open_screen size =
   scale := (int_of_string size);
@@ -73,7 +74,12 @@ let rec draw_players (ps:Player.player list) : unit =
 let button_size = 50
 
 let draw_buttons () =
-  moveto (!scale*10) (!scale*110);
+  let spacing = 500 in
+  draw_image (get_img "images/car.png" |> make_image) 0 200;
+  draw_image (get_img "images/truck.png"|> make_image) 0 (200-spacing);
+  draw_image (get_img "images/car.png"|> make_image) 0 (200-2*spacing);
+  draw_image (get_img "images/car.png"|> make_image) 0 (200-3*spacing)
+(*   moveto (!scale*10) (!scale*110);
   draw_string "Buy Car";
   draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*160);
@@ -85,7 +91,7 @@ let draw_buttons () =
   moveto (!scale*10) (!scale*260);
   draw_string "Save and Quit";
   draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size)
-
+ *)
 let draw_game_state gs : unit =
   clear_graph ();
   draw_ograph gs.graph;
