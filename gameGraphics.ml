@@ -7,18 +7,23 @@ let default_color = 0xD3D3D3
 let vertex_size = 5
 let scale =  ref 2
 
-let get_img img =
-  Images.load img [] |> Graphic_image.array_of_image
+let make_transp img =
+  let replace = Array.map (fun col -> if col = white then transp else col) in
+  Array.map (fun arr -> replace arr) img
 
+let get_img img =
+  Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
 let _ = open_graph " 380x380"
+(* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
+(* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
-let save = get_img "images/car.png" |> make_image
-let pause = get_img "images/truck.png" |> make_image
-let buycar = get_img "images/truck.png" |> make_image
-let buytruck = get_img "images/truck.png" |> make_image
+let save = get_img "images/savebutt.png" |> make_image
+let pause = get_img "images/pausebutt.png" |> make_image
+let buycar = get_img "images/carbutt.png" |> make_image
+let buytruck = get_img "images/truckbutt.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 
 let draw_start () =
@@ -84,12 +89,14 @@ let _ = close_graph
 
 
 let draw_buttons () =
-(*   let spacing = 100 in
-  draw_image (save ) 0 400;
-  draw_image (pause ) 0 (400-spacing);
-  draw_image (buycar ) 0 (400-2*spacing);
-  draw_image (buytruck) 0 (400-3*spacing) *)
-  moveto (!scale*10) (!scale*110);
+
+  let spacing = 55 in
+  let start_height = 250 * !scale in
+  draw_image (save ) 0 start_height;
+  draw_image (pause ) 0 (start_height-spacing);
+  draw_image (buycar ) 0 (start_height-2*spacing);
+  draw_image (buytruck) 0 (start_height-3*spacing)
+(*   moveto (!scale*10) (!scale*110);
   draw_string "Buy Car";
   draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*160);
@@ -100,7 +107,7 @@ let draw_buttons () =
   draw_rect (!scale*0) (!scale*200) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*260);
   draw_string "Save and Quit";
-  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size)
+  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size) *)
 
 
 
