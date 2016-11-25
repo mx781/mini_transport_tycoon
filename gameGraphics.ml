@@ -2,23 +2,27 @@ open Graphics
 open GameElements
 open Player
 
-let vertex_color = black
-let default_color = 0xD3D3D3
-let vertex_size = 5
+let default_color = 0xCD853F
 let scale =  ref 2
 
-let get_img img =
-  Images.load img [] |> Graphic_image.array_of_image
+let make_transp img =
+  let replace = Array.map (fun col -> if col = white then transp else col) in
+  Array.map (fun arr -> replace arr) img
 
+let get_img img =
+  Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
 let _ = open_graph " 380x380"
+(* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
+(* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
-let save = get_img "images/car.png" |> make_image
-let pause = get_img "images/truck.png" |> make_image
-let buycar = get_img "images/truck.png" |> make_image
-let buytruck = get_img "images/truck.png" |> make_image
+let save = get_img "images/savebutt.png" |> make_image
+let pause = get_img "images/pausebutt.png" |> make_image
+let buycar = get_img "images/carbutt.png" |> make_image
+let buytruck = get_img "images/truckbutt.png" |> make_image
+let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 
 let draw_start () =
@@ -34,7 +38,7 @@ let open_screen size =
   resize_window (400* !scale) (300* !scale)
 
 
-let draw_line ?(color=default_color) ?(width=2) (x1,y1) (x2,y2) =
+let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
   set_line_width (!scale * width);
   moveto x1 y1;
@@ -49,18 +53,17 @@ let draw_ograph grph : unit =
       (round ((GameElements.Map.V.label v2).l_y)/ 2 * !scale))
      )  grph;
 
-  set_color vertex_color;
   GameElements.Map.iter_vertex
     (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x,
                           (GameElements.Map.V.label v).l_y) in
-     fill_circle ((round x)/ 2 * !scale) ((round y)/ 2 * !scale) (!scale * vertex_size)) grph
+       draw_image house ((round x - 15)/ 2 * !scale) ((round y - 15)/ 2 * !scale)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
   let pic = (match v.v_t with
             | GameElements.Car -> car_img
             | GameElements.Truck -> truck_img) in
-  let x = (round (v.x *. (float_of_int !scale)/.2.)) in
-  let y = (round (v.y *. (float_of_int !scale)/.2.)) in
+  let x = round ((v.x -. 30.0) /. 2. *. (float_of_int !scale)) in
+  let y = (round ((v.y -. 15.0) /. 2. *. (float_of_int !scale))) in
   Graphics.draw_image pic x y
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
@@ -84,12 +87,14 @@ let _ = close_graph
 
 
 let draw_buttons () =
-(*   let spacing = 100 in
-  draw_image (save ) 0 400;
-  draw_image (pause ) 0 (400-spacing);
-  draw_image (buycar ) 0 (400-2*spacing);
-  draw_image (buytruck) 0 (400-3*spacing) *)
-  moveto (!scale*10) (!scale*110);
+
+  let spacing = 40 * !scale in
+  let start_height = 250 * !scale in
+  draw_image (save ) 0 start_height;
+  draw_image (pause ) 0 (start_height-spacing);
+  draw_image (buycar ) 0 (start_height-2*spacing);
+  draw_image (buytruck) 0 (start_height-3*spacing)
+(*   moveto (!scale*10) (!scale*110);
   draw_string "Buy Car";
   draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*160);
@@ -100,14 +105,25 @@ let draw_buttons () =
   draw_rect (!scale*0) (!scale*200) (!scale*button_size) (!scale*button_size);
   moveto (!scale*10) (!scale*260);
   draw_string "Save and Quit";
-  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size)
+  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size) *)
 
-
+let draw_hover x y grph =
+  let close_enough = 30 in
+  GameElements.Map.iter_vertex
+    (fun v -> let (x1,y1) = ((GameElements.Map.V.label v).l_x,
+                          (GameElements.Map.V.label v).l_y) in
+    if (abs (x*2/ !scale - round x1) < close_enough)
+    && (abs (y*2/ !scale - round y1) < close_enough)
+    then (set_color white; fill_rect x y 150 100) else ()) grph
 
 let draw_game_state gs : unit =
   (* clear_graph (); *)
-  draw_image (bg)  0 0;
+  let stat = wait_next_event [Poll] in
+  let x = stat.mouse_x in
+  let y = stat.mouse_y in
+  draw_image bg 0 0;
   draw_players gs.players;
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
+  draw_hover x y gs.graph
