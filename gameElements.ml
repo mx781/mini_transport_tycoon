@@ -134,26 +134,21 @@ open Player
 (* returns new player list updated for sold cargo. Cargo is emptied in calling
  * function only, this just does the money transfer*)
 let sell_cargo v g players graph st =
-  print_endline "step 3";
   let player = List.find (fun p -> p.p_id = v.v_owner_id) players in
-  print_endline "step 4";
-    print_endline "step 5";
   let sell_l = Map.fold_vertex
     (fun l opt -> let loc = Map.V.create l in
                   if loc.l_x = v.x && loc.l_y = v.y
                   then Some loc
                   else opt)
     graph None in
-  print_endline "step 6";
   let sell_l' = match sell_l with
     | None -> failwith "location does not exist"
     | Some l -> l in
-    print_endline "step 7";
-  let sell_profile = List.find (fun gp -> gp.resource = g.t) sell_l'.accepts in
-  print_endline "step 8";
-  let sell_price = sell_profile.price in
+  let sell_price =
+  try
+    (List.find (fun gp -> gp.resource = g.t) sell_l'.accepts).price
+  with _ -> 0.0 in
   let new_money = (float_of_int g.quantity) *. sell_price in
-  print_endline (string_of_float (new_money +. player.money));
   let player' = {player with money = player.money +. new_money} in
   st.players <- List.map (fun p -> if p = player then player' else p) players
 
@@ -170,7 +165,6 @@ let update_driving_v players graph v st =
     then
       (match v.destination with
         | h::[] ->
-                   print_endline "step 1";
                    let v' =
                    { v with x = dest_x; y = dest_y;
                      cargo = None;
@@ -179,7 +173,6 @@ let update_driving_v players graph v st =
                      status = Waiting;
                      v_loc = Some h
                    } in
-                   print_endline "step 2";
                    let () = match v.cargo with
                      | None -> ()
                      | Some g ->  sell_cargo v' g players graph st; in

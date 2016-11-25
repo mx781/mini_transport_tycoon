@@ -125,7 +125,7 @@ let new_graph () =
   l_y = 430.0;
   accepts= [
   {
-  resource= Iron;
+  resource= Oil;
   steps_to_inc= 50; (*how many game_steps before incrementing current by 1*)
   current= 20;
   capacity= 40;
@@ -225,12 +225,15 @@ let init_game fname scale =
   v_t = Truck;
   speed = 5.0;
   capacity= 100;
-  cargo= None;
+  cargo= Some {
+  t = Oil;
+  quantity = 5;
+  };
   age= 5;
   status= Driving;
   x= 24.0;
   y= 302.0;
-  destination= [2;1;2];};
+  destination= [2;1;0];};
   {v_loc = None;
   v_owner_id= 1;
   v_t = Truck;
