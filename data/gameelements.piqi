@@ -80,14 +80,13 @@
         .name id
         .type int
     ]
-    % location tuple split into locationx and locationy
     .field [
-        .name locationx
-        .type int
+        .name lx
+        .type float
     ]
     .field [
-        .name locationy
-        .type int
+        .name ly
+        .type float
     ]
     .field [
         .name accepts
@@ -122,14 +121,9 @@
         .name age
         .type int
     ]
-    %*********** TODO: speed is defined as a function -- need to flesh it out as vars
     .field [
-        .name speedi
-        .type int
-    ]
-    .field [
-        .name speedj
-        .type int
+        .name speed
+        .type float
     ]
     .field [
         .name length
@@ -179,10 +173,6 @@
     .field [
         .name destination
         .type destlist
-    ]
-    .field [
-        .name predtraveltime
-        .type traveltime
     ]
 ]
 

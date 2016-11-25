@@ -56,8 +56,8 @@ and Location:
   sig
     type t = {
       mutable id: int;
-      mutable locationx: int;
-      mutable locationy: int;
+      mutable lx: Gameelements_piqi.float;
+      mutable ly: Gameelements_piqi.float;
       mutable accepts: Gameelements_piqi.gplist;
       mutable produces: Gameelements_piqi.gplist;
     }
@@ -69,8 +69,7 @@ and Connection:
       mutable lstart: int;
       mutable lend: int;
       mutable age: int;
-      mutable speedi: int;
-      mutable speedj: int;
+      mutable speed: Gameelements_piqi.float;
       mutable length: int;
     }
   end = Connection
@@ -87,7 +86,6 @@ and Vehicle:
       mutable x: int;
       mutable y: int;
       mutable destination: Gameelements_piqi.destlist;
-      mutable predtraveltime: Gameelements_piqi.traveltime;
     }
   end = Vehicle
 
@@ -170,15 +168,15 @@ and parse_gplist x =
 and parse_location x =
   let x = Piqirun.parse_record x in
   let _id, x = Piqirun.parse_required_field 1 parse_int x in
-  let _locationx, x = Piqirun.parse_required_field 2 parse_int x in
-  let _locationy, x = Piqirun.parse_required_field 3 parse_int x in
+  let _lx, x = Piqirun.parse_required_field 2 parse_float x in
+  let _ly, x = Piqirun.parse_required_field 3 parse_float x in
   let _accepts, x = Piqirun.parse_required_field 4 parse_gplist x in
   let _produces, x = Piqirun.parse_required_field 5 parse_gplist x in
   Piqirun.check_unparsed_fields x;
   {
     Location.id = _id;
-    Location.locationx = _locationx;
-    Location.locationy = _locationy;
+    Location.lx = _lx;
+    Location.ly = _ly;
     Location.accepts = _accepts;
     Location.produces = _produces;
   }
@@ -193,17 +191,15 @@ and parse_connection x =
   let _lstart, x = Piqirun.parse_required_field 2 parse_int x in
   let _lend, x = Piqirun.parse_required_field 3 parse_int x in
   let _age, x = Piqirun.parse_required_field 4 parse_int x in
-  let _speedi, x = Piqirun.parse_required_field 5 parse_int x in
-  let _speedj, x = Piqirun.parse_required_field 6 parse_int x in
-  let _length, x = Piqirun.parse_required_field 7 parse_int x in
+  let _speed, x = Piqirun.parse_required_field 5 parse_float x in
+  let _length, x = Piqirun.parse_required_field 6 parse_int x in
   Piqirun.check_unparsed_fields x;
   {
     Connection.owner = _owner;
     Connection.lstart = _lstart;
     Connection.lend = _lend;
     Connection.age = _age;
-    Connection.speedi = _speedi;
-    Connection.speedj = _speedj;
+    Connection.speed = _speed;
     Connection.length = _length;
   }
 
@@ -219,7 +215,6 @@ and parse_vehicle x =
   let _x, x = Piqirun.parse_required_field 8 parse_int x in
   let _y, x = Piqirun.parse_required_field 9 parse_int x in
   let _destination, x = Piqirun.parse_required_field 10 parse_destlist x in
-  let _predtraveltime, x = Piqirun.parse_required_field 11 parse_traveltime x in
   Piqirun.check_unparsed_fields x;
   {
     Vehicle.owner = _owner;
@@ -232,7 +227,6 @@ and parse_vehicle x =
     Vehicle.x = _x;
     Vehicle.y = _y;
     Vehicle.destination = _destination;
-    Vehicle.predtraveltime = _predtraveltime;
   }
 
 
@@ -291,11 +285,11 @@ and gen__gplist code x = (Piqirun.gen_list (gen__goodsprofile)) code x
 
 and gen__location code x =
   let _id = Piqirun.gen_required_field 1 gen__int x.Location.id in
-  let _locationx = Piqirun.gen_required_field 2 gen__int x.Location.locationx in
-  let _locationy = Piqirun.gen_required_field 3 gen__int x.Location.locationy in
+  let _lx = Piqirun.gen_required_field 2 gen__float x.Location.lx in
+  let _ly = Piqirun.gen_required_field 3 gen__float x.Location.ly in
   let _accepts = Piqirun.gen_required_field 4 gen__gplist x.Location.accepts in
   let _produces = Piqirun.gen_required_field 5 gen__gplist x.Location.produces in
-  Piqirun.gen_record code (_id :: _locationx :: _locationy :: _accepts :: _produces :: [])
+  Piqirun.gen_record code (_id :: _lx :: _ly :: _accepts :: _produces :: [])
 
 and gen__destlist code x = (Piqirun.gen_list (gen__int)) code x
 
@@ -304,10 +298,9 @@ and gen__connection code x =
   let _lstart = Piqirun.gen_required_field 2 gen__int x.Connection.lstart in
   let _lend = Piqirun.gen_required_field 3 gen__int x.Connection.lend in
   let _age = Piqirun.gen_required_field 4 gen__int x.Connection.age in
-  let _speedi = Piqirun.gen_required_field 5 gen__int x.Connection.speedi in
-  let _speedj = Piqirun.gen_required_field 6 gen__int x.Connection.speedj in
-  let _length = Piqirun.gen_required_field 7 gen__int x.Connection.length in
-  Piqirun.gen_record code (_owner :: _lstart :: _lend :: _age :: _speedi :: _speedj :: _length :: [])
+  let _speed = Piqirun.gen_required_field 5 gen__float x.Connection.speed in
+  let _length = Piqirun.gen_required_field 6 gen__int x.Connection.length in
+  Piqirun.gen_record code (_owner :: _lstart :: _lend :: _age :: _speed :: _length :: [])
 
 and gen__vehicle code x =
   let _owner = Piqirun.gen_required_field 1 gen__int x.Vehicle.owner in
@@ -320,8 +313,7 @@ and gen__vehicle code x =
   let _x = Piqirun.gen_required_field 8 gen__int x.Vehicle.x in
   let _y = Piqirun.gen_required_field 9 gen__int x.Vehicle.y in
   let _destination = Piqirun.gen_required_field 10 gen__destlist x.Vehicle.destination in
-  let _predtraveltime = Piqirun.gen_required_field 11 gen__traveltime x.Vehicle.predtraveltime in
-  Piqirun.gen_record code (_owner :: _t :: _speed :: _capacity :: _cargo :: _age :: _status :: _x :: _y :: _destination :: _predtraveltime :: [])
+  Piqirun.gen_record code (_owner :: _t :: _speed :: _capacity :: _cargo :: _age :: _status :: _x :: _y :: _destination :: [])
 
 
 let gen_float64 x = gen__float64 (-1) x
@@ -365,8 +357,8 @@ and default_gplist () = []
 and default_location () =
   {
     Location.id = default_int ();
-    Location.locationx = default_int ();
-    Location.locationy = default_int ();
+    Location.lx = default_float ();
+    Location.ly = default_float ();
     Location.accepts = default_gplist ();
     Location.produces = default_gplist ();
   }
@@ -377,8 +369,7 @@ and default_connection () =
     Connection.lstart = default_int ();
     Connection.lend = default_int ();
     Connection.age = default_int ();
-    Connection.speedi = default_int ();
-    Connection.speedj = default_int ();
+    Connection.speed = default_float ();
     Connection.length = default_int ();
   }
 and default_vehicle () =
@@ -393,9 +384,8 @@ and default_vehicle () =
     Vehicle.x = default_int ();
     Vehicle.y = default_int ();
     Vehicle.destination = default_destlist ();
-    Vehicle.predtraveltime = default_traveltime ();
   }
 
 
-let piqi = "\226\202\2304\012gameelements\226\231\249\238\001\017gameelements.piqi\242\189\246\234\004\012ocaml-module\218\244\134\182\012\133\001\170\136\200\184\014\127\218\164\238\191\004\005rtype\170\183\218\222\005\017\232\146\150q\002\218\164\238\191\004\006Lumber\170\183\218\222\005\015\232\146\150q\004\218\164\238\191\004\004Iron\170\183\218\222\005\014\232\146\150q\006\218\164\238\191\004\003Oil\170\183\218\222\005\022\232\146\150q\b\218\164\238\191\004\011Electronics\170\183\218\222\005\018\232\146\150q\n\218\164\238\191\004\007Produce\218\244\134\182\012;\170\136\200\184\0145\218\164\238\191\004\005vtype\170\183\218\222\005\014\232\146\150q\002\218\164\238\191\004\003Car\170\183\218\222\005\016\232\146\150q\004\218\164\238\191\004\005Truck\218\244\134\182\012Z\170\136\200\184\014T\218\164\238\191\004\007vstatus\170\183\218\222\005\018\232\146\150q\002\218\164\238\191\004\007Waiting\170\183\218\222\005\018\232\146\150q\004\218\164\238\191\004\007Driving\170\183\218\222\005\017\232\146\150q\006\218\164\238\191\004\006Broken\218\244\134\182\012I\170\136\200\184\014C\218\164\238\191\004\ntraveltime\170\183\218\222\005\015\232\146\150q\002\218\164\238\191\004\004None\170\183\218\222\005\024\232\146\150q\004\218\164\238\191\004\004Some\210\171\158\194\006\003int\218\244\134\182\012^\138\233\142\251\014X\210\203\242$!\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001t\210\171\158\194\006\005rtype\210\203\242$#\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005quant\210\171\158\194\006\003int\218\164\238\191\004\004good\218\244\134\182\012\159\002\138\233\142\251\014\152\002\210\203\242$(\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bresource\210\171\158\194\006\005rtype\210\203\242$(\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\nstepstoinc\210\171\158\194\006\003int\210\203\242$%\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\007current\210\171\158\194\006\003int\210\203\242$&\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bcapacity\210\171\158\194\006\003int\210\203\242$#\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005price\210\171\158\194\006\003int\210\203\242$*\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\012naturalprice\210\171\158\194\006\003int\218\164\238\191\004\012goodsprofile\218\244\134\182\012$\242\197\227\236\003\030\218\164\238\191\004\006gplist\210\171\158\194\006\012goodsprofile\218\244\134\182\012\237\001\138\233\142\251\014\230\001\210\203\242$ \232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\002id\210\171\158\194\006\003int\210\203\242$'\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\tlocationx\210\171\158\194\006\003int\210\203\242$'\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\tlocationy\210\171\158\194\006\003int\210\203\242$(\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\007accepts\210\171\158\194\006\006gplist\210\203\242$)\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bproduces\210\171\158\194\006\006gplist\218\164\238\191\004\blocation\218\244\134\182\012\029\242\197\227\236\003\023\218\164\238\191\004\bdestlist\210\171\158\194\006\003int\218\244\134\182\012\176\002\138\233\142\251\014\169\002\210\203\242$#\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005owner\210\171\158\194\006\003int\210\203\242$$\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006lstart\210\171\158\194\006\003int\210\203\242$\"\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\004lend\210\171\158\194\006\003int\210\203\242$!\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\003age\210\171\158\194\006\003int\210\203\242$$\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006speedi\210\171\158\194\006\003int\210\203\242$$\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006speedj\210\171\158\194\006\003int\210\203\242$$\232\146\150q\014\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006length\210\171\158\194\006\003int\218\164\238\191\004\nconnection\218\244\134\182\012\230\003\138\233\142\251\014\223\003\210\203\242$#\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005owner\210\171\158\194\006\003int\210\203\242$!\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001t\210\171\158\194\006\005vtype\210\203\242$%\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005speed\210\171\158\194\006\005float\210\203\242$&\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bcapacity\210\171\158\194\006\003int\210\203\242$$\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005cargo\210\171\158\194\006\004good\210\203\242$!\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\003age\210\171\158\194\006\003int\210\203\242$(\232\146\150q\014\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006status\210\171\158\194\006\007vstatus\210\203\242$\031\232\146\150q\016\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001x\210\171\158\194\006\003int\210\203\242$\031\232\146\150q\018\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001y\210\171\158\194\006\003int\210\203\242$.\232\146\150q\020\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\011destination\210\171\158\194\006\bdestlist\210\203\242$3\232\146\150q\022\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\014predtraveltime\210\171\158\194\006\ntraveltime\218\164\238\191\004\007vehicle"
+let piqi = "\226\202\2304\012gameelements\226\231\249\238\001\017gameelements.piqi\242\189\246\234\004\012ocaml-module\218\244\134\182\012\133\001\170\136\200\184\014\127\218\164\238\191\004\005rtype\170\183\218\222\005\017\232\146\150q\002\218\164\238\191\004\006Lumber\170\183\218\222\005\015\232\146\150q\004\218\164\238\191\004\004Iron\170\183\218\222\005\014\232\146\150q\006\218\164\238\191\004\003Oil\170\183\218\222\005\022\232\146\150q\b\218\164\238\191\004\011Electronics\170\183\218\222\005\018\232\146\150q\n\218\164\238\191\004\007Produce\218\244\134\182\012;\170\136\200\184\0145\218\164\238\191\004\005vtype\170\183\218\222\005\014\232\146\150q\002\218\164\238\191\004\003Car\170\183\218\222\005\016\232\146\150q\004\218\164\238\191\004\005Truck\218\244\134\182\012Z\170\136\200\184\014T\218\164\238\191\004\007vstatus\170\183\218\222\005\018\232\146\150q\002\218\164\238\191\004\007Waiting\170\183\218\222\005\018\232\146\150q\004\218\164\238\191\004\007Driving\170\183\218\222\005\017\232\146\150q\006\218\164\238\191\004\006Broken\218\244\134\182\012I\170\136\200\184\014C\218\164\238\191\004\ntraveltime\170\183\218\222\005\015\232\146\150q\002\218\164\238\191\004\004None\170\183\218\222\005\024\232\146\150q\004\218\164\238\191\004\004Some\210\171\158\194\006\003int\218\244\134\182\012^\138\233\142\251\014X\210\203\242$!\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001t\210\171\158\194\006\005rtype\210\203\242$#\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005quant\210\171\158\194\006\003int\218\164\238\191\004\004good\218\244\134\182\012\159\002\138\233\142\251\014\152\002\210\203\242$(\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bresource\210\171\158\194\006\005rtype\210\203\242$(\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\nstepstoinc\210\171\158\194\006\003int\210\203\242$%\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\007current\210\171\158\194\006\003int\210\203\242$&\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bcapacity\210\171\158\194\006\003int\210\203\242$#\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005price\210\171\158\194\006\003int\210\203\242$*\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\012naturalprice\210\171\158\194\006\003int\218\164\238\191\004\012goodsprofile\218\244\134\182\012$\242\197\227\236\003\030\218\164\238\191\004\006gplist\210\171\158\194\006\012goodsprofile\218\244\134\182\012\227\001\138\233\142\251\014\220\001\210\203\242$ \232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\002id\210\171\158\194\006\003int\210\203\242$\"\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\002lx\210\171\158\194\006\005float\210\203\242$\"\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\002ly\210\171\158\194\006\005float\210\203\242$(\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\007accepts\210\171\158\194\006\006gplist\210\203\242$)\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bproduces\210\171\158\194\006\006gplist\218\164\238\191\004\blocation\218\244\134\182\012\029\242\197\227\236\003\023\218\164\238\191\004\bdestlist\210\171\158\194\006\003int\218\244\134\182\012\136\002\138\233\142\251\014\129\002\210\203\242$#\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005owner\210\171\158\194\006\003int\210\203\242$$\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006lstart\210\171\158\194\006\003int\210\203\242$\"\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\004lend\210\171\158\194\006\003int\210\203\242$!\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\003age\210\171\158\194\006\003int\210\203\242$%\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005speed\210\171\158\194\006\005float\210\203\242$$\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006length\210\171\158\194\006\003int\218\164\238\191\004\nconnection\218\244\134\182\012\174\003\138\233\142\251\014\167\003\210\203\242$#\232\146\150q\002\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005owner\210\171\158\194\006\003int\210\203\242$!\232\146\150q\004\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001t\210\171\158\194\006\005vtype\210\203\242$%\232\146\150q\006\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005speed\210\171\158\194\006\005float\210\203\242$&\232\146\150q\b\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\bcapacity\210\171\158\194\006\003int\210\203\242$$\232\146\150q\n\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\005cargo\210\171\158\194\006\004good\210\203\242$!\232\146\150q\012\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\003age\210\171\158\194\006\003int\210\203\242$(\232\146\150q\014\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\006status\210\171\158\194\006\007vstatus\210\203\242$\031\232\146\150q\016\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001x\210\171\158\194\006\003int\210\203\242$\031\232\146\150q\018\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\001y\210\171\158\194\006\003int\210\203\242$.\232\146\150q\020\152\182\154\152\004\223\162\138\147\001\218\164\238\191\004\011destination\210\171\158\194\006\bdestlist\218\164\238\191\004\007vehicle"
 include Gameelements_piqi

@@ -3,3 +3,4 @@ _build/*
 .DS_Store
 *~
 interfaces/_build/*
+data/_build/*
