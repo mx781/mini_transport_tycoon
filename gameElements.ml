@@ -42,7 +42,7 @@ type vehicle = {
   v_owner_id: int;
   speed : float;
   capacity : int;
-  t : v_type;
+  v_t : v_type;
   cargo: good option; (*For single resource type this will only have one element *)
   age: int; (*In game steps, useful for breakdowns etc.*)
   status: v_status;
@@ -99,9 +99,9 @@ module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 type game_state = {
   vehicles : vehicle list;
   graph: Map.t;
-  players : Player.player list;
   game_age : int;
   paused: bool;
+  mutable players : Player.player list;
 }
 
 let breakdown_chance = 0.0001
@@ -129,7 +129,35 @@ let route_vehicle l v v_list =
   let new_v = {v with destination = [l.l_id]} in
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
-let update_driving_v graph v =
+open Player
+
+(* returns new player list updated for sold cargo. Cargo is emptied in calling
+ * function only, this just does the money transfer*)
+let sell_cargo v g players graph st =
+  print_endline "step 3";
+  let player = List.find (fun p -> p.p_id = v.v_owner_id) players in
+  print_endline "step 4";
+    print_endline "step 5";
+  let sell_l = Map.fold_vertex
+    (fun l opt -> let loc = Map.V.create l in
+                  if loc.l_x = v.x && loc.l_y = v.y
+                  then Some loc
+                  else opt)
+    graph None in
+  print_endline "step 6";
+  let sell_l' = match sell_l with
+    | None -> failwith "location does not exist"
+    | Some l -> l in
+    print_endline "step 7";
+  let sell_profile = List.find (fun gp -> gp.resource = g.t) sell_l'.accepts in
+  print_endline "step 8";
+  let sell_price = sell_profile.price in
+  let new_money = (float_of_int g.quantity) *. sell_price in
+  print_endline (string_of_float (new_money +. player.money));
+  let player' = {player with money = player.money +. new_money} in
+  st.players <- List.map (fun p -> if p = player then player' else p) players
+
+let update_driving_v players graph v st =
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
   let dest_x = dest.l_x in
@@ -138,41 +166,49 @@ let update_driving_v graph v =
   let delta_y = (dest_y -. v.y) in
   let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
   let new_y = v.y +. (v.speed *. (sin (atan2 delta_y delta_x))) in
-  let (new_status, new_destination) =
-    if (((v.x -. dest_x)*.(v.x -. dest_x)) +. ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
+  if (((v.x -. dest_x)*.(v.x -. dest_x)) +. ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
     then
-      match v.destination with
-        | h::[] -> (Waiting,[])
-        | h::h2::t -> (Driving,h2::t)
-        | _ -> failwith "unexpected vehicle destination pattern"
-    else if Random.float 1.0 < breakdown_chance then (Broken,v.destination) else (Driving,v.destination) in
-  {
-  v_owner_id = v.v_owner_id;
-  t = v.t;
-  speed = v.speed;
-  capacity = v.capacity;
-  cargo = v.cargo; (*For single resource type this will only have one element *)
-  age= v.age + 1; (*In game steps, useful for breakdowns etc.*)
-  status= new_status;
-  x = new_x;
-  y = new_y;
-  destination = new_destination;
-  v_loc = None;
-  }
+      (match v.destination with
+        | h::[] ->
+                   print_endline "step 1";
+                   let v' =
+                   { v with x = dest_x; y = dest_y;
+                     cargo = None;
+                     age = v.age + 1;
+                     destination = [];
+                     status = Waiting;
+                     v_loc = Some h
+                   } in
+                   print_endline "step 2";
+                   let () = match v.cargo with
+                     | None -> ()
+                     | Some g ->  sell_cargo v' g players graph st; in
+                   v'
+        | h::h2::t -> { v with x = new_x; y = new_y;
+                        age = v.age + 1;
+                        destination = h2::t;
+                        v_loc = Some h
+                      }
+        | _ -> failwith "unexpected vehicle destination pattern")
+    else if Random.float 1.0 < breakdown_chance then
+    {v with age = v.age + 1; status = Broken}
+    else
+    {v with age = v.age + 1; x = new_x; y = new_y}
+
 
 let update_waiting v =
   {v with age = v.age + 1}
 
 (*Currently only works for driving vehicles*)
-let update_vehicle graph v =
+let update_vehicle graph players st v =
   match v.status with
-    | Driving -> update_driving_v graph v
+    | Driving -> update_driving_v players graph v st
     | Waiting -> update_waiting v
     | Broken -> update_waiting v
 
 
-let update_vehicles v_lst graph =
- List.map (update_vehicle graph) v_lst
+let update_vehicles v_lst graph players st =
+ List.map (update_vehicle graph players st) v_lst
 
 let update_connections c_lst =
   c_lst
@@ -210,7 +246,7 @@ let rec find_good_price g_p (resource:good) =
 
 (*Buys the vehicle associated with a player and adds it to v_list*)
 let buy_vehicle vehicle player location v_list spd cpt =
-  let new_vehicle = {v_owner_id = player; t = vehicle; cargo = None;
+  let new_vehicle = {v_owner_id = player; v_t = vehicle; cargo = None;
     status = Waiting; x = location.l_x; y = location.l_y; destination = [];
     speed = spd; age = 0; capacity = cpt; v_loc = None} in
   new_vehicle :: v_list

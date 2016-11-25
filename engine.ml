@@ -181,7 +181,7 @@ let rec main_loop st =
     let start_t = Sys.time () in
     GameGraphics.draw_game_state st;
     let processes = [] in
-    let new_vehicles = update_vehicles st.vehicles st.graph in
+    let new_vehicles = update_vehicles st.vehicles st.graph st.players st in
     let new_graph = update_locations st.graph st.game_age in
     let st' = { vehicles = new_vehicles;
                 graph = new_graph;
@@ -207,8 +207,8 @@ let init_game fname scale =
   main_loop
   { vehicles=
   [{v_loc = None;
-  v_owner_id= 2;
-  t = Car;
+  v_owner_id= 0;
+  v_t = Car;
   speed = 1.0;
   capacity= 100;
   cargo= Some {
@@ -221,14 +221,11 @@ let init_game fname scale =
   y= 122.0;
   destination= [1;0;2;0];};
   {v_loc = None;
-  v_owner_id= 1;
-  t = Truck;
+  v_owner_id= 0;
+  v_t = Truck;
   speed = 5.0;
   capacity= 100;
-  cargo= Some {
-  t = Oil;
-  quantity = 5;
-  };
+  cargo= None;
   age= 5;
   status= Driving;
   x= 24.0;
@@ -236,7 +233,7 @@ let init_game fname scale =
   destination= [2;1;2];};
   {v_loc = None;
   v_owner_id= 1;
-  t = Truck;
+  v_t = Truck;
   speed = 1.4;
   capacity= 100;
   cargo= Some {
@@ -248,5 +245,10 @@ let init_game fname scale =
   x= 450.0;
   y= 12.0;
   destination= [0;1;2;0];}];
-  graph = new_graph () ; players = [];
+  graph = new_graph () ;
+
+  players = [
+    {p_id = 0; p_type = Human; money = 100.0};
+    {p_id = 1; p_type = AI(2); money = 200.0};
+  ];
     game_age = 0; paused = false;}

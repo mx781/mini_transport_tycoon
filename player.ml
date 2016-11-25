@@ -6,7 +6,7 @@
  type player = {
     p_id : int;
     p_type : p_type;
-    money: int;
+    money: float;
 }
 
 let l_update p_lst =
