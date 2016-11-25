@@ -33,9 +33,7 @@ let round flt =
 
 let open_screen size =
   scale := (int_of_string size);
-  let display = string_of_int (400 * !scale) ^ "x" ^ string_of_int (300 * !scale) in
-  (* open_graph (" " ^ display) *)
-  resize_window (400* !scale) (300* !scale)
+  resize_window (500* !scale) (300* !scale)
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
@@ -81,10 +79,6 @@ let rec draw_players (ps:Player.player list) : unit =
   | p::t -> draw_players t; draw_player_info p
   | [] -> ()
 
-let button_size = open_graph ""; 50
-
-let _ = close_graph
-
 
 let draw_buttons () =
 
@@ -106,24 +100,46 @@ let draw_buttons () =
   moveto (!scale*10) (!scale*260);
   draw_string "Save and Quit";
   draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size) *)
+open GameElements
+let rtos r =
+  match r with
+  | Lumber -> "Lumber"
+  | Iron -> "Iron"
+  | Oil -> "Oil"
+  | Electronics -> "Electronics"
+  | Produce -> "Produce"
 
-let draw_hover x y grph =
-  let close_enough = 30 in
-  GameElements.Map.iter_vertex
-    (fun v -> let (x1,y1) = ((GameElements.Map.V.label v).l_x,
-                          (GameElements.Map.V.label v).l_y) in
-    if (abs (x*2/ !scale - round x1) < close_enough)
-    && (abs (y*2/ !scale - round y1) < close_enough)
-    then (set_color white; fill_rect x y 150 100) else ()) grph
+let two_dec flt =
+  float_of_int (round (flt *. 100.)) /. 100.
 
-let draw_game_state gs : unit =
-  (* clear_graph (); *)
+let draw_info_box x y v =
+  (set_color white; fill_rect x y 150 100);
+  let loc = GameElements.Map.V.label v in
+  moveto x y;
+  set_text_size 20;
+  set_color black;
+  List.iter (fun acc -> if not (button_down ()) then () else
+    print_endline
+    (rtos acc.resource ^ ": $" ^
+      string_of_float (two_dec acc.price))) loc.accepts
+
+let draw_hover grph =
   let stat = wait_next_event [Poll] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
+  let close_enough = 30 in
+  let labl = GameElements.Map.V.label in
+  GameElements.Map.iter_vertex
+    (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
+              if (abs (x*2/ !scale - round x1) < close_enough)
+              && (abs (y*2/ !scale - round y1) < close_enough)
+                             then draw_info_box x y v else ()) grph
+
+let draw_game_state gs : unit =
+  (* clear_graph (); *)
   draw_image bg 0 0;
   draw_players gs.players;
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
-  draw_hover x y gs.graph
+  draw_hover gs.graph

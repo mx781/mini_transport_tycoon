@@ -14,5 +14,5 @@ let () =
     let scale = read_line () in
     Engine.init_game file_name scale
   with
-  | Graphics.Graphic_failure _ -> failwith "Don't Exit out of the Start Screen"
+  | Graphics.Graphic_failure _ -> failwith "Don't Exit out of the Screen"
   | _ -> Engine.init_game "default.json" "2"

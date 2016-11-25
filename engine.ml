@@ -201,7 +201,6 @@ let rec main_loop st =
   print_endline
   "###########################################################################"
 
-
 let init_game fname scale =
   GameGraphics.open_screen scale;
   main_loop
