@@ -3,7 +3,7 @@ open GameElements
 open Player
 
 let vertex_color = black
-let default_color = 0xD3D3D3
+let default_color = 0xCD853F
 let vertex_size = 5
 let scale =  ref 2
 
@@ -24,6 +24,7 @@ let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
 let buytruck = get_img "images/truckbutt.png" |> make_image
+let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 
 let draw_start () =
@@ -39,7 +40,7 @@ let open_screen size =
   resize_window (400* !scale) (300* !scale)
 
 
-let draw_line ?(color=default_color) ?(width=2) (x1,y1) (x2,y2) =
+let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
   set_line_width (!scale * width);
   moveto x1 y1;
@@ -58,14 +59,15 @@ let draw_ograph grph : unit =
   GameElements.Map.iter_vertex
     (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x,
                           (GameElements.Map.V.label v).l_y) in
-     fill_circle ((round x)/ 2 * !scale) ((round y)/ 2 * !scale) (!scale * vertex_size)) grph
+    (* fill_circle ((round x)/ 2 * !scale) ((round y)/ 2 * !scale) (!scale * vertex_size)) grph *)
+       draw_image house ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
   let pic = (match v.t with
             | GameElements.Car -> car_img
             | GameElements.Truck -> truck_img) in
-  let x = (round (v.x *. (float_of_int !scale)/.2.)) in
-  let y = (round (v.y *. (float_of_int !scale)/.2.)) in
+  let x = (round (v.x -. 30.0 *. (float_of_int !scale)/.2.)) in
+  let y = (round (v.y -. 15.0 *. (float_of_int !scale)/.2.)) in
   Graphics.draw_image pic x y
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
