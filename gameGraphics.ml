@@ -5,20 +5,6 @@ open Player
 let default_color = 0xCD853F
 let scale =  ref 2
 
-let rec chr_lst str =
-  match str with
-  | "" ->[]
-  | ch ->(String.sub ch 0 1)::(chr_lst (String.sub ch 1 ((String.length ch)-1)))
-
-let rec draw_chars chars x y =
-  let width = 20 in
-  match chars with
-  | [] -> ()
-  | h::t -> draw_image ("font/"^chr) x y; draw_chars t x+width y
-
-let draw_str str x y =
-  draw_chars (chr_lst str) x y
-
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
   Array.map (fun arr -> replace arr) img
@@ -38,6 +24,21 @@ let buycar = get_img "images/carbutt.png" |> make_image
 let buytruck = get_img "images/truckbutt.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
+
+let rec chr_lst str =
+  match str with
+  | "" ->[]
+  | ch ->(String.sub ch 0 1)::(chr_lst (String.sub ch 1 ((String.length ch)-1)))
+
+let rec draw_chars chars x y =
+  let width = 20 in
+  match chars with
+  | [] -> ()
+  | h::t -> draw_image (get_img ("font/"^h) |> make_image) x y;
+            draw_chars t (x+width) y
+
+let draw_str str x y =
+  draw_chars (chr_lst str) x y
 
 let draw_start () =
   draw_image start_screen 0 0
