@@ -1,3 +1,5 @@
+open Player
+
 type r_type =
     | Lumber
     | Iron
@@ -129,7 +131,6 @@ let route_vehicle l v v_list =
   let new_v = {v with destination = [l.l_id]} in
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
-open Player
 
 (* returns new player list updated for sold cargo. Cargo is emptied in calling
  * function only, this just does the money transfer*)
