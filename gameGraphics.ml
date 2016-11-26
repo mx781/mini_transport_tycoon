@@ -71,7 +71,7 @@ let draw_ograph grph : unit =
        draw_image house ((round x - 15)/ 2 * !scale) ((round y - 15)/ 2 * !scale)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
-  let pic = (match v.t with
+  let pic = (match v.v_t with
             | GameElements.Car -> car_img
             | GameElements.Truck -> truck_img) in
   let x = round ((v.x -. 30.0) /. 2. *. (float_of_int !scale)) in
@@ -86,7 +86,7 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
 let draw_player_info (p:Player.player) : unit =
    moveto (10*p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
-                ": $" ^(string_of_int p.money))
+                ": $" ^(string_of_float p.money))
 
 let rec draw_players (ps:Player.player list) : unit =
   match ps with

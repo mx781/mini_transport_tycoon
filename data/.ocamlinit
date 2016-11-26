@@ -7,12 +7,16 @@ print_string "Loading DataProcessing components...";;
 #load "piqirun.cmo";;
 #load "piqirun_ext.cmo";;
 
+(* load additional reqs *)
+#require "ocamlgraph";;
+
 (* open compiled modules *)
 #directory "_build";;
 #load "gameelements_piqi.cmo";;
 #load "gameelements_piqi_ext.cmo";;
 #load "player_piqi.cmo";;
 #load "player_piqi_ext.cmo";;
+#load "gameelements.cmo";;
 #load "piqirun_custom.cmo";;
 #load "graph_piqi.cmo";;
 #load "graph_piqi_ext.cmo";;
