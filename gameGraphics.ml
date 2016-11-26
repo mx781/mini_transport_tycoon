@@ -119,10 +119,10 @@ let rec draw_players (ps:Player.player list) : unit =
   | p::t -> draw_players t; draw_player_info p
   | [] -> ()
 
+let spacing = 25 * !scale
+let start_height = 250 * !scale
 
 let draw_buttons () =
-  let spacing = 40 * !scale in
-  let start_height = 250 * !scale in
   draw_image (save ) 0 start_height;
   draw_image (pause ) 0 (start_height-spacing);
   draw_image (buycar ) 0 (start_height-2*spacing);
@@ -163,6 +163,41 @@ let draw_hover grph =
               && (abs (y*2/ !scale - round y1) < close_enough)
                              then draw_info_box x y v else ()) grph
 
+let button_width = 93
+let button_height = 50
+
+let quit () =
+  (* SAVE; *)
+  close_graph ()
+
+let rec pause () =
+  let stat = wait_next_event [Button_down] in
+  let x = stat.mouse_x in
+  let y = stat.mouse_y in
+  if y < start_height+button_height-spacing && y > start_height-spacing
+     && x < button_width
+  then ()
+  else () (* Should be recursive call, but won't work *)
+
+let buy_car () =
+  ()
+
+let buy_truck () =
+  ()
+
+let click_buttons () =
+  let stat = wait_next_event [Poll] in
+  let x = stat.mouse_x in
+  let y = stat.mouse_y in
+  if not (button_down () && x < button_width) then ()
+  else (
+    if y < start_height+button_height && y > start_height then quit () else
+    if y < start_height+button_height-spacing && y > start_height-spacing then pause () else
+    if y < start_height+button_height-2*spacing && y > start_height-2*spacing then buy_car () else
+    if y < start_height+button_height-3*spacing && y > start_height-3*spacing then buy_truck ()
+    else ()
+  )
+
 let draw_game_state gs : unit =
   (* clear_graph (); *)
   draw_image bg 0 0;
@@ -170,4 +205,5 @@ let draw_game_state gs : unit =
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
-  draw_hover gs.graph
+  draw_hover gs.graph;
+  click_buttons ()
