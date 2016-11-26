@@ -1,12 +1,12 @@
 open Player
 
-(* Type definitions *)
 type r_type =
     | Lumber
     | Iron
     | Oil
     | Electronics
     | Produce
+
 
 type good = {
   t : r_type;
@@ -67,6 +67,7 @@ type connection = {
   c_speed: float; (*speed of vehicle on road*)
 }
 
+
 module Location = struct
   type t = location
   let equal l1 l2 = l1.l_id = l2.l_id
@@ -97,15 +98,6 @@ end
 
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
-type game_state = {
-  vehicles : vehicle list;
-  graph: Map.t;
-  game_age : int;
-  paused: bool;
-  mutable players : Player.player list;
-  ai_info : (int * location -> good * location) ref option;
-}
-
 module ConnectionWeight = struct
   type edge = Map.E.t
   type t = float
@@ -116,6 +108,15 @@ module ConnectionWeight = struct
 end
 
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
+
+type game_state = {
+  vehicles : vehicle list;
+  graph: Map.t;
+  game_age : int;
+  paused: bool;
+  mutable players : Player.player list;
+  ai_info : (int * location -> good * location) ref option;
+}
 
 let breakdown_chance = 0.0001
 

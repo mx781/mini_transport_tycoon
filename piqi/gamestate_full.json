@@ -1,0 +1,72 @@
+{
+    "vehicles": [
+        {
+            "owner": 1,
+            "t": "Car",
+            "speed": 3.2,
+            "capacity": 100,
+            "cargo": {
+                "t": "Lumber",
+                "quantity": 100,
+                "origin": 32
+            },
+            "age": 200,
+            "status": "Driving",
+            "x": 320,
+            "y": 112
+        }
+    ],
+    "gameage": 3293222,
+    "paused": true,
+    "players": [
+        {
+            "pid": 1,
+            "ptype": "Human",
+            "money": 3200
+        },
+        {
+            "pid": 2,
+            "ptype": "AI",
+            "aiskilllevel": 1,
+            "money": 3200
+        }
+    ],
+    "graph": {
+        "directed": false,
+        "type": "graph type",
+        "label": "graph label",
+        "metadata": {
+            "user_defined": "values"
+        },
+        "nodes": [
+            {
+                "id": "0",
+                "type": "node type",
+                "label": "node label(0)",
+                "metadata": {
+                    "user_defined": "values"
+                }
+            },
+            {
+                "id": "1",
+                "type": "node type",
+                "label": "node label(1)",
+                "metadata": {
+                    "user_defined": "values"
+                }
+            }
+        ],
+        "edges": [
+            {
+                "source": "0",
+                "relation": "edge relationship",
+                "target": "1",
+                "directed": false,
+                "label": "edge label",
+                "metadata": {
+                    "user_defined": "values"
+                }
+            }
+        ]
+    }
+}

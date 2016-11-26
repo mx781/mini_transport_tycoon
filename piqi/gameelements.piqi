@@ -1,0 +1,183 @@
+%.ocaml-module "Gameelements_piqi"
+
+% ********** VARIANTS ********** %
+.variant [
+    .name rtype
+    .option [ .name Lumber ]
+    .option [ .name Iron ]
+    .option [ .name Oil ]
+    .option [ .name Electronics ]
+    .option [ .name Produce ]
+]
+
+.variant [
+    .name vtype
+    .option [ .name Car ]
+    .option [ .name Truck ]
+]
+
+.variant [
+    .name vstatus
+    .option [ .name Waiting ]
+    .option [ .name Driving ]
+    .option [ .name Broken ]
+]
+
+.variant [
+    .name intopt
+    .option [ .name None]
+    .option [ .name Some .type int]
+]
+
+% ********** GOODS ********** %
+.record [
+    .name good
+    .field [
+        .name t
+        .type rtype
+    ]
+    .field [
+        .name quant
+        .type int
+    ]
+]
+.record [
+    .name goodsprofile
+    .field [
+        .name resource
+        .type rtype
+    ]
+    .field [
+        .name stepstoinc
+        .type int
+    ]
+    .field [
+        .name current
+        .type int
+    ]
+    .field [
+        .name capacity
+        .type int
+    ]
+    .field [
+        .name price
+        .type float
+    ]
+    .field [
+        .name naturalprice
+        .type float
+    ]
+]
+.list [
+    .name gplist
+    .type goodsprofile
+]
+
+% ********** LOCATIONS ********** %
+.record [
+    .name location
+    .field [
+        .name id
+        .type int
+    ]
+    .field [
+        .name lx
+        .type float
+    ]
+    .field [
+        .name ly
+        .type float
+    ]
+    .field [
+        .name accepts
+        .type gplist
+    ]
+    .field [
+        .name produces
+        .type gplist
+    ]
+]
+.list [
+    .name destlist
+    .type int
+]
+
+% ********** CONNECTIONS ********** %
+.record [
+    .name connection
+    .field [
+        .name owner
+        .type int
+    ]
+    .field [
+        .name lstart
+        .type int
+    ]
+    .field [
+        .name lend
+        .type int
+    ]
+    .field [
+        .name age
+        .type int
+    ]
+    .field [
+        .name speed
+        .type float
+    ]
+    .field [
+        .name length
+        .type float
+    ]
+]
+
+% ********** VEHICLES ********** %
+.record [
+    .name vehicle
+    .field [
+        .name owner
+        .type int
+    ]
+    .field [
+        .name t
+        .type vtype
+    ]
+    .field [
+        .name speed
+        .type float
+    ]
+    .field [
+        .name capacity
+        .type int
+    ]
+    .field [
+        .name cargo
+        .type good
+    ]
+    .field [
+        .name age
+        .type int
+    ]
+    .field [
+        .name status
+        .type vstatus
+    ]
+    .field [
+        .name x
+        .type float
+    ]
+    .field [
+        .name y
+        .type float
+    ]
+    .field [
+        .name destination
+        .type destlist
+    ]
+    .field [
+        .name loc
+        .type intopt
+    ]
+]
+
+.custom-field ocaml-module

@@ -4,3 +4,6 @@ _build/*
 *~
 interfaces/_build/*
 data/_build/*
+#setup.sh#
+.omakedb.lock
+env.sh

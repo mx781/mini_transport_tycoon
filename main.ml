@@ -14,7 +14,7 @@ let () =
     print_endline "\t (2) to load a game from a file\n";
     print_string  "> ";
     let opt = read_line () in
-    let file_name = if opt = "1" then "default.json" else if opt = "2" then (
+    let file_name = if opt = "1" then "data/game.json" else if opt = "2" then (
     print_endline "\nPlease enter the name of the game file you want to load.\n";
     print_string  "> "; read_line () ) else failwith "You Lost The Game: you only had 2 options" in
     (* print_endline "Please select:";
@@ -38,4 +38,4 @@ let () =
     Engine.init_game file_name scale
   with
   | Graphics.Graphic_failure _ -> failwith "Don't Exit out of the Screen"
-  | _ -> Engine.init_game "default.json" "2"
+  | _ -> Engine.init_game "data/game.json" "2"

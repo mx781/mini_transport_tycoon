@@ -1,0 +1,134 @@
+{
+    "vehicles": [
+        {
+            "owner": 0,
+            "t": {"Car": true},
+            "speed": 1.0,
+            "capacity": 100,
+            "cargo": {
+                "t": {"Oil": true},
+                "quant": 5
+            },
+            "age": 56,
+            "status": {"Driving": true},
+            "x": 224.0,
+            "y": 122.0,
+            "destination": [1,0,2,0],
+            "loc": {"None": true}
+        },
+        {
+            "owner": 0,
+            "t": {"Truck": true},
+            "speed": 5.0,
+            "capacity": 100,
+            "cargo": {
+                "t": {"Oil": true},
+                "quant": 5
+            },
+            "age": 5,
+            "status": {"Driving": true},
+            "x": 24.0,
+            "y": 302.0,
+            "destination": [2,1,0],
+            "loc": {"None": true}
+        },
+        {
+            "owner": 0,
+            "t": {"Truck": true},
+            "speed": 1.4,
+            "capacity": 100,
+            "cargo": {
+                "t": {"Oil": true},
+                "quant": 5
+            },
+            "age": 5,
+            "status": {"Driving": true},
+            "x": 450.0,
+            "y": 12.0,
+            "destination": [0,1,2,0],
+            "loc": {"None": true}
+        }
+    ],
+    "gameage": 0,
+    "paused": false,
+    "aiinfo": {"None": true},
+    "players": [
+        {
+            "pid": 0,
+            "ptype": {"Human": true},
+            "money": 100.0
+        },
+        {
+            "pid": 1,
+            "ptype": {"AI": 2},
+            "money": 200.0
+        }
+    ],
+    "graph": {
+        "directed": false,
+        "type": "2D undirected graph",
+        "label": "Game map",
+        "metadata": {
+            "var": "dummy value"
+        },
+        "nodes": [
+            {
+                "id": 0,
+                "lx": 450.0,
+                "ly": 430.0,
+                "accepts": [
+                  {
+                    "resource": {"Oil": true},
+                    "stepstoinc": 50,
+                    "current": 20,
+                    "capacity": 40,
+                    "price": 1.4,
+                    "naturalprice": 1.4
+                  }
+                ],
+                "produces": [
+                  {
+                    "resource": {"Oil": true},
+                    "stepstoinc": 100,
+                    "current": 100,
+                    "capacity": 140,
+                    "price": 3.4,
+                    "naturalprice": 4.4
+                  }
+                ]
+            },
+            {
+                "id": 1,
+                "lx": 150.0,
+                "ly": 300.0,
+                "accepts": [],
+                "produces": []
+            },
+            {
+                "id": 2,
+                "lx": 430.0,
+                "ly": 200.0,
+                "accepts": [],
+                "produces": []
+            }
+        ],
+        "edges": [
+            {
+                "owner": 4,
+                "lstart": 0,
+                "lend": 1,
+                "age": 0,
+                "speed": 3.0,
+                "length": 2.0
+            },
+            {
+                "owner": 4,
+                "lstart": 0,
+                "lend": 2,
+                "age": 0,
+                "speed": 3.0,
+                "length": 2.0
+            }
+        ]
+    }
+}

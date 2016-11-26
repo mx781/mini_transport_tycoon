@@ -1,0 +1,83 @@
+%.ocaml-module "Gamestate_piqi"
+
+% ********** IMPORTS ********** %
+.import [ .module player]
+.import [ .module graph]
+.import [ .module gameelements]
+
+% ********** ALIASES ********** %
+.alias [
+    .name vehicle
+    .type gameelements/vehicle
+    .ocaml-type "Piqirun_custom.vehicle"
+    .ocaml-name "vehicle"
+]
+.alias [
+    .name player
+    .type player/player
+    .ocaml-type "Piqirun_custom.player"
+    .ocaml-name "player"
+]
+.alias [
+    .name graph
+    .type graph/graph
+    .ocaml-type "Piqirun_custom.graph"
+    .ocaml-name "graph"
+]
+
+% ********** LISTS ********** %
+.list [
+    .name vehiclelist
+    .type vehicle
+]
+.list [
+    .name playerlist
+    .type player
+]
+.variant [
+    .name funcopt
+    .option [ .name None ]
+]
+
+
+% ********** GAMESTATE ********** %
+.record [
+    .name gamestate
+    .field [
+        .name vehicles
+        .type vehiclelist
+    ]
+    .field [
+        .name players
+        .type playerlist
+    ]
+    .field [
+        .name aiinfo
+        .type funcopt
+    ]
+    .field [
+        .name gameage
+        .type int
+    ]
+    .field [
+        .name paused
+        .type bool
+    ]
+    .field [
+        .name graph
+        .type graph
+    ]
+]
+
+# .record [
+#     .name gsl
+#     .field [
+#         .name gs
+#         .type gslist
+#     ]
+# ]
+
+% ********** CUSTOM FIELD DEFS ********** %
+.custom-field ocaml-name
+.custom-field ocaml-module
+.custom-field ocaml-type
