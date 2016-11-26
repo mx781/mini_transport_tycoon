@@ -63,6 +63,10 @@ let fps = 30.0
 let car_price = 100.0
 let truck_price = 200.0
 let sell_back_percentage = 0.6
+let road_unit_cost = 1.0
+let road_length_cost_exponent = 1.2
+let road_rights_unit_cost = 0.4
+exception EndGame
 
 let buy_vehicle v st =
   let cost = match v.v_t with
@@ -91,6 +95,62 @@ let set_v_dest v st =
   let new_vehicles = List.map route_dest st.vehicles in
   {st with vehicles = new_vehicles}
 
+let buy_connection c st =
+  let loc1 = get_loc c.l_start st.graph in
+  let loc2 = get_loc c.l_end st.graph in
+  let vertices = Map.fold_vertex
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+                   then vx::acc
+                   else acc
+    ) st.graph [] in
+  let new_graph = match vertices with
+    | l1::l2::[] -> Map.add_edge_e st.graph (l1,c,l2)
+    | _ -> failwith "Multiple locations with same ids or invalid ids" in
+  let cost = road_unit_cost*.(c.length**road_length_cost_exponent) in
+  let new_players = List.map
+    (fun p -> if p.p_id = c.c_owner_id
+              then {p with money = (p.money -. cost)}
+              else p) st.players in
+  {st with graph = new_graph; players = new_players}
+
+let sell_connection c st =
+  let loc1 = get_loc c.l_start st.graph in
+  let loc2 = get_loc c.l_end st.graph in
+  let vertices = Map.fold_vertex
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+                   then vx::acc
+                   else acc
+    ) st.graph [] in
+  let new_graph = match vertices with
+    | l1::l2::[] -> Map.remove_edge_e st.graph (Map.find_edge st.graph l1 l2)
+    | _ -> failwith "Multiple locations with same ids or invalid ids" in
+  let gain = (road_unit_cost*.(c.length**road_length_cost_exponent))
+    *.sell_back_percentage in
+  let new_players = List.map
+    (fun p -> if p.p_id = c.c_owner_id
+              then {p with money = (p.money +. gain)}
+              else p) st.players in
+  {st with graph = new_graph; players = new_players}
+
+let change_connection_owner c st =
+  let loc1 = get_loc c.l_start st.graph in
+  let loc2 = get_loc c.l_end st.graph in
+  let vertices = Map.fold_vertex
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+                   then vx::acc
+                   else acc
+    ) st.graph [] in
+  let new_graph = match vertices with
+    | l1::l2::[] ->
+      let g' = Map.remove_edge_e st.graph (Map.find_edge st.graph l1 l2) in
+      Map.add_edge_e g' (l1,c,l2)
+    | _ -> failwith "Multiple locations with same ids or invalid ids" in
+  let cost = road_rights_unit_cost*.(c.length) in
+  let new_players = List.map
+    (fun p -> if p.p_id = c.c_owner_id
+              then {p with money = (p.money -. cost)}
+              else p) st.players in
+  {st with graph = new_graph; players = new_players}
 
 let rec handle_processes proclist st =
   match proclist with
@@ -98,6 +158,12 @@ let rec handle_processes proclist st =
     | BuyVehicle(v)::t -> handle_processes t (buy_vehicle v st)
     | SellVehicle(v)::t -> handle_processes t (sell_vehicle v st)
     | SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st)
+    | AddRoad(c)::t -> handle_processes t (buy_connection c st)
+    | DeleteRoad(c)::t -> handle_processes t (sell_connection c st)
+    | PurchaseRoad(c)::t -> handle_processes t (change_connection_owner c st)
+    | Pause::t-> handle_processes t ({st with paused = not st.paused})
+    | EndGame::t -> raise EndGame
+    | None:: t -> handle_processes t st
 
 
 let rec main_loop st =
