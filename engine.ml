@@ -85,11 +85,20 @@ let sell_vehicle v st =
               else p) st.players in
     {st with vehicles = new_vehicles; players = new_players}
 
+let set_v_dest v st =
+  let route_dest = fun vhcl -> if {vhcl with x = v.x; y = v.y} = v
+                               then v else vhcl in
+  let new_vehicles = List.map route_dest st.vehicles in
+  {st with vehicles = new_vehicles}
+
+
 let rec handle_processes proclist st =
   match proclist with
     | [] -> st
-    | BuyVehicle(v)::t -> buy_vehicle v st
-    | SellVehicle(v)::t -> sell_vehicle v st
+    | BuyVehicle(v)::t -> handle_processes t (buy_vehicle v st)
+    | SellVehicle(v)::t -> handle_processes t (sell_vehicle v st)
+    | SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st)
+
 
 let rec main_loop st =
   try
