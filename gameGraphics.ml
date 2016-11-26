@@ -141,15 +141,42 @@ let two_dec flt =
   float_of_int (round (flt *. 100.)) /. 100.
 
 let draw_info_box x y v =
-  (set_color white; fill_rect x y 150 100);
+  let box_height = 100 in
+  (set_color white; fill_rect x y 150 box_height);
   let loc = GameElements.Map.V.label v in
-  moveto (x+10) y;
   set_color black;
   (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1"; *)
-  List.iter (fun acc -> (* if not (button_down ()) then () else *)
-    rmoveto 0 10; draw_string
-    (rtos acc.resource ^ ": $" ^
-      string_of_float (two_dec acc.price))) loc.accepts
+  moveto (x+10) (y+ box_height - 20);
+  draw_string "Accepts:";
+  rmoveto (-(fst (text_size "Accepts:"))) 0;
+  List.iter (fun acc ->
+    rmoveto 0 (-12);
+    let str = (rtos acc.resource ^ ": $" ^ string_of_float (two_dec acc.price)) in
+    draw_string str;
+    rmoveto (-fst (text_size str)) 0;
+    ) loc.accepts;
+
+  rmoveto 0 (-20);
+  draw_string "Produces:";
+  rmoveto (-(fst (text_size "Produces:"))) 0;
+  List.iter (fun prod ->
+    rmoveto 0 (-12);
+    let str = string_of_int prod.current ^ " " ^ rtos prod.resource ^ ": $" ^ string_of_float (two_dec prod.price) in
+    draw_string str;
+    rmoveto (-fst (text_size str)) 0;
+    ) loc.produces
+
+
+let get_loc_near x y grph =
+  let loc = ref None in
+  let close_enough = 30 in
+  let labl = GameElements.Map.V.label in
+  GameElements.Map.iter_vertex
+    (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
+              if (abs (x*2/ !scale - round x1) < close_enough)
+              && (abs (y*2/ !scale - round y1) < close_enough)
+                                  then loc := Some v else () ) grph;
+  !loc
 
 let draw_hover grph =
   let stat = wait_next_event [Poll] in
@@ -166,18 +193,13 @@ let draw_hover grph =
 let button_width = 93
 let button_height = 50
 
-let quit () =
+let quit gs =
   (* SAVE; *)
   close_graph ()
 
 let rec pause () =
-  let stat = wait_next_event [Button_down] in
-  let x = stat.mouse_x in
-  let y = stat.mouse_y in
-  if y < start_height+button_height-spacing && y > start_height-spacing
-     && x < button_width
-  then ()
-  else () (* Should be recursive call, but won't work *)
+  let _ = wait_next_event [Button_down] in
+  ()
 
 let buy_car () =
   ()
@@ -185,16 +207,20 @@ let buy_car () =
 let buy_truck () =
   ()
 
-let click_buttons () =
+let click_buttons gs =
   let stat = wait_next_event [Poll] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
   if not (button_down () && x < button_width) then ()
   else (
-    if y < start_height+button_height && y > start_height then quit () else
-    if y < start_height+button_height-spacing && y > start_height-spacing then pause () else
-    if y < start_height+button_height-2*spacing && y > start_height-2*spacing then buy_car () else
-    if y < start_height+button_height-3*spacing && y > start_height-3*spacing then buy_truck ()
+    if y < start_height+button_height
+       && y > start_height then quit gs else
+    if y < start_height+button_height-spacing
+       && y > start_height-spacing then pause () else
+    if y < start_height+button_height-2*spacing
+      && y > start_height-2*spacing then buy_car () else
+    if y < start_height+button_height-3*spacing
+       && y > start_height-3*spacing then buy_truck ()
     else ()
   )
 
