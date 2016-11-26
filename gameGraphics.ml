@@ -34,7 +34,7 @@ let rec draw_chars chars x y =
   let width = 20 in
   match chars with
   | [] -> ()
-  | h::t -> draw_image (get_img ("font/"^h) |> make_image) x y;
+  | h::t -> draw_image (get_img ("font/"^h^".png") |> make_image) x y;
             draw_chars t (x+width) y
 
 let draw_str str x y =
@@ -147,4 +147,5 @@ let draw_game_state gs : unit =
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
-  draw_hover gs.graph
+  draw_hover gs.graph;
+  draw_str "111111111" 100 100
