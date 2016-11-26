@@ -24,6 +24,30 @@ let buycar = get_img "images/carbutt.png" |> make_image
 let buytruck = get_img "images/truckbutt.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
+let n1 = get_img "font/1.png" |> make_image
+let n2 = get_img "font/2.png" |> make_image
+let n3 = get_img "font/3.png" |> make_image
+let n4 = get_img "font/4.png" |> make_image
+let n5 = get_img "font/5.png" |> make_image
+let n6 = get_img "font/6.png" |> make_image
+let n7 = get_img "font/7.png" |> make_image
+let n8 = get_img "font/8.png" |> make_image
+let n9 = get_img "font/9.png" |> make_image
+let n0 = get_img "font/0.png" |> make_image
+
+let img_of_str str =
+  match str with
+  | "1" -> n1
+  | "2" -> n2
+  | "3" -> n3
+  | "4" -> n4
+  | "5" -> n5
+  | "6" -> n6
+  | "7" -> n7
+  | "8" -> n8
+  | "9" -> n9
+  | "0" -> n0
+  | _ -> n0
 
 let rec chr_lst str =
   match str with
@@ -34,7 +58,7 @@ let rec draw_chars chars x y =
   let width = 20 in
   match chars with
   | [] -> ()
-  | h::t -> draw_image (get_img ("font/"^h^".png") |> make_image) x y;
+  | h::t -> draw_image (img_of_str h) x y;
             draw_chars t (x+width) y
 
 let draw_str str x y =
@@ -85,9 +109,10 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
-   moveto (10*p.p_id) (10*p.p_id);
+  draw_str (string_of_int(int_of_float p.money)) 850 (550-p.p_id*30)
+  (*  moveto (p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
-                ": $" ^(string_of_float p.money))
+                ": $" ^(string_of_float p.money)) *)
 
 let rec draw_players (ps:Player.player list) : unit =
   match ps with
@@ -147,5 +172,4 @@ let draw_game_state gs : unit =
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
-  draw_hover gs.graph;
-  draw_str "111111111" 100 100
+  draw_hover gs.graph
