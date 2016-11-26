@@ -3,7 +3,7 @@ open GameElements
 open Player
 
 let default_color = 0xCD853F
-let scale =  ref 2
+let scale =  ref 2 (* No longer supported *)
 
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
@@ -143,13 +143,11 @@ let two_dec flt =
 let draw_info_box x y v =
   (set_color white; fill_rect x y 150 100);
   let loc = GameElements.Map.V.label v in
-  moveto x y;
-  set_text_size 20;
+  moveto (x+10) y;
   set_color black;
   (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1"; *)
-  draw_string "IRON";
-  List.iter (fun acc -> if not (button_down ()) then () else
-    print_endline
+  List.iter (fun acc -> (* if not (button_down ()) then () else *)
+    rmoveto 0 10; draw_string
     (rtos acc.resource ^ ": $" ^
       string_of_float (two_dec acc.price))) loc.accepts
 
