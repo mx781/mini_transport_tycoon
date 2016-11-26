@@ -58,6 +58,7 @@ type vehicle = {
 }
 
 type connection = {
+  (*IF THE OWNER IS -1 then that means there is no owner*)
   c_owner_id: int;
   l_start: int;
   l_end: int;
@@ -97,6 +98,16 @@ end
 
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
+module ConnectionWeight = struct
+  type edge = Map.E.t
+  type t = float
+  let weight (_,e,_) : float = e.length
+  let compare = Pervasives.compare
+  let add e1 e2 = e1 +. e2
+  let zero = 0.
+end
+
+module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
 type game_state = {
   vehicles : vehicle list;
@@ -247,7 +258,7 @@ let buy_vehicle vehicle player location v_list spd cpt =
 
 (*Sells cargo at given location given a vehicle. Returns a tuple containing
  *the new vehicle and the new money value*)
-let sell_cargo vehicle player money graph =
+(* let sell_cargo vehicle player money graph =
   let new_vehicle = {vehicle with cargo = None; status = Waiting} in
   let the_good =
     match vehicle.cargo with
@@ -258,9 +269,86 @@ let sell_cargo vehicle player money graph =
     |None -> failwith "trying to sell cargo when not at final loc, TALK TO DAN"
     |Some loc -> find_good_price (get_loc loc graph).accepts the_good) in
   (new_vehicle, (money +. the_price))
-
+ *)
 
 (*UPDATES: Changed vehicle types to contain capacity + speed, since
   those should be connected with the vehicle
   -Gave vehicle location option*)
 
+(*Gets a player from the player list*)
+let rec get_player p_id (p_list:Player.player list)=
+  match p_list with
+  |h :: t-> if h.p_id = p_id then h else get_player p_id t
+  |[]-> failwith "trying to get player when non-existent, TALK TO DAN"
+
+(*Gets owned vehicles from a player as a list*)
+let rec get_owned_vehicles p_id v_list =
+  List.fold_left(fun x y -> if y.v_owner_id = p_id then y :: x else x) [] v_list
+
+(*Gets the snd element of a tuple*)
+let sec (_,y,_) = y
+
+(*Gets roads from player as a list*)
+let get_roads p_id graph=
+  Map.fold_edges_e
+    (fun x y->if (Map.E.label x).c_owner_id=p_id ||
+      (Map.E.label x).c_owner_id = (-1) then x::y else y) graph []
+
+(*Allows the AI to activate waiting vehicles*)
+let rec activate_vehicles v_list =
+  match v_list with
+  |h :: t -> if h.status = Waiting then Some h else activate_vehicles t
+  |[] -> None
+
+(*Gets details about location from graph.*)
+let get_loc_details graph loc_id =
+  Map.fold_vertex
+    (fun x y -> if (Map.V.label x).l_id = loc_id then x::y else y) graph []
+
+(*Adds edges to graph*)
+let rec add_edges graph edge_list =
+  match edge_list with
+  |[] -> graph
+  |h :: t -> add_edges (Map.add_edge_e graph h) t
+
+(*Stuff that chooses AI movement based on a list of connections*)
+let make_vehicle_move vehicle c_connections graph=
+  (*Create a new graph with only these connections.*)
+  let empty = Map.empty in
+  let new_graph = add_edges empty c_connections in
+  let cur_loc =
+    match vehicle.v_loc with
+    |None -> failwith "Passive vehicle with no location, talk to Dan"
+    |Some loc -> loc in
+  let loc_details = get_loc_details graph cur_loc in
+  (*Fix later*)
+  let produces = (List.hd loc_details).produces in []
+
+
+(*This uses the current game state to determine how the AI should make a move.
+( p_id refers to the id of the AI *)
+let make_c_move (state: game_state) c_id =
+  let c_player = get_player c_id state.players in
+  (*Current money*)
+  let c_money = c_player.money in
+  (*DEBUGGER (REMOVE LINE LATER)*)
+  if c_player.p_type = Human then failwith "not a computer, TALK TO DAN" else
+  let c_vehicles = get_owned_vehicles c_id state.vehicles in
+  let c_connections = get_roads c_id state.graph in
+  (*First, check for waiting vehicles*)
+  let vehicle_processes =
+    match activate_vehicles c_vehicles with
+    (*Activate waiting vehicle*)
+    |Some v -> make_vehicle_move v c_connections state.graph
+    |None -> [] in
+      vehicle_processes
+
+
+(* type game_state = {
+  vehicles : vehicle list;
+  graph: Map.t;
+  game_age : int;
+  paused: bool;
+  mutable players : Player.player list;
+}
+ *)
