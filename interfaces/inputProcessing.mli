@@ -10,7 +10,7 @@ type process =
   | PurchaseRoad of connection (*Purchase rights to a road that is preexisting*)
   | Pause
   | EndGame
-  | None
+  | Nothing
 
 
 (* Processes_input (master). Using the information from the input it returns a
