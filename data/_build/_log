@@ -1,52 +1,52 @@
 ### Starting build.
-# Target: dataProcessing.ml.depends, tags: { package(piqirun.ext), extension:ml, file:dataProcessing.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules dataProcessing.ml > dataProcessing.ml.depends # cached
-# Target: gamestate_piqi_ext.ml.depends, tags: { package(piqirun.ext), extension:ml, file:gamestate_piqi_ext.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules gamestate_piqi_ext.ml > gamestate_piqi_ext.ml.depends # cached
-# Target: gameelements_piqi_ext.ml.depends, tags: { package(piqirun.ext), extension:ml, file:gameelements_piqi_ext.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules gameelements_piqi_ext.ml > gameelements_piqi_ext.ml.depends # cached
-# Target: gameelements_piqi.ml.depends, tags: { package(piqirun.ext), extension:ml, file:gameelements_piqi.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules gameelements_piqi.ml > gameelements_piqi.ml.depends # cached
-# Target: gameelements_piqi.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameelements_piqi.cmo, file:gameelements_piqi.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o gameelements_piqi.cmo gameelements_piqi.ml # cached
-# Target: gameelements_piqi_ext.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameelements_piqi_ext.cmo, file:gameelements_piqi_ext.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o gameelements_piqi_ext.cmo gameelements_piqi_ext.ml # cached
-# Target: gamestate_piqi.ml.depends, tags: { package(piqirun.ext), extension:ml, file:gamestate_piqi.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules gamestate_piqi.ml > gamestate_piqi.ml.depends # cached
-# Target: graph_piqi.ml.depends, tags: { package(piqirun.ext), extension:ml, file:graph_piqi.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules graph_piqi.ml > graph_piqi.ml.depends # cached
-# Target: graph_piqi.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:graph_piqi.cmo, file:graph_piqi.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o graph_piqi.cmo graph_piqi.ml # cached
-# Target: piqirun_custom.ml.depends, tags: { package(piqirun.ext), extension:ml, file:piqirun_custom.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules piqirun_custom.ml > piqirun_custom.ml.depends
-# Target: gameElements.ml.depends, tags: { package(piqirun.ext), extension:ml, file:gameElements.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules gameElements.ml > gameElements.ml.depends # cached
-# Target: gameElements.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameElements.cmo, file:gameElements.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o gameElements.cmo gameElements.ml # cached
-# Target: player.ml.depends, tags: { package(piqirun.ext), extension:ml, file:player.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules player.ml > player.ml.depends # cached
-# Target: player.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player.cmo, file:player.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o player.cmo player.ml # cached
-# Target: player_piqi.ml.depends, tags: { package(piqirun.ext), extension:ml, file:player_piqi.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules player_piqi.ml > player_piqi.ml.depends # cached
-# Target: player_piqi.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player_piqi.cmo, file:player_piqi.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o player_piqi.cmo player_piqi.ml # cached
-# Target: piqirun_custom.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:piqirun_custom.cmo, file:piqirun_custom.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o piqirun_custom.cmo piqirun_custom.ml
-# Target: graph_piqi_ext.ml.depends, tags: { package(piqirun.ext), extension:ml, file:graph_piqi_ext.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules graph_piqi_ext.ml > graph_piqi_ext.ml.depends # cached
-# Target: graph_piqi_ext.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:graph_piqi_ext.cmo, file:graph_piqi_ext.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o graph_piqi_ext.cmo graph_piqi_ext.ml # cached
-# Target: player_piqi_ext.ml.depends, tags: { package(piqirun.ext), extension:ml, file:player_piqi_ext.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package piqirun.ext -modules player_piqi_ext.ml > player_piqi_ext.ml.depends # cached
-# Target: player_piqi_ext.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player_piqi_ext.cmo, file:player_piqi_ext.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o player_piqi_ext.cmo player_piqi_ext.ml # cached
-# Target: gamestate_piqi.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gamestate_piqi.cmo, file:gamestate_piqi.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o gamestate_piqi.cmo gamestate_piqi.ml
-# Target: gamestate_piqi_ext.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gamestate_piqi_ext.cmo, file:gamestate_piqi_ext.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o gamestate_piqi_ext.cmo gamestate_piqi_ext.ml
-# Target: dataProcessing.cmo, tags: { package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:dataProcessing.cmo, file:dataProcessing.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package piqirun.ext -o dataProcessing.cmo dataProcessing.ml
-# Target: dataProcessing.byte, tags: { package(piqirun.ext), byte, dont_link_with, extension:byte, file:dataProcessing.byte, link, ocaml, program, quiet }
-ocamlfind ocamlc -linkpkg -package piqirun.ext gameelements_piqi.cmo gameelements_piqi_ext.cmo graph_piqi.cmo gameElements.cmo player.cmo player_piqi.cmo piqirun_custom.cmo gamestate_piqi.cmo graph_piqi_ext.cmo player_piqi_ext.cmo gamestate_piqi_ext.cmo dataProcessing.cmo -o dataProcessing.byte
+# Target: dataProcessing.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:dataProcessing.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules dataProcessing.ml > dataProcessing.ml.depends # cached
+# Target: gamestate_piqi_ext.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:gamestate_piqi_ext.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules gamestate_piqi_ext.ml > gamestate_piqi_ext.ml.depends # cached
+# Target: gameelements_piqi_ext.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:gameelements_piqi_ext.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules gameelements_piqi_ext.ml > gameelements_piqi_ext.ml.depends # cached
+# Target: gameelements_piqi.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:gameelements_piqi.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules gameelements_piqi.ml > gameelements_piqi.ml.depends # cached
+# Target: gameelements_piqi.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameelements_piqi.cmo, file:gameelements_piqi.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o gameelements_piqi.cmo gameelements_piqi.ml # cached
+# Target: gameelements_piqi_ext.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameelements_piqi_ext.cmo, file:gameelements_piqi_ext.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o gameelements_piqi_ext.cmo gameelements_piqi_ext.ml # cached
+# Target: gamestate_piqi.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:gamestate_piqi.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules gamestate_piqi.ml > gamestate_piqi.ml.depends # cached
+# Target: graph_piqi.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:graph_piqi.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules graph_piqi.ml > graph_piqi.ml.depends # cached
+# Target: graph_piqi.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:graph_piqi.cmo, file:graph_piqi.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o graph_piqi.cmo graph_piqi.ml # cached
+# Target: piqirun_custom.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:piqirun_custom.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules piqirun_custom.ml > piqirun_custom.ml.depends # cached
+# Target: gameElements.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:gameElements.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules gameElements.ml > gameElements.ml.depends # cached
+# Target: player.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:player.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules player.ml > player.ml.depends # cached
+# Target: player.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player.cmo, file:player.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o player.cmo player.ml # cached
+# Target: gameElements.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gameElements.cmo, file:gameElements.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o gameElements.cmo gameElements.ml # cached
+# Target: player_piqi.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:player_piqi.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules player_piqi.ml > player_piqi.ml.depends # cached
+# Target: player_piqi.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player_piqi.cmo, file:player_piqi.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o player_piqi.cmo player_piqi.ml # cached
+# Target: piqirun_custom.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:piqirun_custom.cmo, file:piqirun_custom.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o piqirun_custom.cmo piqirun_custom.ml # cached
+# Target: gamestate_piqi.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gamestate_piqi.cmo, file:gamestate_piqi.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o gamestate_piqi.cmo gamestate_piqi.ml # cached
+# Target: graph_piqi_ext.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:graph_piqi_ext.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules graph_piqi_ext.ml > graph_piqi_ext.ml.depends # cached
+# Target: graph_piqi_ext.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:graph_piqi_ext.cmo, file:graph_piqi_ext.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o graph_piqi_ext.cmo graph_piqi_ext.ml # cached
+# Target: player_piqi_ext.ml.depends, tags: { package(ocamlgraph), package(piqirun.ext), extension:ml, file:player_piqi_ext.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package ocamlgraph -package piqirun.ext -modules player_piqi_ext.ml > player_piqi_ext.ml.depends # cached
+# Target: player_piqi_ext.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:player_piqi_ext.cmo, file:player_piqi_ext.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o player_piqi_ext.cmo player_piqi_ext.ml # cached
+# Target: gamestate_piqi_ext.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:gamestate_piqi_ext.cmo, file:gamestate_piqi_ext.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o gamestate_piqi_ext.cmo gamestate_piqi_ext.ml # cached
+# Target: dataProcessing.cmo, tags: { package(ocamlgraph), package(piqirun.ext), byte, compile, extension:cmo, extension:ml, file:dataProcessing.cmo, file:dataProcessing.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package ocamlgraph -package piqirun.ext -o dataProcessing.cmo dataProcessing.ml # cached
+# Target: dataProcessing.byte, tags: { package(ocamlgraph), package(piqirun.ext), byte, dont_link_with, extension:byte, file:dataProcessing.byte, link, ocaml, program, quiet }
+ocamlfind ocamlc -linkpkg -package ocamlgraph -package piqirun.ext gameelements_piqi.cmo gameelements_piqi_ext.cmo graph_piqi.cmo player.cmo gameElements.cmo player_piqi.cmo piqirun_custom.cmo gamestate_piqi.cmo graph_piqi_ext.cmo player_piqi_ext.cmo gamestate_piqi_ext.cmo dataProcessing.cmo -o dataProcessing.byte # cached
 # Compilation successful.

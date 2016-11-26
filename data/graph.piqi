@@ -33,7 +33,7 @@
 ]
 .list [
     .name nodelist
-    .type node
+    .type gameelements/location
 ]
 
 % ********** EDGES ********** %
@@ -67,7 +67,7 @@
 ]
 .list [
     .name edgelist
-    .type edge
+    .type gameelements/connection
 ]
 
 % ********** GRAPH ********** %
