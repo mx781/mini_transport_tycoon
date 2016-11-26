@@ -4,7 +4,7 @@
  open InputProcessing
  open DataProcessing
 
-let fps = 30.0
+let fps = 24.0
 let car_price = 100.0
 let truck_price = 200.0
 let sell_back_percentage = 0.6

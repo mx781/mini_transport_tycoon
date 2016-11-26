@@ -201,7 +201,9 @@ let rec pause () =
   let _ = wait_next_event [Button_down] in
   ()
 
-let buy_car () =
+let buy_car grph =
+  let stat = wait_next_event [Button_up] in
+  let v1 = get_loc_near stat.mouse_x stat.mouse_y grph in
   ()
 
 let buy_truck () =
@@ -218,7 +220,7 @@ let click_buttons gs =
     if y < start_height+button_height-spacing
        && y > start_height-spacing then pause () else
     if y < start_height+button_height-2*spacing
-      && y > start_height-2*spacing then buy_car () else
+      && y > start_height-2*spacing then buy_car gs.graph else
     if y < start_height+button_height-3*spacing
        && y > start_height-3*spacing then buy_truck ()
     else ()
@@ -232,4 +234,4 @@ let draw_game_state gs : unit =
   draw_vehicles gs.vehicles;
   draw_buttons ();
   draw_hover gs.graph;
-  click_buttons ()
+  click_buttons gs
