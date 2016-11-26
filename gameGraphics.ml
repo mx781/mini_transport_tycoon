@@ -5,6 +5,20 @@ open Player
 let default_color = 0xCD853F
 let scale =  ref 2
 
+let rec chr_lst str =
+  match str with
+  | "" ->[]
+  | ch ->(String.sub ch 0 1)::(chr_lst (String.sub ch 1 ((String.length ch)-1)))
+
+let rec draw_chars chars x y =
+  let width = 20 in
+  match chars with
+  | [] -> ()
+  | h::t -> draw_image ("font/"^chr) x y; draw_chars t x+width y
+
+let draw_str str x y =
+  draw_chars (chr_lst str) x y
+
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
   Array.map (fun arr -> replace arr) img
@@ -81,25 +95,13 @@ let rec draw_players (ps:Player.player list) : unit =
 
 
 let draw_buttons () =
-
   let spacing = 40 * !scale in
   let start_height = 250 * !scale in
   draw_image (save ) 0 start_height;
   draw_image (pause ) 0 (start_height-spacing);
   draw_image (buycar ) 0 (start_height-2*spacing);
   draw_image (buytruck) 0 (start_height-3*spacing)
-(*   moveto (!scale*10) (!scale*110);
-  draw_string "Buy Car";
-  draw_rect (!scale*0) (!scale*100) (!scale*button_size) (!scale*button_size);
-  moveto (!scale*10) (!scale*160);
-  draw_string "Buy Truck";
-  draw_rect (!scale*0) (!scale*150) (!scale*button_size) (!scale*button_size);
-  moveto (!scale*10) (!scale*210);
-  draw_string "Pause";
-  draw_rect (!scale*0) (!scale*200) (!scale*button_size) (!scale*button_size);
-  moveto (!scale*10) (!scale*260);
-  draw_string "Save and Quit";
-  draw_rect (!scale*0) (!scale*250) (!scale*button_size) (!scale*button_size) *)
+
 open GameElements
 let rtos r =
   match r with
@@ -118,6 +120,8 @@ let draw_info_box x y v =
   moveto x y;
   set_text_size 20;
   set_color black;
+  (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1"; *)
+  draw_string "IRON";
   List.iter (fun acc -> if not (button_down ()) then () else
     print_endline
     (rtos acc.resource ^ ": $" ^
