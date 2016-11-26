@@ -67,20 +67,6 @@ type connection = {
   c_speed: float; (*speed of vehicle on road*)
 }
 
-type process =
-  | BuyVehicle of vehicle
-  | SellVehicle of vehicle
-  | SetVehicleDestination of vehicle (*with updated destinations*)
-  | BuyVehicleCargo of vehicle
-  | AddRoad of connection
-  | DeleteRoad of connection
-  | PurchaseRoad of connection (*Purchase rights to a road that is preexisting*)
-  | Pause
-  | EndGame
-  | Nothing
-
-
-
 module Location = struct
   type t = location
   let equal l1 l2 = l1.l_id = l2.l_id

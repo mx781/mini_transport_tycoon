@@ -42,8 +42,12 @@ let rec activate_vehicles v_list =
 
 (*Gets details about location from graph.*)
 let get_loc_details graph loc_id =
-  Map.fold_vertex
-    (fun x y -> if (Map.V.label x).l_id = loc_id then x::y else y) graph []
+  let loc_info =
+    Map.fold_vertex
+    (fun x y -> if (Map.V.label x).l_id = loc_id then x::y else y) graph [] in
+  match loc_info with
+  |[h] -> h
+  |_ -> failwith "Trying to get info about more than one loc"
 
 let rec get_p_info id players =
   match players with
@@ -77,8 +81,7 @@ let get_good_profit graph good  =
   (0., None, None)
 
 (*See if item exists in any particular location that can be connected
- *through Dijkstra's. Find the one with the maximum price difference.
- *The good*)
+ *through Dijkstra's. Find the one with the maximum price difference. *)
 let rec get_good_loc graph goods_produced curr_m =
   List.fold_left
   (fun x y->
@@ -93,6 +96,22 @@ let get_o op =
   |Some x -> x
   |None -> failwith "trying to get option out of nothing, TALK TO DAN"
 
+(*Sees if it is possible to get from loc1 to loc2 for player*)
+let get_route (loc1:int) (loc2:int) state (p_id:int)=
+  let accessible_roads = get_roads p_id state.graph in
+  let empty = Map.empty in
+  let new_graph = add_edges empty accessible_roads in
+  let loc_info1 = get_loc_details state.graph loc1 in
+  let loc_info2 = get_loc_details state.graph loc2 in
+  let new_path =
+    (try Dijkstra.shortest_path new_graph loc_info1 loc_info2 with
+    |Not_found ->([], (-1.))) in
+  if new_path = ([],(-1.)) then
+    None
+  else
+    Some (List.map (fun x -> (t x).l_id) (fst new_path))
+
+
 (*Stuff that chooses AI movement based on a list of connections*)
 let make_vehicle_move vehicle c_connections graph curr_m=
   (*Create a new graph with only these connections.*)
@@ -103,15 +122,8 @@ let make_vehicle_move vehicle c_connections graph curr_m=
     match vehicle.v_loc with
     |None -> failwith "Passive vehicle with no location, talk to Dan"
     |Some loc -> loc in
-  let loc_details =
-    match get_loc_details graph cur_loc with
-    |[h] -> h
-    |_ -> failwith "Getting more than one location, TALK TO DAN" in
-  let goods =
-    match get_loc_details graph cur_loc with
-    |[h] -> h.accepts
-    |_ -> failwith "could not get only one location, TALK TO DAN" in
-  (*Fix later*)
+  let loc_details = get_loc_details graph cur_loc in
+  let goods = loc_details.accepts in
   let max_profits = get_good_loc graph goods curr_m in
   (*Need to fix use of 1 here: TODO*)
   if f max_profits <= 0. then
