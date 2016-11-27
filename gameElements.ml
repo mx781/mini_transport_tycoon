@@ -118,6 +118,13 @@ end
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
 let breakdown_chance = 0.0001
+let car_speed = 4.0
+let truck_speed = 2.0
+let car_capacity = 25
+let truck_capacity = 100
+let price_update_steps = 10
+
+
 
 (* let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
@@ -222,7 +229,7 @@ let new_gp g_a gp =
   { gp with
   current = min
     (gp.current + (if g_a mod gp.steps_to_inc = 0 then 1 else 0)) (gp.capacity);
-  price = max (gp.price +. if g_a mod gp.steps_to_inc = 0
+  price = max (gp.price +. if g_a mod price_update_steps = 0
     then (0.02*. (2.0*.(Random.float gp.natural_price) -. gp.natural_price))
     else 0.0) 0.0;
   }

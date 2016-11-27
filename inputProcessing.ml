@@ -155,3 +155,35 @@ let make_c_move (state: game_state) c_id =
     |Some v -> make_vehicle_move v c_connections state.graph c_player_info.money
     |None -> [] in
       vehicle_processes
+
+let init_vehicle player_id v_type start_loc_id graph=
+  let loc = get_loc start_loc_id graph in
+  let v =
+  {
+    v_owner_id = player_id;
+    speed = (if v_type = Car then car_speed else truck_speed);
+    capacity = (if v_type = Car then car_capacity else truck_capacity);
+    v_t = v_type;
+    cargo = None;
+    age = 0;
+    status = Waiting;
+    x = loc.l_x;
+    y = loc.l_y;
+    destination= [];
+    v_loc = Some start_loc_id;
+  } in
+  BuyVehicle(v)
+
+let init_road player_id l1_id l2_id graph =
+  let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
+    ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
+  let c =
+  {
+    c_owner_id = player_id;
+    l_start= l1_id;
+    l_end =  l2_id;
+    length= c_length;
+    c_age= 0;
+    c_speed = 5.0; (*not used yet, completely arbitrary*)
+  } in
+  AddRoad(c)

@@ -1,6 +1,7 @@
 open Graphics
 open GameElements
 open Player
+open InputProcessing
 
 let default_color = 0xCD853F
 let scale =  ref 2 (* No longer supported *)
@@ -220,11 +221,13 @@ let button_height = 50
 let quit gs =
   print_endline "Game saved in myGame.json";
   DataProcessing.save_file gs "myGame.json";
-  close_graph ()
+  close_graph ();
+  EndGame
 
 let rec pause () =
   let _ = wait_next_event [Button_down] in
-  print_endline "Game Paused. Click anywhere to continue\n"
+  print_endline "Game Paused. Click anywhere to continue";
+  Pause
 
 let get_start_end grph =
   print_endline "Select a start location.";
@@ -233,37 +236,40 @@ let get_start_end grph =
   let end_loc = get_loc_near grph in
   (start_loc, end_loc)
 
-let buy_car (gs:GameElements.game_state) =
+let buy_car (gs:GameElements.game_state) player_id =
   print_endline "Select a start location.";
   let loc = get_loc_near gs.graph in
-  print_endline "Car bought.\n"
+  print_endline "Car bought.\n";
+  InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
-let buy_truck (gs:GameElements.game_state) =
+let buy_truck (gs:GameElements.game_state) player_id =
   print_endline "Select a start location.";
   let loc = get_loc_near gs.graph in
-  print_endline "Truck bought.\n"
+  print_endline "Truck bought.\n";
+  InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
-let buy_road (gs:GameElements.game_state) =
+let buy_road (gs:GameElements.game_state) player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
-  print_endline "Road bought.\n"
+  print_endline "Road bought.\n";
+  init_road player_id start_loc.l_id end_loc.l_id gs.graph
 
-let click_buttons (gs:GameElements.game_state) =
+let click_buttons (gs:GameElements.game_state) player_id =
   let stat = wait_next_event [Poll] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
-  if not (button_down () && x < button_width) then ()
+  if not (button_down () && x < button_width) then Nothing
   else (
     if y < start_height+button_height
        && y > start_height then quit gs else
     if y < start_height+button_height-spacing
        && y > start_height-spacing then pause () else
     if y < start_height+button_height-2*spacing
-      && y > start_height-2*spacing then buy_car gs else
+      && y > start_height-2*spacing then buy_car gs player_id else
     if y < start_height+button_height-3*spacing
-       && y > start_height-3*spacing then buy_truck gs else
+       && y > start_height-3*spacing then buy_truck gs player_id else
     if y < start_height+button_height-4*spacing
-       && y > start_height-4*spacing then buy_road gs
-    else ()
+       && y > start_height-4*spacing then buy_road gs player_id
+    else Nothing
   )
 
 let draw_game_state (gs:GameElements.game_state) : unit =
@@ -274,4 +280,4 @@ let draw_game_state (gs:GameElements.game_state) : unit =
   draw_vehicles gs.vehicles;
   draw_buttons ();
   draw_hover gs.graph;
-  click_buttons gs
+ (*  click_buttons gs *)

@@ -11,6 +11,7 @@ let sell_back_percentage = 0.6
 let road_unit_cost = 1.0
 let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.4
+
 exception EndGame
 
 let buy_vehicle v st =
@@ -44,7 +45,7 @@ let buy_connection c st =
   let loc1 = get_loc c.l_start st.graph in
   let loc2 = get_loc c.l_end st.graph in
   let vertices = Map.fold_vertex
-    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc2.l_id
                    then vx::acc
                    else acc
     ) st.graph [] in
@@ -148,7 +149,7 @@ let rec generate_processes st players procs =
   match players with
     | [] -> procs
     | h::t -> if h.p_type = Human
-              then generate_processes st t procs
+              then generate_processes st t (GameGraphics.click_buttons st h.p_id:: procs)
               else generate_processes st t ((make_c_move st h.p_id) @ procs)
 
 let rec main_loop st =
