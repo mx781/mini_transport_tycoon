@@ -92,7 +92,6 @@ let open_screen size =
   scale := (int_of_string size);
   resize_window (500* !scale) (300* !scale)
 
-
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
   set_line_width (!scale * width);
@@ -111,7 +110,7 @@ let draw_ograph grph : unit =
   GameElements.Map.iter_vertex
     (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x,
                           (GameElements.Map.V.label v).l_y) in
-       draw_image house ((round x - 15)/ 2 * !scale) ((round y - 15)/ 2 * !scale)) grph
+       draw_image house ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
   let pic = (match v.v_t with
@@ -183,7 +182,9 @@ let draw_info_box x y v =
     ) loc.produces
 
 
-let get_loc_near x y grph =
+let rec get_loc_near grph =
+  let stat = wait_next_event [Button_down] in
+  let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let loc = ref None in
   let close_enough = 30 in
   let labl = GameElements.Map.V.label in
@@ -192,7 +193,9 @@ let get_loc_near x y grph =
               if (abs (x*2/ !scale - round x1) < close_enough)
               && (abs (y*2/ !scale - round y1) < close_enough)
                                   then loc := Some v else () ) grph;
-  !loc
+  match !loc with
+  | Some v -> v
+  | None -> (* print_endline "Not a valid location"; *) get_loc_near grph
 
 let draw_hover grph =
   let stat = wait_next_event [Poll] in
@@ -215,28 +218,30 @@ let quit gs =
 
 let rec pause () =
   let _ = wait_next_event [Button_down] in
-  ()
+  print_endline "Game Paused. Click anywhere to continue"
 
-let get_start_end gs =
-  let stat = wait_next_event [Button_up] in
-  let start_loc = get_loc_near stat.mouse_x stat.mouse_y gs.graph in
-  let stat = wait_next_event [Button_up] in
-  let end_loc = get_loc_near stat.mouse_x stat.mouse_y gs.graph in
+let get_start_end grph =
+  print_endline "Select a start location.";
+  let start_loc = get_loc_near grph in
+  print_endline "Select an end location.";
+  let end_loc = get_loc_near grph in
   (start_loc, end_loc)
 
-let buy_car gs =
-  let (start_loc, end_loc) = get_start_end gs in
-  ()
+let buy_car (gs:GameElements.game_state) =
+  print_endline "Select a start location.";
+  let loc = get_loc_near gs.graph in
+  print_endline "Car bought.\n"
 
-let buy_truck gs =
-  let (start_loc, end_loc) = get_start_end gs in
-  ()
+let buy_truck (gs:GameElements.game_state) =
+  print_endline "Select a start location.";
+  let loc = get_loc_near gs.graph in
+  print_endline "Truck bought.\n"
 
-let buy_road gs =
-  let (start_loc, end_loc) = get_start_end gs in
-  ()
+let buy_road (gs:GameElements.game_state) =
+  let (start_loc, end_loc) = get_start_end gs.graph in
+  print_endline "Road bought.\n"
 
-let click_buttons gs =
+let click_buttons (gs:GameElements.game_state) =
   let stat = wait_next_event [Poll] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
@@ -255,7 +260,7 @@ let click_buttons gs =
     else ()
   )
 
-let draw_game_state gs : unit =
+let draw_game_state (gs:GameElements.game_state) : unit =
   (* clear_graph (); *)
   draw_image bg 0 0;
   draw_players gs.players;
