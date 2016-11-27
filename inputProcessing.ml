@@ -187,3 +187,28 @@ let init_road player_id l1_id l2_id graph =
     c_speed = 5.0; (*not used yet, completely arbitrary*)
   } in
   AddRoad(c)
+
+let route_vehicle player_id v_old start_loc end_loc graph =
+  let new_path =
+    (try Dijkstra.shortest_path graph start_loc end_loc with
+    |Not_found ->([], (-1.))) in
+  let dest_list = if new_path = ([],(-1.)) then
+    []
+  else
+    (List.map (fun x -> (t x).l_id) (fst new_path)) in
+  let v =
+    if v_old.v_owner_id = player_id
+    then {
+      v_old with destination = dest_list; status = Driving;
+    }
+    else v_old
+  in SetVehicleDestination(v)
+
+let buy_vehicle_cargo player_id v_old location r_type =
+  let accepts = List.find (fun gp -> gp.resource = r_type) location.produces in
+  let maxq = accepts.current in
+  let v =
+    if v_old.v_owner_id = player_id
+    then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
+    else v_old
+  in BuyVehicleCargo(v)
