@@ -107,6 +107,7 @@ let string_of_float flt =
 
 let player_color pid =
   match pid with
+  | -1 -> default_color
   | 0 -> red
   | 1 -> blue
   | 2 -> yellow
@@ -130,12 +131,17 @@ let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   lineto x2 y2
 
 let draw_ograph grph : unit =
-  GameElements.Map.iter_edges
-    (fun v1 v2 -> draw_line
-      ((round ((GameElements.Map.V.label v1).l_x) / 2 * !scale),
-      (round ((GameElements.Map.V.label v1).l_y)/ 2 * !scale))
-      ((round ((GameElements.Map.V.label v2).l_x)/ 2 * !scale),
-      (round ((GameElements.Map.V.label v2).l_y)/ 2 * !scale))
+  let label = GameElements.Map.V.label in
+  GameElements.Map.iter_edges_e
+    (fun (v1, e, v2) ->
+      let pos1 = ( (round (label v1).l_x)/ 2 * !scale,
+                   (round (label v1).l_y)/ 2 * !scale ) in
+      let pos2 = ( (round (label v2).l_x)/ 2 * !scale,
+                   (round (label v2).l_y)/ 2 * !scale ) in
+      draw_line pos1 pos2;
+      let pid = e.c_owner_id in
+      if pid < 0 then ()
+      else draw_line ~color:(player_color pid) ~width:4 pos1 pos2
      )  grph;
 
   GameElements.Map.iter_vertex
