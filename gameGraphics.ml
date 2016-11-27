@@ -24,6 +24,9 @@ let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
 let buytruck = get_img "images/truckbutt.png" |> make_image
 let buyroad = get_img "images/buyroad.png" |> make_image
+let sellroad = get_img "images/sellroad.png" |> make_image
+let addcargo = get_img "images/addcargo.png" |> make_image
+let moveauto = get_img "images/moveauto.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -148,7 +151,10 @@ let draw_buttons () =
   draw_image pause 0 (start_height-spacing);
   draw_image buycar 0 (start_height-2*spacing);
   draw_image buytruck 0 (start_height-3*spacing);
-  draw_image buyroad 0 (start_height-4*spacing)
+  draw_image buyroad 0 (start_height-4*spacing);
+  draw_image sellroad 0 (start_height-5*spacing);
+  draw_image addcargo 0 (start_height-6*spacing);
+  draw_image moveauto 0 (start_height-7*spacing)
 
 open GameElements
 let rtos r =
@@ -253,6 +259,22 @@ let buy_road (gs:GameElements.game_state) player_id =
   print_endline "Road bought.\n";
   init_road player_id start_loc.l_id end_loc.l_id gs.graph
 
+let sell_road (gs:GameElements.game_state) player_id =
+  let (start_loc, end_loc) = get_start_end gs.graph in
+  print_endline "Road sold.\n";
+  Nothing
+  (* init_road player_id start_loc.l_id end_loc.l_id gs.graph *)
+
+let add_cargo (gs:GameElements.game_state) player_id =
+  (* get_vehicle_near *)
+  print_endline "Cargo Added.\n";
+  Nothing
+
+let move_auto (gs:GameElements.game_state) player_id =
+  (* get car, loc *)
+  print_endline "Auto is en route.\n";
+  Nothing
+
 let click_buttons (gs:GameElements.game_state) player_id =
   let stat = wait_next_event [Poll] in
   let x = stat.mouse_x in
@@ -268,7 +290,13 @@ let click_buttons (gs:GameElements.game_state) player_id =
     if y < start_height+button_height-3*spacing
        && y > start_height-3*spacing then buy_truck gs player_id else
     if y < start_height+button_height-4*spacing
-       && y > start_height-4*spacing then buy_road gs player_id
+       && y > start_height-4*spacing then buy_road gs player_id else
+    if y < start_height+button_height-5*spacing
+       && y > start_height-5*spacing then sell_road gs player_id else
+    if y < start_height+button_height-6*spacing
+       && y > start_height-6*spacing then add_cargo gs player_id else
+    if y < start_height+button_height-7*spacing
+       && y > start_height-7*spacing then move_auto gs player_id
     else Nothing
   )
 
