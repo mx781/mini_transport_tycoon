@@ -3,7 +3,7 @@ _build/*
 .DS_Store
 *~
 interfaces/_build/*
-data/_build/*
+piqi/_build/*
 #setup.sh#
 .omakedb.lock
 env.sh

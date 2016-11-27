@@ -1,0 +1,30 @@
+print_string "Loading DataProcessing components...";;
+
+(* load pre-reqs for Piqi *)
+#require "piqilib";;
+#load "piqilib.cma";;
+#require "piqirun";;
+#load "piqirun.cmo";;
+#load "piqirun_ext.cmo";;
+
+(* load additional reqs *)
+#require "ocamlgraph";;
+
+(* open compiled modules *)
+#directory "_build";;
+#load "piqi/gameelements_piqi.cmo";;
+#load "piqi/gameelements_piqi_ext.cmo";;
+#load "piqi/player_piqi.cmo";;
+#load "piqi/player_piqi_ext.cmo";;
+#load "gameelements.cmo";;
+#load "piqi/piqirun_custom.cmo";;
+#load "piqi/graph_piqi.cmo";;
+#load "piqi/graph_piqi_ext.cmo";;
+#load "piqi/gamestate_piqi.cmo";;
+#load "piqi/gamestate_piqi_ext.cmo";;
+#load "dataProcessing.cmo";;
+
+print_endline " Done!";;
+
+(* load dataProcessing for convenience *)
+open DataProcessing;;

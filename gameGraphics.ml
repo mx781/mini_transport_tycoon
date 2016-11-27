@@ -57,7 +57,7 @@ let img_of_str str =
   | "." -> dot
   | ":" -> colon
   | "$" -> dollar
-  | _ -> n0
+  | _ -> dot
 
 let rec chr_lst str =
   match str with
@@ -68,6 +68,7 @@ let rec draw_chars chars x y =
   let width = 16 in
   match chars with
   | [] -> ()
+  | " "::t -> draw_chars t (x+width) y
   | h::t -> draw_image (img_of_str h) x y;
             draw_chars t (x+width) y
 
@@ -111,7 +112,8 @@ let draw_ograph grph : unit =
   GameElements.Map.iter_vertex
     (fun v -> let (x,y) = ((GameElements.Map.V.label v).l_x,
                           (GameElements.Map.V.label v).l_y) in
-       draw_image house ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
+     draw_image house
+       ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
 
 let draw_vehicle (v:GameElements.vehicle) : unit =
   let pic = (match v.v_t with
@@ -127,7 +129,8 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
-  draw_str ("P"^string_of_int p.p_id^":$"^string_of_float(two_dec p.money)) 800 (550-p.p_id*30)
+  draw_str ("P"^string_of_int p.p_id^":$"^
+            string_of_float(two_dec p.money)) 800 (550-p.p_id*30)
   (*  moveto (p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
                 ": $" ^(string_of_float p.money)) *)
@@ -161,13 +164,13 @@ let draw_info_box x y v =
   (set_color white; fill_rect x y 150 box_height);
   let loc = GameElements.Map.V.label v in
   set_color black;
-  (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1"; *)
+  (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1";*)
   moveto (x+10) (y+ box_height - 20);
   draw_string "Accepts:";
   rmoveto (-(fst (text_size "Accepts:"))) 0;
   List.iter (fun acc ->
     rmoveto 0 (-12);
-    let str = (rtos acc.resource ^ ": $" ^ string_of_float (two_dec acc.price)) in
+    let str = (rtos acc.resource ^": $"^ string_of_float (two_dec acc.price)) in
     draw_string str;
     rmoveto (-fst (text_size str)) 0;
     ) loc.accepts;
@@ -177,7 +180,8 @@ let draw_info_box x y v =
   rmoveto (-(fst (text_size "Produces:"))) 0;
   List.iter (fun prod ->
     rmoveto 0 (-12);
-    let str = string_of_int prod.current ^ " " ^ rtos prod.resource ^ ": $" ^ string_of_float (two_dec prod.price) in
+    let str = string_of_int prod.current ^ " " ^ rtos prod.resource ^
+              ": $" ^ string_of_float (two_dec prod.price) in
     draw_string str;
     rmoveto (-fst (text_size str)) 0;
     ) loc.produces
@@ -214,8 +218,10 @@ let button_width = 93
 let button_height = 50
 
 let quit gs =
-  (* SAVE; *)
-  close_graph (); EndGame
+  print_endline "Game saved in myGame.json";
+  DataProcessing.save_file gs "myGame.json";
+  close_graph ();
+  EndGame
 
 let rec pause () =
   let _ = wait_next_event [Button_down] in
