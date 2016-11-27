@@ -188,6 +188,15 @@ let init_road player_id l1_id l2_id graph =
   } in
   AddRoad(c)
 
+let sell_road player_id l1 l2 graph =
+  try
+    let c = Map.find_edge l1 l2 graph in
+    let c' = match c with
+    |(_,c,_) -> c in
+    DeleteRoad(c')
+  with
+  | _ -> Nothing
+
 let route_vehicle player_id v_old start_loc end_loc graph =
   let new_path =
     (try Dijkstra.shortest_path graph start_loc end_loc with
