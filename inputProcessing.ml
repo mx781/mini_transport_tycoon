@@ -155,3 +155,21 @@ let make_c_move (state: game_state) c_id =
     |Some v -> make_vehicle_move v c_connections state.graph c_player_info.money
     |None -> [] in
       vehicle_processes
+
+let init_vehicle player_id v_type start_loc_id graph=
+  let loc = get_loc start_loc_id graph in
+  let v =
+  {
+    v_owner_id = player_id;
+    speed = (if v_type = Car then car_speed else truck_speed);
+    capacity = (if v_type = Car then car_capacity else truck_capacity);
+    v_t = v_type;
+    cargo = None;
+    age = 0;
+    status = Waiting;
+    x = loc.l_x;
+    y = loc.l_y;
+    destination= [];
+    v_loc = Some start_loc_id;
+  } in
+  BuyVehicle(v)
