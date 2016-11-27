@@ -151,8 +151,10 @@ let draw_vehicle (v:GameElements.vehicle) : unit =
   let x = round ((v.x -. 30.0) /. 2. *. (float_of_int !scale)) in
   let y = (round ((v.y -. 15.0) /. 2. *. (float_of_int !scale))) in
   Graphics.draw_image pic x y;
+  set_color black;
+  fill_circle x y 10;
   set_color (player_color v.v_owner_id);
-  fill_circle x y 10
+  fill_circle x y 8
 
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
@@ -161,8 +163,14 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
+  let x = 800 in
+  let y = (550-p.p_id*30) in
+  set_color black;
+  fill_circle (x-10) (y+10) 10;
+  set_color (player_color p.p_id);
+  fill_circle (x-10) (y+10) 8;
   draw_str ("P"^string_of_int p.p_id^":$"^
-            string_of_float(two_dec p.money)) 800 (550-p.p_id*30)
+            string_of_float(two_dec p.money)) x y
   (*  moveto (p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
                 ": $" ^(string_of_float p.money)) *)
@@ -237,7 +245,6 @@ let draw_game_state (gs:GameElements.game_state) : unit =
 
 let rec get_loc_near ?(l_id = (-1)) grph =
   let stat = wait_next_event [Button_down] in
-  let stat = wait_next_event [Button_down] in
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let loc = ref None in
   let close_enough = 30 in
@@ -249,7 +256,8 @@ let rec get_loc_near ?(l_id = (-1)) grph =
                                   then loc := Some v else () ) grph;
   match !loc with
   | Some v when (labl v).l_id <> l_id -> v
-  | _ -> (* print_endline "Not a valid location"; *) get_loc_near grph
+  | _ -> (* print_endline "Not a valid location"; *)
+         get_loc_near ~l_id:l_id grph
 
 let rec get_auto_near gs =
   let stat = wait_next_event [Button_down] in
@@ -281,8 +289,8 @@ let quit gs =
   DataProcessing.save_file gs "myGame.json";
   EndGame
 
-let rec pause () =
-  let _ = wait_next_event [Button_down] in
+let rec pause () =(*
+  let _ = wait_next_event [Button_down] in *)
   print_endline "Game Paused. Click anywhere to continue\n";
   Pause
 
