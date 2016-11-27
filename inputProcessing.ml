@@ -197,10 +197,17 @@ let sell_road player_id l1 l2 graph =
   with
   | _ -> Nothing
 
+let sell_vehicle player_id v =
+  if v.v_owner_id = player_id
+  then SellVehicle(v)
+  else
+  let () = print_endline "You cannot sell that vehicle, you do not own it!" in
+  Nothing
+
 let route_vehicle player_id v_old start_loc end_loc graph =
   let new_path =
     (try Dijkstra.shortest_path graph start_loc end_loc with
-    |Not_found ->([], (-1.))) in
+    |_ ->([], (-1.))) in
   let dest_list = if new_path = ([],(-1.)) then
     []
   else
@@ -208,16 +215,22 @@ let route_vehicle player_id v_old start_loc end_loc graph =
   let v =
     if v_old.v_owner_id = player_id
     then {
-      v_old with destination = dest_list; status = Driving;
+      v_old with destination = dest_list;
+      status = Driving;
     }
-    else v_old
-  in SetVehicleDestination(v)
+    else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
+  in
+  print_endline (string_of_int (List.hd dest_list));
+  SetVehicleDestination(v)
 
-let buy_vehicle_cargo player_id v_old location r_type =
-  let accepts = List.find (fun gp -> gp.resource = r_type) location.produces in
-  let maxq = accepts.current in
-  let v =
-    if v_old.v_owner_id = player_id
-    then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
-    else v_old
-  in BuyVehicleCargo(v)
+let buy_vehicle_cargo player_id v_old r_type graph=
+  match v_old.v_loc with
+    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
+    | Some location ->
+      let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location graph).produces in
+      let maxq = accepts.current in
+      let v =
+        if v_old.v_owner_id = player_id
+        then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
+        else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!" in v_old
+      in BuyVehicleCargo(v)

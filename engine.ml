@@ -36,10 +36,11 @@ let sell_vehicle v st =
     {st with vehicles = new_vehicles; players = new_players}
 
 let set_v_dest v st =
-  let route_dest = fun vhcl -> if {vhcl with destination = v.destination} = v
+  print_endline "here";
+  let route_dest = fun vhcl -> if {vhcl with destination = v.destination; status = v.status} = v
                                then v else vhcl in
   let new_vehicles = List.map route_dest st.vehicles in
-  {st with vehicles = new_vehicles}
+  {st with vehicles = new_vehicles;}
 
 let buy_connection c st =
   let loc1 = get_loc c.l_start st.graph in

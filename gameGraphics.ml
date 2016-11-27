@@ -261,7 +261,7 @@ let get_start_end grph =
   (start_loc, end_loc)
 
 let pick_cargo () =
-  ()
+  Oil
 
 let quit gs =
   print_endline "Game saved in myGame.json\n";
@@ -294,8 +294,8 @@ let buy_road (gs:GameElements.game_state) player_id =
 let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
-  print_endline "Road sold.\n";
-  Nothing
+  print_endline "Road sold.\n"; Nothing
+(*   sell_road player_id start_loc end_loc gs.graph *)
   (* init_road player_id start_loc.l_id end_loc.l_id gs.graph *)
 
 let add_cargo (gs:GameElements.game_state) player_id =
@@ -304,7 +304,7 @@ let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Choose cargo to go in that vehicle.";
   let cargo = pick_cargo () in
   print_endline "Cargo Added.\n";
-  Nothing
+  buy_vehicle_cargo player_id auto cargo gs.graph
 
 let move_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to move.";
@@ -312,13 +312,16 @@ let move_auto (gs:GameElements.game_state) player_id =
   print_endline "Choose destination.";
   let dest = get_loc_near gs.graph in
   print_endline "Your vehicle is en route.\n";
-  Nothing
+  let l = match auto.v_loc with
+    | None -> failwith "vehicle has no location"
+    | Some loc -> get_loc loc gs.graph in
+  route_vehicle player_id auto l dest gs.graph
 
 let sell_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to sell.";
   let auto = get_auto_near gs in
   print_endline "Vehicle is sold.\n";
-  Nothing
+  sell_vehicle player_id auto
 
 let click_buttons (gs:GameElements.game_state) player_id =
   let stat = wait_next_event [Poll] in
