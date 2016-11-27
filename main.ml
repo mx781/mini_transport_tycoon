@@ -7,7 +7,7 @@ let () =
     print_endline
       "               Welcome to Mini Transport Tycoon.                       ";
     print_endline
-      "***********************************************************************";
+      "***********************************************************************\n";
     GameGraphics.draw_start ();
     print_endline "Please select:";
     print_endline "\t (1) to start a new game";
@@ -31,13 +31,13 @@ let () =
     print_endline
       "***********************************************************************\n";
     print_endline "Save/Quit: Saves the current game to a json file and closes the game.\n";
-    print_endline "Pause: Pauses the game until the screen is clicked again\n";
-    print_endline "Buy Car: Buys a car starting at a given location\n";
+    print_endline "Pause:     Pauses the game until the screen is clicked again\n";
+    print_endline "Buy Car:   Buys a car starting at a given location\n";
     print_endline "Buy Truck: Buys a truck starting at a given location\n";
-    print_endline "Buy Road: Buys a new road between two locations, or if a road exists,";
-    print_endline "          buys exclusive right to that road\n";
+    print_endline "Buy Road:  Buys a new road between two locations, or if a road exists,";
+    print_endline "           buys exclusive right to that road\n";
     print_endline
-      "***********************************************************************";
+      "***********************************************************************\n";
     Engine.init_game file_name scale
   with
   | Graphics.Graphic_failure _ -> failwith "Don't Exit out of the Screen"
