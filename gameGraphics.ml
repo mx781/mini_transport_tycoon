@@ -247,10 +247,10 @@ let buy_truck (gs:GameElements.game_state) player_id =
   print_endline "Truck bought.\n";
   InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
-let buy_road (gs:GameElements.game_state) =
+let buy_road (gs:GameElements.game_state) player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
   print_endline "Road bought.\n";
-  Nothing
+  init_road player_id start_loc.l_id end_loc.l_id gs.graph
 
 let click_buttons (gs:GameElements.game_state) player_id =
   let stat = wait_next_event [Poll] in
@@ -267,7 +267,7 @@ let click_buttons (gs:GameElements.game_state) player_id =
     if y < start_height+button_height-3*spacing
        && y > start_height-3*spacing then buy_truck gs player_id else
     if y < start_height+button_height-4*spacing
-       && y > start_height-4*spacing then buy_road gs
+       && y > start_height-4*spacing then buy_road gs player_id
     else Nothing
   )
 

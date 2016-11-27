@@ -14,21 +14,6 @@ let road_rights_unit_cost = 0.4
 
 exception EndGame
 
-
-let init_road player_id l1_id l2_id graph =
-  let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
-    ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
-  let c =
-  {
-    c_owner_id = player_id;
-    l_start= l1_id;
-    l_end =  l2_id;
-    length= c_length;
-    c_age= 0;
-    c_speed = 5.0; (*not used yet, completely arbitrary*)
-  } in
-  AddRoad(c)
-
 let buy_vehicle v st =
   let cost = match v.v_t with
     | Car -> car_price
@@ -60,7 +45,7 @@ let buy_connection c st =
   let loc1 = get_loc c.l_start st.graph in
   let loc2 = get_loc c.l_end st.graph in
   let vertices = Map.fold_vertex
-    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc2.l_id
                    then vx::acc
                    else acc
     ) st.graph [] in

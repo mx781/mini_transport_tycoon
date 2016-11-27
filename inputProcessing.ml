@@ -173,3 +173,17 @@ let init_vehicle player_id v_type start_loc_id graph=
     v_loc = Some start_loc_id;
   } in
   BuyVehicle(v)
+
+let init_road player_id l1_id l2_id graph =
+  let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
+    ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
+  let c =
+  {
+    c_owner_id = player_id;
+    l_start= l1_id;
+    l_end =  l2_id;
+    length= c_length;
+    c_age= 0;
+    c_speed = 5.0; (*not used yet, completely arbitrary*)
+  } in
+  AddRoad(c)
