@@ -217,8 +217,8 @@ let button_width = 93
 let button_height = 50
 
 let quit gs =
-  print_endline "Game saved in ???.json";
-  (* SAVE; *)
+  print_endline "Game saved in myGame.json";
+  DataProcessing.save_file gs "myGame.json";
   close_graph ()
 
 let rec pause () =
