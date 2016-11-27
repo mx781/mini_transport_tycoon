@@ -31,6 +31,7 @@ let buyroad = get_img "images/buyroad.png" |> make_image
 let sellroad = get_img "images/sellroad.png" |> make_image
 let addcargo = get_img "images/addcargo.png" |> make_image
 let moveauto = get_img "images/moveauto.png" |> make_image
+let sellauto = get_img "images/sellauto.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -170,7 +171,8 @@ let draw_buttons () =
   draw_image buyroad 0 (start_height-4*spacing);
   draw_image sellroad 0 (start_height-5*spacing);
   draw_image addcargo 0 (start_height-6*spacing);
-  draw_image moveauto 0 (start_height-7*spacing)
+  draw_image moveauto 0 (start_height-7*spacing);
+  draw_image sellauto 0 (start_height-8*spacing)
 
 let draw_info_box x y v =
   let box_height = 100 in
@@ -309,7 +311,13 @@ let move_auto (gs:GameElements.game_state) player_id =
   let auto = get_auto_near gs in
   print_endline "Choose destination.";
   let dest = get_loc_near gs.graph in
-  print_endline "Auto is en route.\n";
+  print_endline "Your vehicle is en route.\n";
+  Nothing
+
+let sell_auto (gs:GameElements.game_state) player_id =
+  print_endline "Pick a vehicle to sell.";
+  let auto = get_auto_near gs in
+  print_endline "Vehicle is sold.\n";
   Nothing
 
 let click_buttons (gs:GameElements.game_state) player_id =
@@ -333,6 +341,8 @@ let click_buttons (gs:GameElements.game_state) player_id =
     if y < start_height+button_height-6*spacing
        && y > start_height-6*spacing then add_cargo gs player_id else
     if y < start_height+button_height-7*spacing
-       && y > start_height-7*spacing then move_auto gs player_id
+       && y > start_height-7*spacing then move_auto gs player_id else
+       if y < start_height+button_height-8*spacing
+       && y > start_height-8*spacing then sell_auto gs player_id
     else Nothing
   )
