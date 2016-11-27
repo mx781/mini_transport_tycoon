@@ -22,6 +22,7 @@ let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
 let buytruck = get_img "images/truckbutt.png" |> make_image
+let buyroad = get_img "images/buyroad.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -34,9 +35,14 @@ let n7 = get_img "font/7.png" |> make_image
 let n8 = get_img "font/8.png" |> make_image
 let n9 = get_img "font/9.png" |> make_image
 let n0 = get_img "font/0.png" |> make_image
+let p = get_img "font/P.png" |> make_image
+let dot = get_img "font/dot.png" |> make_image
+let colon = get_img "font/colon.png" |> make_image
+let dollar = get_img "font/dollar.png" |> make_image
 
 let img_of_str str =
   match str with
+  | "P" -> p
   | "1" -> n1
   | "2" -> n2
   | "3" -> n3
@@ -47,6 +53,9 @@ let img_of_str str =
   | "8" -> n8
   | "9" -> n9
   | "0" -> n0
+  | "." -> dot
+  | ":" -> colon
+  | "$" -> dollar
   | _ -> n0
 
 let rec chr_lst str =
@@ -55,7 +64,7 @@ let rec chr_lst str =
   | ch ->(String.sub ch 0 1)::(chr_lst (String.sub ch 1 ((String.length ch)-1)))
 
 let rec draw_chars chars x y =
-  let width = 20 in
+  let width = 16 in
   match chars with
   | [] -> ()
   | h::t -> draw_image (img_of_str h) x y;
@@ -69,6 +78,15 @@ let draw_start () =
 
 let round flt =
   int_of_float (flt +. 0.5)
+
+let two_dec flt =
+  float_of_int (round (flt *. 100.)) /. 100.
+
+let string_of_float flt =
+  let str = string_of_float flt in
+  if String.index str '.' = (String.length str - 1) then str ^ "00" else
+  if String.index str '.' = (String.length str - 2) then str ^ "0" else
+  str
 
 let open_screen size =
   scale := (int_of_string size);
@@ -109,7 +127,7 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
-  draw_str (string_of_int(int_of_float p.money)) 850 (550-p.p_id*30)
+  draw_str ("P"^string_of_int p.p_id^":$"^string_of_float(two_dec p.money)) 800 (550-p.p_id*30)
   (*  moveto (p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
                 ": $" ^(string_of_float p.money)) *)
@@ -123,10 +141,11 @@ let spacing = 25 * !scale
 let start_height = 250 * !scale
 
 let draw_buttons () =
-  draw_image (save ) 0 start_height;
-  draw_image (pause ) 0 (start_height-spacing);
-  draw_image (buycar ) 0 (start_height-2*spacing);
-  draw_image (buytruck) 0 (start_height-3*spacing)
+  draw_image save 0 start_height;
+  draw_image pause 0 (start_height-spacing);
+  draw_image buycar 0 (start_height-2*spacing);
+  draw_image buytruck 0 (start_height-3*spacing);
+  draw_image buyroad 0 (start_height-4*spacing)
 
 open GameElements
 let rtos r =
@@ -136,9 +155,6 @@ let rtos r =
   | Oil -> "Oil"
   | Electronics -> "Electronics"
   | Produce -> "Produce"
-
-let two_dec flt =
-  float_of_int (round (flt *. 100.)) /. 100.
 
 let draw_info_box x y v =
   let box_height = 100 in
@@ -201,12 +217,23 @@ let rec pause () =
   let _ = wait_next_event [Button_down] in
   ()
 
-let buy_car grph =
+let get_start_end gs =
   let stat = wait_next_event [Button_up] in
-  let v1 = get_loc_near stat.mouse_x stat.mouse_y grph in
+  let start_loc = get_loc_near stat.mouse_x stat.mouse_y gs.graph in
+  let stat = wait_next_event [Button_up] in
+  let end_loc = get_loc_near stat.mouse_x stat.mouse_y gs.graph in
+  (start_loc, end_loc)
+
+let buy_car gs =
+  let (start_loc, end_loc) = get_start_end gs in
   ()
 
-let buy_truck () =
+let buy_truck gs =
+  let (start_loc, end_loc) = get_start_end gs in
+  ()
+
+let buy_road gs =
+  let (start_loc, end_loc) = get_start_end gs in
   ()
 
 let click_buttons gs =
@@ -220,9 +247,11 @@ let click_buttons gs =
     if y < start_height+button_height-spacing
        && y > start_height-spacing then pause () else
     if y < start_height+button_height-2*spacing
-      && y > start_height-2*spacing then buy_car gs.graph else
+      && y > start_height-2*spacing then buy_car gs else
     if y < start_height+button_height-3*spacing
-       && y > start_height-3*spacing then buy_truck ()
+       && y > start_height-3*spacing then buy_truck gs else
+    if y < start_height+button_height-4*spacing
+       && y > start_height-4*spacing then buy_road gs
     else ()
   )
 
