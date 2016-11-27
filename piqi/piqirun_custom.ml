@@ -6,6 +6,12 @@ open Player_piqi.Player
 open Graph_piqi.Graph
 (* open Gamestate_piqi.Gamestate *)
 
+
+(*TODO: use global helpers, remove dupes *)
+let f (x, _, _) = x
+let s (_,y,_) = y
+let t (_,_,z) = z
+
 exception ParsingFailure
 
 (* Native typedefs need to be repeated manually -- opening the whole module
@@ -21,13 +27,21 @@ type game_state = GameElements.game_state
 (* TODO: rename funcs for clarity*)
 
 (* Resource *)
-let resource_of_piqiresource res = 
-  let open GameElements in match res with
+let resource_of_piqiresource pres = 
+  let open GameElements in match pres with
   | `lumber -> Lumber
   | `iron -> Iron
   | `oil -> Oil
   | `electronics -> Electronics
   | `produce -> Produce
+
+let resource_to_piqiresource res = 
+  match res with
+  | Lumber -> `lumber
+  | Iron -> `iron
+  | Oil -> `oil
+  | Electronics -> `electronics
+  | Produce -> `produce
 
 (* Vehicle *)
 let vehicle_of_vehicle: Gameelements_piqi.vehicle -> GameElements.vehicle =
@@ -68,23 +82,35 @@ let vehicle_of_vehicle: Gameelements_piqi.vehicle -> GameElements.vehicle =
       }
 )
 let vehicle_to_vehicle: GameElements.vehicle -> Gameelements_piqi.vehicle =
-(fun x -> failwith "unimplemented")
+(fun x -> failwith "veh")
 
 (* Player *)
 let player_of_player: Player_piqi.player -> Player.player = (fun p -> 
   let open Player in match p with
-  | {pid=id'; ptype=pt; money=m;} ->
+  | {pid=id; ptype=pt; money=m;} ->
     let pt' = match pt with
       | `human -> Human
       | `ai x -> AI x
     in
     {
-      p_id = id';
+      p_id = id;
       p_type = pt';
       money = m;
     }
 )
-let player_to_player: Player.player -> Player_piqi.player = (fun x -> failwith "unimplemented")
+let player_to_player: Player.player -> Player_piqi.player = (fun p ->
+  match p with
+  | {p_id=id'; p_type=pt; money=m;} -> 
+    let pt' = match pt with
+      | Human -> `human
+      | AI x -> `ai x
+    in
+    {
+      pid = id';
+      ptype = pt';
+      money = m;
+    }
+)
 
 (* Goods Profile *)
 let goodsprofile_of_piqigoodsprofile: Gameelements_piqi.Goodsprofile.t -> GameElements.goods_profile = 
@@ -99,6 +125,20 @@ let goodsprofile_of_piqigoodsprofile: Gameelements_piqi.Goodsprofile.t -> GameEl
       capacity = cap;
       price = p;
       natural_price = np;
+    }
+)
+let goodsprofile_to_piqigoodsprofile: GameElements.goods_profile -> Gameelements_piqi.Goodsprofile.t =
+(fun goodsprofile ->
+  match goodsprofile with
+  | {resource=r; steps_to_inc=sti; current=curr; capacity=cap; price=p;
+    natural_price=np} -> 
+    {
+      resource = resource_to_piqiresource r;
+      stepstoinc = sti;
+      current = curr;
+      capacity = cap;
+      price = p;
+      naturalprice = np;
     }
 )
 
@@ -117,6 +157,20 @@ let node_of_piqinode: Gameelements_piqi.Location.t -> GameElements.location =
       produces = p';
     }
 )
+let node_to_piqinode: GameElements.location -> Gameelements_piqi.Location.t =
+(fun node ->
+  match node with
+  | {l_id=id'; l_x=lx'; l_y=ly'; accepts=a; produces=p} ->
+    let a' = List.map goodsprofile_to_piqigoodsprofile a in
+    let p' = List.map goodsprofile_to_piqigoodsprofile p in
+    {
+      id = id';
+      lx = lx';
+      ly = ly';
+      accepts = a';
+      produces = p';
+    }
+)
 
 let edge_of_piqiedge: Gameelements_piqi.Connection.t -> GameElements.connection = 
 (fun pedge ->
@@ -128,6 +182,19 @@ let edge_of_piqiedge: Gameelements_piqi.Connection.t -> GameElements.connection 
       l_end = end';
       c_age = age';
       c_speed = sp;
+      length = l;
+    }
+)
+let edge_to_piqiedge: GameElements.connection -> Gameelements_piqi.Connection.t =
+(fun edge ->
+  match edge with
+  | {c_owner_id=o; l_start=st; l_end=end'; c_age=age; c_speed=sp; length=l} ->
+    {
+      owner = o;
+      lstart = st;
+      lend = end';
+      age = age;
+      speed = sp;
       length = l;
     }
 )
@@ -163,4 +230,17 @@ let graph_of_graph: Graph_piqi.graph -> graph = (fun g ->
       graph edges_with_nodes
 )
 
-let graph_to_graph: graph -> Graph_piqi.graph = (fun x -> failwith "unimplemented")
+let graph_to_graph: graph -> Graph_piqi.graph = (fun g ->
+  let nodes = Map.fold_vertex (fun nd acc ->
+      (node_to_piqinode nd)::acc) g [] in
+  let edges = Map.fold_edges_e (fun e_triple acc -> 
+      (edge_to_piqiedge (s e_triple))::acc) g [] in
+  {
+    directed = false;
+    type_ = "2D undirected graph";
+    label = "Game Map";
+    metadata = {var = "str"};
+    nodes = nodes;
+    edges = edges;
+  }
+)

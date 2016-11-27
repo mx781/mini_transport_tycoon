@@ -180,6 +180,6 @@ let rec main_loop st =
 
 let init_game fname scale =
   GameGraphics.open_screen scale;
-  let piqi_gs = DataProcessing.parse_json_file fname in
-  let gs = DataProcessing.convert_gamestate piqi_gs in
-  main_loop gs
+  let init_gs = DataProcessing.load_file fname in
+  main_loop init_gs;
+  DataProcessing.save_file init_gs "data/gamesave.json"
