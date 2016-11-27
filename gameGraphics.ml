@@ -5,6 +5,8 @@ open InputProcessing
 
 let default_color = 0xCD853F
 let scale =  ref 2 (* No longer supported *)
+let button_width = 93
+let button_height = 50
 
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
@@ -12,6 +14,8 @@ let make_transp img =
 
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
+
+(******************************IMAGES*****************************************)
 
 let _ = open_graph " 380x380"
 (* 8Bit live wallpaper by Nysis*)
@@ -27,6 +31,7 @@ let buyroad = get_img "images/buyroad.png" |> make_image
 let sellroad = get_img "images/sellroad.png" |> make_image
 let addcargo = get_img "images/addcargo.png" |> make_image
 let moveauto = get_img "images/moveauto.png" |> make_image
+let sellauto = get_img "images/sellauto.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -43,6 +48,8 @@ let p = get_img "font/P.png" |> make_image
 let dot = get_img "font/dot.png" |> make_image
 let colon = get_img "font/colon.png" |> make_image
 let dollar = get_img "font/dollar.png" |> make_image
+
+(******************************HELPER FUNCTIONS********************************)
 
 let img_of_str str =
   match str with
@@ -62,6 +69,14 @@ let img_of_str str =
   | "$" -> dollar
   | _ -> dot
 
+let rtos r =
+  match r with
+  | GameElements.Lumber -> "Lumber"
+  | GameElements.Iron -> "Iron"
+  | GameElements.Oil -> "Oil"
+  | GameElements.Electronics -> "Electronics"
+  | GameElements.Produce -> "Produce"
+
 let rec chr_lst str =
   match str with
   | "" ->[]
@@ -78,9 +93,6 @@ let rec draw_chars chars x y =
 let draw_str str x y =
   draw_chars (chr_lst str) x y
 
-let draw_start () =
-  draw_image start_screen 0 0
-
 let round flt =
   int_of_float (flt +. 0.5)
 
@@ -93,9 +105,14 @@ let string_of_float flt =
   if String.index str '.' = (String.length str - 2) then str ^ "0" else
   str
 
+(******************************GRAPHICS****************************************)
+
 let open_screen size =
   scale := (int_of_string size);
   resize_window (500* !scale) (300* !scale)
+
+let draw_start () =
+  draw_image start_screen 0 0
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
@@ -154,16 +171,8 @@ let draw_buttons () =
   draw_image buyroad 0 (start_height-4*spacing);
   draw_image sellroad 0 (start_height-5*spacing);
   draw_image addcargo 0 (start_height-6*spacing);
-  draw_image moveauto 0 (start_height-7*spacing)
-
-open GameElements
-let rtos r =
-  match r with
-  | Lumber -> "Lumber"
-  | Iron -> "Iron"
-  | Oil -> "Oil"
-  | Electronics -> "Electronics"
-  | Produce -> "Produce"
+  draw_image moveauto 0 (start_height-7*spacing);
+  draw_image sellauto 0 (start_height-8*spacing)
 
 let draw_info_box x y v =
   let box_height = 100 in
@@ -192,10 +201,30 @@ let draw_info_box x y v =
     rmoveto (-fst (text_size str)) 0;
     ) loc.produces
 
+  let draw_hover grph =
+  let stat = wait_next_event [Poll] in
+  let x = stat.mouse_x in
+  let y = stat.mouse_y in
+  let close_enough = 30 in
+  let labl = GameElements.Map.V.label in
+  GameElements.Map.iter_vertex
+    (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
+              if (abs (x*2/ !scale - round x1) < close_enough)
+              && (abs (y*2/ !scale - round y1) < close_enough)
+                             then draw_info_box x y v else ()) grph
+
+let draw_game_state (gs:GameElements.game_state) : unit =
+  draw_image bg 0 0;
+  draw_players gs.players;
+  draw_ograph gs.graph;
+  draw_vehicles gs.vehicles;
+  draw_buttons ();
+  draw_hover gs.graph
+
+(******************************INPUT******************************************)
 
 let rec get_loc_near grph =
   let stat = wait_next_event [Button_down] in
-  if not (button_down ()) then get_loc_near grph else
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let loc = ref None in
   let close_enough = 30 in
@@ -209,31 +238,20 @@ let rec get_loc_near grph =
   | Some v -> v
   | None -> (* print_endline "Not a valid location"; *) get_loc_near grph
 
-let draw_hover grph =
-  let stat = wait_next_event [Poll] in
-  let x = stat.mouse_x in
-  let y = stat.mouse_y in
+let rec get_auto_near gs =
+  let stat = wait_next_event [Button_down] in
+  let (x,y) = (stat.mouse_x, stat.mouse_y) in
+  let auto = ref None in
   let close_enough = 30 in
   let labl = GameElements.Map.V.label in
-  GameElements.Map.iter_vertex
-    (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
-              if (abs (x*2/ !scale - round x1) < close_enough)
-              && (abs (y*2/ !scale - round y1) < close_enough)
-                             then draw_info_box x y v else ()) grph
-
-let button_width = 93
-let button_height = 50
-
-let quit gs =
-  print_endline "Game saved in myGame.json";
-  DataProcessing.save_file gs "myGame.json";
-  close_graph ();
-  EndGame
-
-let rec pause () =
-  let _ = wait_next_event [Button_down] in
-  print_endline "Game Paused. Click anywhere to continue";
-  Pause
+  List.iter
+    (fun v -> let (x1,y1) = round v.x, round v.y in
+              if (abs (x*2/ !scale - x1) < close_enough)
+              && (abs (y*2/ !scale - y1) < close_enough)
+                                  then auto := Some v else () ) gs.vehicles;
+  match !auto with
+  | Some v -> v
+  | None -> (* print_endline "No automobile there"; *) get_auto_near gs
 
 let get_start_end grph =
   print_endline "Select a start location.";
@@ -241,6 +259,20 @@ let get_start_end grph =
   print_endline "Select an end location.";
   let end_loc = get_loc_near grph in
   (start_loc, end_loc)
+
+let pick_cargo () =
+  ()
+
+let quit gs =
+  print_endline "Game saved in myGame.json\n";
+  DataProcessing.save_file gs "myGame.json";
+  close_graph ();
+  EndGame
+
+let rec pause () =
+  let _ = wait_next_event [Button_down] in
+  print_endline "Game Paused. Click anywhere to continue\n";
+  Pause
 
 let buy_car (gs:GameElements.game_state) player_id =
   print_endline "Select a start location.";
@@ -260,19 +292,32 @@ let buy_road (gs:GameElements.game_state) player_id =
   init_road player_id start_loc.l_id end_loc.l_id gs.graph
 
 let sell_road (gs:GameElements.game_state) player_id =
+  print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
   print_endline "Road sold.\n";
   Nothing
   (* init_road player_id start_loc.l_id end_loc.l_id gs.graph *)
 
 let add_cargo (gs:GameElements.game_state) player_id =
-  (* get_vehicle_near *)
+  print_endline "Pick a vehicle.";
+  let auto = get_auto_near gs in
+  print_endline "Choose cargo to go in that vehicle.";
+  let cargo = pick_cargo () in
   print_endline "Cargo Added.\n";
   Nothing
 
 let move_auto (gs:GameElements.game_state) player_id =
-  (* get car, loc *)
-  print_endline "Auto is en route.\n";
+  print_endline "Pick a vehicle to move.";
+  let auto = get_auto_near gs in
+  print_endline "Choose destination.";
+  let dest = get_loc_near gs.graph in
+  print_endline "Your vehicle is en route.\n";
+  Nothing
+
+let sell_auto (gs:GameElements.game_state) player_id =
+  print_endline "Pick a vehicle to sell.";
+  let auto = get_auto_near gs in
+  print_endline "Vehicle is sold.\n";
   Nothing
 
 let click_buttons (gs:GameElements.game_state) player_id =
@@ -296,16 +341,8 @@ let click_buttons (gs:GameElements.game_state) player_id =
     if y < start_height+button_height-6*spacing
        && y > start_height-6*spacing then add_cargo gs player_id else
     if y < start_height+button_height-7*spacing
-       && y > start_height-7*spacing then move_auto gs player_id
+       && y > start_height-7*spacing then move_auto gs player_id else
+       if y < start_height+button_height-8*spacing
+       && y > start_height-8*spacing then sell_auto gs player_id
     else Nothing
   )
-
-let draw_game_state (gs:GameElements.game_state) : unit =
-  (* clear_graph (); *)
-  draw_image bg 0 0;
-  draw_players gs.players;
-  draw_ograph gs.graph;
-  draw_vehicles gs.vehicles;
-  draw_buttons ();
-  draw_hover gs.graph;
- (*  click_buttons gs *)
