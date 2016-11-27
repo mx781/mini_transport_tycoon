@@ -188,6 +188,7 @@ let draw_info_box x y v =
 
 let rec get_loc_near grph =
   let stat = wait_next_event [Button_down] in
+  if not (button_down ()) then get_loc_near grph else
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let loc = ref None in
   let close_enough = 30 in
@@ -223,7 +224,7 @@ let quit gs =
 
 let rec pause () =
   let _ = wait_next_event [Button_down] in
-  print_endline "Game Paused. Click anywhere to continue"
+  print_endline "Game Paused. Click anywhere to continue\n"
 
 let get_start_end grph =
   print_endline "Select a start location.";
