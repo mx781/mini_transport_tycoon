@@ -11,7 +11,26 @@ let sell_back_percentage = 0.6
 let road_unit_cost = 1.0
 let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.4
+
 exception EndGame
+
+let init_vehicle player_id v_type start_loc_id graph=
+  let loc = get_loc start_loc_id graph in
+  let v =
+  {
+    v_owner_id = player_id;
+    speed = (if v_type = Car then car_speed else truck_speed);
+    capacity = (if v_type = Car then car_capacity else truck_capacity);
+    v_t = v_type;
+    cargo = None;
+    age = 0;
+    status = Waiting;
+    x = loc.l_x;
+    y = loc.l_y;
+    destination= [];
+    v_loc = Some start_loc_id;
+  } in
+  BuyVehicle(v)
 
 let buy_vehicle v st =
   let cost = match v.v_t with
