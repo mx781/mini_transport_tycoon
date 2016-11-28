@@ -4,14 +4,6 @@
  open InputProcessing
  open DataProcessing
 
-let fps = 24.0
-let car_price = 100.0
-let truck_price = 200.0
-let sell_back_percentage = 0.6
-let road_unit_cost = 1.0
-let road_length_cost_exponent = 1.2
-let road_rights_unit_cost = 0.4
-
 exception EndGame
 
 let buy_vehicle v st =
