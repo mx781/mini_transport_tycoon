@@ -23,6 +23,7 @@ let start_screen = get_img "images/start.png" |> make_image
 (* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
+(* Buttons *)
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
@@ -33,6 +34,19 @@ let addcargo = get_img "images/addcargo.png" |> make_image
 let moveauto = get_img "images/moveauto.png" |> make_image
 let sellauto = get_img "images/sellauto.png" |> make_image
 let cancel = get_img "images/cancel.png" |> make_image
+(* Resources *)
+let tech = get_img "images/elect.png" |> make_image
+let fruit = get_img "images/fruit.png" |> make_image
+let oil = get_img "images/oil.png" |> make_image
+let drugs = get_img "images/oil.png" |> make_image
+let wood = get_img "images/lumber.png" |> make_image
+(* No Resources *)
+let notech = get_img "images/elect.png" |> make_image
+let nofruit = get_img "images/fruit.png" |> make_image
+let nooil = get_img "images/oil.png" |> make_image
+let nodrugs = get_img "images/oil.png" |> make_image
+let nowood = get_img "images/lumber.png" |> make_image
+
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -72,11 +86,11 @@ let img_of_str str =
 
 let rtos r =
   match r with
-  | GameElements.Lumber -> "Lumber"
-  | GameElements.Iron -> "Iron"
+  | GameElements.Lumber -> "Wood"
+  | GameElements.Iron -> "Drugs"
   | GameElements.Oil -> "Oil"
-  | GameElements.Electronics -> "Electronics"
-  | GameElements.Produce -> "Produce"
+  | GameElements.Electronics -> "Tech"
+  | GameElements.Produce -> "Fruit"
 
 let rec chr_lst str =
   match str with
@@ -259,9 +273,10 @@ let get_some opt =
   | Some v -> v
   | _ -> failwith "Always check None before using get_some"
 
-let rec get_loc_near ?(l_id = (-1)) grph =
-  let stat = wait_next_event [Button_down] in
-  let (x,y) = (stat.mouse_x, stat.mouse_y) in
+let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
+  let (x,y) = if click then let stat = wait_next_event [Button_down] in
+                            (stat.mouse_x, stat.mouse_y)
+              else pos in
   let loc = ref None in
   let close_enough = 30 in
   let labl = GameElements.Map.V.label in
@@ -302,7 +317,26 @@ let get_start_end grph =
     get_loc_near ~l_id:(GameElements.Map.V.label (get_some start_loc)).l_id grph in
   (start_loc, end_loc))
 
-let pick_cargo () =
+let pick_cargo loc =
+  let res_start = start_height-6*spacing in
+  let res_space = 56 in
+  let resource_list = List.map (fun prod -> prod.resource) loc.produces in
+  if List.exists ((=) GameElements.Electronics) resource_list
+    then draw_image tech button_width res_start
+    else draw_image notech button_width res_start;
+  if List.exists ((=) GameElements.Oil) resource_list
+    then draw_image oil (button_width+res_space) res_start
+    else draw_image nooil (button_width+res_space) res_start;
+  if List.exists ((=) GameElements.Produce) resource_list
+    then draw_image fruit (button_width+2*res_space) res_start
+    else draw_image nofruit (button_width+2*res_space) res_start;
+  if List.exists ((=) GameElements.Lumber) resource_list
+    then draw_image wood (button_width+3*res_space) res_start
+    else draw_image nowood (button_width+3*res_space) res_start;
+  if List.exists ((=) GameElements.Iron) resource_list
+    then draw_image drugs (button_width+4*res_space) res_start
+    else draw_image nodrugs (button_width+4*res_space) res_start;
+  let stat = wait_next_event [Button_down] in
   Oil
 
 let quit gs =
@@ -344,11 +378,15 @@ let sell_road (gs:GameElements.game_state) player_id =
 
 let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle.";
-  match get_auto_near gs with None -> (print_endline "Cancelled\n"; Nothing) | Some auto ->
+  match get_auto_near gs with
+  | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
-  let cargo = pick_cargo () in
+  let loc = get_loc_near ~click:false ~pos:(round auto.x, round auto.y) gs.graph in
+  if loc = None then Nothing else (
+  let cargo = pick_cargo (get_some loc) in
   print_endline "Cargo Added.\n";
-  buy_vehicle_cargo player_id auto cargo gs.graph
+  buy_vehicle_cargo player_id auto cargo gs.graph)
 
 let move_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to move.";
