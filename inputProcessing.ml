@@ -174,7 +174,7 @@ let init_vehicle player_id v_type start_loc_id graph=
   } in
   BuyVehicle(v)
 
-let init_road player_id l1_id l2_id graph =
+let buy_road player_id l1_id l2_id graph =
   let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
     ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
   let c =
@@ -190,7 +190,7 @@ let init_road player_id l1_id l2_id graph =
 
 let sell_road player_id l1 l2 graph =
   try
-    let c = Map.find_edge l1 l2 graph in
+    let c = Map.find_edge graph l1 l2 in
     let c' = match c with
     |(_,c,_) -> c in
     DeleteRoad(c')
