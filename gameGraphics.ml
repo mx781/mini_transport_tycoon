@@ -58,6 +58,8 @@ let nowood = get_img "images/nolumber.png" |> make_image
 
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
+let gameover = get_img "images/gameover.png" |> make_image
+
 let n1 = get_img "font/1.png" |> make_image
 let n2 = get_img "font/2.png" |> make_image
 let n3 = get_img "font/3.png" |> make_image
