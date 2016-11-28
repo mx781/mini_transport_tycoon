@@ -174,7 +174,7 @@ let init_vehicle player_id v_type start_loc_id graph=
   } in
   BuyVehicle(v)
 
-let init_road player_id l1_id l2_id graph =
+let buy_road player_id l1_id l2_id graph =
   let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
     ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
   let c =
@@ -187,3 +187,50 @@ let init_road player_id l1_id l2_id graph =
     c_speed = 5.0; (*not used yet, completely arbitrary*)
   } in
   AddRoad(c)
+
+let sell_road player_id l1 l2 graph =
+  try
+    let c = Map.find_edge graph l1 l2 in
+    let c' = match c with
+    |(_,c,_) -> c in
+    DeleteRoad(c')
+  with
+  | _ -> Nothing
+
+let sell_vehicle player_id v =
+  if v.v_owner_id = player_id
+  then SellVehicle(v)
+  else
+  let () = print_endline "You cannot sell that vehicle, you do not own it!" in
+  Nothing
+
+let route_vehicle player_id v_old start_loc end_loc graph =
+  let new_path =
+    (try Dijkstra.shortest_path graph start_loc end_loc with
+    |_ ->([], (-1.))) in
+  let dest_list = if new_path = ([],(-1.)) then
+    []
+  else
+    (List.map (fun x -> (t x).l_id) (fst new_path)) in
+  let v =
+    if v_old.v_owner_id = player_id
+    then {
+      v_old with destination = dest_list;
+      status = Driving;
+    }
+    else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
+  in
+  print_endline (string_of_int (List.hd dest_list));
+  SetVehicleDestination(v)
+
+let buy_vehicle_cargo player_id v_old r_type graph=
+  match v_old.v_loc with
+    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
+    | Some location ->
+      let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location graph).produces in
+      let maxq = accepts.current in
+      let v =
+        if v_old.v_owner_id = player_id
+        then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
+        else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!" in v_old
+      in BuyVehicleCargo(v)
