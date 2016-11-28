@@ -51,13 +51,16 @@ let buy_connection c st =
     | l1::l2::[] -> Map.add_edge_e st.graph (l1,c,l2)
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let cost = road_unit_cost*.(c.length**road_length_cost_exponent) in
+  print_endline "findme2";
   let new_players = List.map
     (fun p ->
       if p.p_id = c.c_owner_id
-      then if p.money -. cost >= 0.0
+      then
+        (print_endline (string_of_float (cost));
+          if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
            else let () = print_endline ("You cannot afford that road. It costs $"
-             ^ (string_of_float (GameGraphics.two_dec cost))) in p
+             ^ (string_of_float (GameGraphics.two_dec cost))) in p)
       else p) st.players in
   if st.players = new_players
   then st
@@ -201,7 +204,8 @@ let rec main_loop st =
   print_endline
   "                               Game Over                               ";
   print_endline
-  "#########################################################################"
+  "#########################################################################";
+  raise e
 
 let init_game fname scale =
   GameGraphics.open_screen scale;
