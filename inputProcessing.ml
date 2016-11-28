@@ -204,23 +204,22 @@ let sell_vehicle player_id v =
   let () = print_endline "You cannot sell that vehicle, you do not own it!" in
   Nothing
 
-let route_vehicle player_id v_old start_loc end_loc graph =
-  let new_path =
-    (try Dijkstra.shortest_path graph start_loc end_loc with
-    |_ ->([], (-1.))) in
-  let dest_list = if new_path = ([],(-1.)) then
-    []
-  else
-    (List.map (fun x -> (t x).l_id) (fst new_path)) in
+let set_vehicle_dest player_id v_old start_loc end_loc st =
+  let checked_route = get_route start_loc.l_id end_loc.l_id st player_id in
+  let dest_list = match checked_route with
+    | None -> []
+    | Some lst -> lst in
+  let stat = match dest_list with
+    | [] -> Waiting
+    | h::t -> Driving in
   let v =
     if v_old.v_owner_id = player_id
     then {
       v_old with destination = dest_list;
-      status = Driving;
+      status = stat;
     }
     else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
   in
-  print_endline (string_of_int (List.hd dest_list));
   SetVehicleDestination(v)
 
 let buy_vehicle_cargo player_id v_old r_type graph=

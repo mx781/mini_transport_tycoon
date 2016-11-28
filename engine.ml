@@ -36,7 +36,6 @@ let sell_vehicle v st =
     {st with vehicles = new_vehicles; players = new_players}
 
 let set_v_dest v st =
-  print_endline "here";
   let route_dest = fun vhcl -> if {vhcl with destination = v.destination; status = v.status} = v
                                then v else vhcl in
   let new_vehicles = List.map route_dest st.vehicles in
