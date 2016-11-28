@@ -4,14 +4,6 @@
  open InputProcessing
  open DataProcessing
 
-let fps = 24.0
-let car_price = 100.0
-let truck_price = 200.0
-let sell_back_percentage = 0.6
-let road_unit_cost = 1.0
-let road_length_cost_exponent = 1.2
-let road_rights_unit_cost = 0.4
-
 exception EndGame
 
 let buy_vehicle v st =
@@ -36,7 +28,6 @@ let sell_vehicle v st =
     {st with vehicles = new_vehicles; players = new_players}
 
 let set_v_dest v st =
-  print_endline "here";
   let route_dest = fun vhcl -> if {vhcl with destination = v.destination; status = v.status} = v
                                then v else vhcl in
   let new_vehicles = List.map route_dest st.vehicles in

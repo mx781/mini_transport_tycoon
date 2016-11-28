@@ -397,7 +397,7 @@ let move_auto (gs:GameElements.game_state) player_id =
   let l = match auto.v_loc with
     | None -> failwith "vehicle has no location"
     | Some loc -> get_loc loc gs.graph in
-  route_vehicle player_id auto l dest gs.graph
+  set_vehicle_dest player_id auto l dest gs
 
 let sell_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to sell.";
