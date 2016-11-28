@@ -167,9 +167,18 @@ let rec generate_processes st players procs =
               then generate_processes st t (GameGraphics.click_buttons st h.p_id:: procs)
               else generate_processes st t ((make_c_move st h.p_id) @ procs)
 
+let player_wins st =
+  try
+    (List.find (fun p -> p.money > win_condition) st.players).p_id
+  with
+    Not_found -> (-1)
+
+
 let rec main_loop st =
   try
     let start_t = Sys.time () in
+    let p_win = player_wins st in
+    if p_win <> (-1) then GameGraphics.draw_winner p_win st else
     GameGraphics.draw_game_state st;
     let processes = generate_processes st st.players [] in
     let st' = handle_processes processes st in
