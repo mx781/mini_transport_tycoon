@@ -193,7 +193,8 @@ let sell_road player_id l1 l2 graph =
     let c = Map.find_edge graph l1 l2 in
     let c' = match c with
     |(_,c,_) -> c in
-    DeleteRoad(c')
+    if c'.c_owner_id = player_id then DeleteRoad(c') else
+    let () = print_endline "You cannot sell a road you do not own." in Nothing
   with
   | _ -> Nothing
 
