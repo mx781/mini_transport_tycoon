@@ -58,6 +58,8 @@ let nowood = get_img "images/nolumber.png" |> make_image
 
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
+let gameover = get_img "images/gameover.png" |> make_image
+
 let n1 = get_img "font/1.png" |> make_image
 let n2 = get_img "font/2.png" |> make_image
 let n3 = get_img "font/3.png" |> make_image
@@ -487,6 +489,7 @@ let rec rec_draw_circles color =
     draw_image truck_img (Random.int 800) (Random.int 800);
     draw_image car_img (Random.int 800) (Random.int 800);
     draw_image drugs (Random.int 800) (Random.int 800);
+    draw_image gameover (screen_width/2) (screen_width/2);
     Unix.sleepf 0.003;
     rec_draw_circles color; ()
 
