@@ -40,5 +40,5 @@ let () =
       "***********************************************************************\n";
     Engine.init_game file_name scale
   with
-  | Graphics.Graphic_failure _ -> failwith "Don't Exit out of the Screen"
+  | Graphics.Graphic_failure _ -> print_endline "Bye"
   | _ -> Engine.init_game "data/game.json" "2"

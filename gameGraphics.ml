@@ -32,6 +32,7 @@ let sellroad = get_img "images/sellroad.png" |> make_image
 let addcargo = get_img "images/addcargo.png" |> make_image
 let moveauto = get_img "images/moveauto.png" |> make_image
 let sellauto = get_img "images/sellauto.png" |> make_image
+let cancel = get_img "images/cancel.png" |> make_image
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let n1 = get_img "font/1.png" |> make_image
@@ -198,7 +199,8 @@ let draw_buttons () =
   draw_image sellroad 0 (start_height-5*spacing);
   draw_image addcargo 0 (start_height-6*spacing);
   draw_image moveauto 0 (start_height-7*spacing);
-  draw_image sellauto 0 (start_height-8*spacing)
+  draw_image sellauto 0 (start_height-8*spacing);
+  draw_image cancel 0 (start_height-9*spacing)
 
 let draw_info_box x y v =
   let box_height = 100 in
@@ -249,6 +251,14 @@ let draw_game_state (gs:GameElements.game_state) : unit =
 
 (******************************INPUT******************************************)
 
+let is_cancelled (x,y) =
+  y < start_height+button_height-9*spacing && y > start_height-9*spacing
+
+let get_some opt =
+  match opt with
+  | Some v -> v
+  | _ -> failwith "Always check None before using get_some"
+
 let rec get_loc_near ?(l_id = (-1)) grph =
   let stat = wait_next_event [Button_down] in
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
@@ -261,8 +271,9 @@ let rec get_loc_near ?(l_id = (-1)) grph =
               && (abs (y*2/ !scale - round y1) < close_enough)
                                   then loc := Some v else () ) grph;
   match !loc with
-  | Some v when (labl v).l_id <> l_id -> v
-  | _ -> (* print_endline "Not a valid location"; *)
+  | Some v when (labl v).l_id <> l_id -> Some v
+  | _ -> if is_cancelled (x,y) then None else
+         (* print_endline "Not a valid location"; *)
          get_loc_near ~l_id:l_id grph
 
 let rec get_auto_near gs =
@@ -277,15 +288,19 @@ let rec get_auto_near gs =
               && (abs (y*2/ !scale - y1) < close_enough)
                                   then auto := Some v else () ) gs.vehicles;
   match !auto with
-  | Some v -> v
-  | None -> (* print_endline "No automobile there"; *) get_auto_near gs
+  | Some v -> Some v
+  | None -> if is_cancelled (x,y) then None else
+            (* print_endline "No automobile there"; *)
+            get_auto_near gs
 
 let get_start_end grph =
   print_endline "Select a start location.";
   let start_loc = get_loc_near grph in
-  print_endline "Select an end location.";
-  let end_loc = get_loc_near ~l_id:(GameElements.Map.V.label start_loc).l_id grph in
-  (start_loc, end_loc)
+  if start_loc = None then (None, None) else
+  (print_endline "Select an end location.";
+  let end_loc =
+    get_loc_near ~l_id:(GameElements.Map.V.label (get_some start_loc)).l_id grph in
+  (start_loc, end_loc))
 
 let pick_cargo () =
   ()
@@ -302,20 +317,23 @@ let rec pause () =(*
 
 let buy_car (gs:GameElements.game_state) player_id =
   print_endline "Select a start location.";
-  let loc = get_loc_near gs.graph in
+  match get_loc_near gs.graph with None -> (print_endline "Cancelled\n"; Nothing) | Some loc ->
   print_endline "Car bought.\n";
   InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
 let buy_truck (gs:GameElements.game_state) player_id =
   print_endline "Select a start location.";
-  let loc = get_loc_near gs.graph in
+  match get_loc_near gs.graph with
+  | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some loc ->
   print_endline "Truck bought.\n";
   InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
 let buy_road (gs:GameElements.game_state) player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
+  if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
   print_endline "Road bought.\n";
-  init_road player_id start_loc.l_id end_loc.l_id gs.graph
+  init_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
 let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
@@ -334,9 +352,9 @@ let add_cargo (gs:GameElements.game_state) player_id =
 
 let move_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to move.";
-  let auto = get_auto_near gs in
+  match get_auto_near gs with None -> (print_endline "Cancelled"; Nothing) | Some auto ->
   print_endline "Choose destination.";
-  let dest = get_loc_near gs.graph in
+  match get_loc_near gs.graph with None -> (print_endline "Cancelled"; Nothing) | Some dest ->
   print_endline "Your vehicle is en route.\n";
   Nothing
 
@@ -368,7 +386,8 @@ let click_buttons (gs:GameElements.game_state) player_id =
        && y > start_height-6*spacing then add_cargo gs player_id else
     if y < start_height+button_height-7*spacing
        && y > start_height-7*spacing then move_auto gs player_id else
-       if y < start_height+button_height-8*spacing
+    if y < start_height+button_height-8*spacing
        && y > start_height-8*spacing then sell_auto gs player_id
+    (*Cancel doesn't do anything by itself*)
     else Nothing
   )
