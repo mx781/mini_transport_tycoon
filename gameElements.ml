@@ -3,7 +3,8 @@ open Player
 (* Type definitions *)
 type r_type =
     | Lumber
-    | Iron
+    | Iron (*really drugs, but these constructors are all dummy names so it does
+            * not need changed. *)
     | Oil
     | Electronics
     | Produce

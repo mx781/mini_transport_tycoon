@@ -205,7 +205,10 @@ let sell_vehicle player_id v =
   Nothing
 
 let set_vehicle_dest player_id v_old start_loc end_loc st =
-  let checked_route = get_route start_loc.l_id end_loc.l_id st player_id in
+  let first_dest = match v_old.destination with
+    | [] -> start_loc.l_id
+    | h::t -> h in
+  let checked_route = get_route first_dest end_loc.l_id st player_id in
   let dest_list = match checked_route with
     | None -> []
     | Some lst -> lst in
@@ -215,7 +218,7 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
   let v =
     if v_old.v_owner_id = player_id
     then {
-      v_old with destination = dest_list;
+      v_old with destination = first_dest::dest_list;
       status = stat;
     }
     else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
