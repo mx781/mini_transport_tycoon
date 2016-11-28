@@ -480,17 +480,23 @@ let click_buttons (gs:GameElements.game_state) player_id =
     else Nothing
   )
 
-let rec rec_draw_circles color =
+let rec rec_draw_circles p_win =
+   let color = (player_color p_win) in
+   print_endline (string_of_int p_win);
     set_color color;
-    fill_circle (Random.int 800) (Random.int 800) 20;
-    fill_circle (Random.int 800) (Random.int 800) 20;
-    draw_image truck_img (Random.int 800) (Random.int 800);
-    draw_image car_img (Random.int 800) (Random.int 800);
-    draw_image drugs (Random.int 800) (Random.int 800);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    fill_circle (Random.int screen_width * !scale) (Random.int screen_height * !scale) 20;
+    fill_circle (Random.int screen_width * !scale) (Random.int screen_height * !scale) 20;
+    draw_image truck_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_image car_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_image drugs (Random.int screen_width * !scale) (Random.int screen_height * !scale);
     Unix.sleepf 0.003;
-    rec_draw_circles color; ()
+    rec_draw_circles p_win; ()
 
   let draw_winner p_win st =
     draw_game_state st;
-    rec_draw_circles (player_color p_win); ()
+    rec_draw_circles p_win; ()
 
