@@ -282,16 +282,28 @@ let init_vehicle player_id v_type start_loc_id graph=
 let buy_road player_id l1_id l2_id graph =
   let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
     ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
-  let c =
-  {
-    c_owner_id = player_id;
-    l_start= l1_id;
-    l_end =  l2_id;
-    length= c_length;
-    c_age= 0;
-    c_speed = 5.0; (*not used yet, completely arbitrary*)
-  } in
-  AddRoad(c)
+  try
+    let connection =
+      match Map.find_edge graph (get_loc l1_id graph) (get_loc l2_id graph) with
+        | (_,c,_) -> c
+        | _ -> failwith "invalid connection" in
+    if connection.c_owner_id <> -1
+    then if connection.c_owner_id = player_id
+    then let () = print_endline "You already have a road here." in Nothing
+    else let () = print_endline "You cannot buy an opponent's road." in Nothing
+    else PurchaseRoad({connection with c_owner_id = player_id; length = c_length;})
+  with
+    Not_found ->
+    let c =
+    {
+      c_owner_id = player_id;
+      l_start= l1_id;
+      l_end =  l2_id;
+      length= c_length;
+      c_age= 0;
+      c_speed = 5.0; (*not used yet, completely arbitrary*)
+    } in
+    AddRoad(c)
 
 let sell_road player_id l1 l2 graph =
   try
@@ -331,14 +343,19 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
   in
   SetVehicleDestination(v)
 
-let buy_vehicle_cargo player_id v_old r_type graph=
+let buy_vehicle_cargo player_id v_old r_type st =
+  let vehicle_max = match v_old.v_t with
+    | Car -> car_capacity
+    | Truck -> truck_capacity in
   match v_old.v_loc with
     | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
     | Some location ->
-      let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location graph).produces in
-      let maxq = accepts.current in
+      let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location st.graph).produces in
+      let player = List.find (fun p -> p.p_id = player_id) st.players in
+      let maxq = min accepts.current vehicle_max in
+      let maxq' = min maxq ( int_of_float (player.money /. accepts.price)) in
       let v =
         if v_old.v_owner_id = player_id
-        then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
+        then {v_old with cargo = Some {t= r_type; quantity = maxq';}}
         else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!" in v_old
       in BuyVehicleCargo(v)

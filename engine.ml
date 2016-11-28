@@ -4,6 +4,8 @@
  open InputProcessing
  open DataProcessing
 
+
+
 exception EndGame
 
 let buy_vehicle v st =
@@ -11,9 +13,13 @@ let buy_vehicle v st =
     | Car -> car_price
     | Truck -> truck_price in
   let new_players = List.map
-    (fun p -> if p.p_id = v.v_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
+    (fun p ->
+      if p.p_id = v.v_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline "You cannot afford that vehicle." in p
+      else p) st.players in
+  if new_players = st.players then st else
   {st with vehicles = v::st.vehicles; players = new_players}
 
 let sell_vehicle v st =
@@ -46,10 +52,16 @@ let buy_connection c st =
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let cost = road_unit_cost*.(c.length**road_length_cost_exponent) in
   let new_players = List.map
-    (fun p -> if p.p_id = c.c_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
-  {st with graph = new_graph; players = new_players}
+    (fun p ->
+      if p.p_id = c.c_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline ("You cannot afford that road. It costs $"
+             ^ (string_of_float (GameGraphics.two_dec cost))) in p
+      else p) st.players in
+  if st.players = new_players
+  then st
+  else {st with graph = new_graph; players = new_players}
 
 let sell_connection c st =
   let loc1 = get_loc c.l_start st.graph in
@@ -85,10 +97,16 @@ let change_connection_owner c st =
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let cost = road_rights_unit_cost*.(c.length) in
   let new_players = List.map
-    (fun p -> if p.p_id = c.c_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
-  {st with graph = new_graph; players = new_players}
+    (fun p ->
+      if p.p_id = c.c_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline ("You cannot afford that road. It costs $"
+             ^ (string_of_float (GameGraphics.two_dec cost))) in p
+      else p) st.players in
+  if st.players = new_players
+  then st
+  else {st with graph = new_graph; players = new_players}
 
 let set_v_cargo v st =
   let swap_vehicle = fun vhcl -> if {vhcl with cargo = v.cargo} = v
@@ -105,7 +123,7 @@ let set_v_cargo v st =
     | Some l -> l in
   let crgo = match v.cargo with
     | Some c -> c
-    | None -> failwith "can not buy 0 cargo" in
+    | None -> failwith "cannot buy 0 cargo" in
   let t_gp = List.find (fun gp -> gp.resource = crgo.t) buy_location'.produces in
   let cost = t_gp.price *. (float_of_int crgo.quantity) in
   let new_gp = {t_gp with current = t_gp.current - crgo.quantity} in
@@ -117,10 +135,15 @@ let set_v_cargo v st =
                then new_location
                else vx) st.graph in
   let new_players = List.map
-    (fun p -> if p.p_id = v.v_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
-  {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
+    (fun p ->
+      if p.p_id = v.v_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline "You cannot afford that cargo." in p
+      else p) st.players in
+  if st.players = new_players
+  then st
+  else {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
 
 
 let rec handle_processes proclist st =

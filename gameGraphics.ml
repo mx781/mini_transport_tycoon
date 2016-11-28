@@ -413,7 +413,7 @@ let add_cargo (gs:GameElements.game_state) player_id =
   let cargo = pick_cargo (get_some loc) in
   if cargo = None then Nothing else (
   print_endline "Cargo Added.\n";
-  buy_vehicle_cargo player_id auto (get_some cargo) gs.graph) )
+  buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
 let move_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to move.";
