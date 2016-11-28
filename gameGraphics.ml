@@ -484,7 +484,6 @@ let click_buttons (gs:GameElements.game_state) player_id =
 
 let rec rec_draw_circles p_win =
    let color = (player_color p_win) in
-   print_endline (string_of_int p_win);
     set_color color;
     draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
     draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
