@@ -172,6 +172,7 @@ let rec get_cheapest graph goods =
   |[] -> (200000.0, None, None)
 
 (*Returns an end_loc based on income. Also checks if the road has already been built*)
+(*CAUSES AN ERROR*)
  let rec build_road graph location good price (ai_info:ai_stuff) c_info =
   Map.fold_vertex (fun x y ->
     let good_price = get_o (get_good_cost x.accepts good) in
@@ -195,12 +196,14 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
   let loc = get_o (s cheapest) in
   let price = f cheapest in
   let the_good = get_o (t cheapest) in
-  let new_loc = build_road graph loc the_good price ai_info c_info in
-  match new_loc with
-  |None -> (None, None)
-  |Some loc2 ->
-  (Some (PurchaseRoad {c_owner_id= c_info.p_id; l_start = loc2.l_id;
-    l_end = loc.l_id; length = 0.; c_age = 0; c_speed = 0.}), Some loc)
+  if !ai_info <> None then
+    let new_loc = build_road graph loc the_good price ai_info c_info in
+    match new_loc with
+    |None -> (None, None)
+    |Some loc2 ->
+    (Some (PurchaseRoad {c_owner_id= c_info.p_id; l_start = loc2.l_id;
+      l_end = loc.l_id; length = 0.; c_age = 0; c_speed = 0.}), Some loc)
+  else (None, None)
 
 
 (*Buys a vehicle for AI*)
@@ -228,13 +231,14 @@ let make_c_move (state: game_state) c_id =
       c_player_info.money state.ai_info c_id
     |None -> [] in
   (*Next, check if it's plausible to build a road somewhere. RETURNS AN OPTION*)
-    let buy_road = buy_c_road state.graph state.ai_info c_player_info in
-   (*Finally, buy vehicles*)
-    if fst buy_road = None then
-      vehicle_processes
-    else
-      (buy_vehicle c_player_info (get_o (snd buy_road)))
-      :: (get_o (fst buy_road)) :: vehicle_processes
+  (*ERROR*)
+  let buy_road = buy_c_road state.graph state.ai_info c_player_info in
+ (*Finally, buy vehicles*)
+  if fst buy_road = None || snd buy_road = None then
+    vehicle_processes
+  else
+    (buy_vehicle c_player_info (get_o (snd buy_road)))
+    :: (get_o (fst buy_road)) :: vehicle_processes
 
 
 
