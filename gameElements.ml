@@ -97,13 +97,15 @@ end
 
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
+type ai_stuff =  ((int * location option -> (float * location option* goods_profile option) option)
+    option) ref
 type game_state = {
   vehicles : vehicle list;
   graph: Map.t;
   game_age : int;
   paused: bool;
   mutable players : Player.player list;
-  ai_info : (int * location -> good * location) ref option;
+  ai_info : ai_stuff;
 }
 
 module ConnectionWeight = struct
@@ -116,6 +118,15 @@ module ConnectionWeight = struct
 end
 
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
+
+let fps = 24.0
+let car_price = 100.0
+let truck_price = 200.0
+let sell_back_percentage = 0.6
+let road_unit_cost = 1.0
+let road_length_cost_exponent = 1.2
+let road_rights_unit_cost = 0.4
+let ai_exceeds = 1000.0
 
 let breakdown_chance = 0.0001
 let car_speed = 4.0

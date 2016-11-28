@@ -12,7 +12,7 @@ let load_json file =
         | s -> read_line ch (str ^ s)
     with
         | End_of_file -> str
-  in 
+  in
   let str = read_line ch "" in
   close_in ch;
   parse_gamestate str `json
@@ -27,11 +27,11 @@ let gs_from_piqi piqi_gs =
     players = piqi_gs.players;
     paused = piqi_gs.paused;
     game_age = piqi_gs.gameage;
-    ai_info = None;
+    ai_info = ref None;
   }
 
 (* TODO: see if we can resolve the necessity to have explicit typing *)
-let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs -> 
+let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs ->
   let open Gamestate_piqi.Gamestate in {
     vehicles = gs.vehicles;
     graph = gs.graph;
@@ -42,14 +42,14 @@ let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs ->
   }
 )
 
-let load_file file = 
+let load_file file =
   try
     let piqi_gs = load_json file in
     gs_from_piqi piqi_gs
   with
     | _ -> failwith ("Failed to load " ^ file)
 
-let save_file game_state file = 
+let save_file game_state file =
   try
     let piqi_gs = gs_to_piqi game_state in
     let out_chan = open_out_bin file in
