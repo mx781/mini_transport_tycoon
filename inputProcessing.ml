@@ -294,7 +294,8 @@ let sell_road player_id l1 l2 graph =
     let c = Map.find_edge graph l1 l2 in
     let c' = match c with
     |(_,c,_) -> c in
-    DeleteRoad(c')
+    if c'.c_owner_id = player_id then DeleteRoad(c') else
+    let () = print_endline "You cannot sell a road you do not own." in Nothing
   with
   | _ -> Nothing
 
@@ -305,23 +306,25 @@ let sell_vehicle player_id v =
   let () = print_endline "You cannot sell that vehicle, you do not own it!" in
   Nothing
 
-let route_vehicle player_id v_old start_loc end_loc graph =
-  let new_path =
-    (try Dijkstra.shortest_path graph start_loc end_loc with
-    |_ ->([], (-1.))) in
-  let dest_list = if new_path = ([],(-1.)) then
-    []
-  else
-    (List.map (fun x -> (t x).l_id) (fst new_path)) in
+let set_vehicle_dest player_id v_old start_loc end_loc st =
+  let first_dest = match v_old.destination with
+    | [] -> start_loc.l_id
+    | h::t -> h in
+  let checked_route = get_route first_dest end_loc.l_id st player_id in
+  let dest_list = match checked_route with
+    | None -> []
+    | Some lst -> lst in
+  let stat = match dest_list with
+    | [] -> Waiting
+    | h::t -> Driving in
   let v =
     if v_old.v_owner_id = player_id
     then {
-      v_old with destination = dest_list;
-      status = Driving;
+      v_old with destination = first_dest::dest_list;
+      status = stat;
     }
     else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
   in
-  print_endline (string_of_int (List.hd dest_list));
   SetVehicleDestination(v)
 
 let buy_vehicle_cargo player_id v_old r_type graph=

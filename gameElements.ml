@@ -3,7 +3,8 @@ open Player
 (* Type definitions *)
 type r_type =
     | Lumber
-    | Iron
+    | Iron (*really drugs, but these constructors are all dummy names so it does
+            * not need changed. *)
     | Oil
     | Electronics
     | Produce
@@ -126,9 +127,8 @@ let sell_back_percentage = 0.6
 let road_unit_cost = 1.0
 let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.4
-let ai_exceeds = 1000.0
 
-let breakdown_chance = 0.0001
+let breakdown_chance = 0.0000
 let car_speed = 4.0
 let truck_speed = 2.0
 let car_capacity = 25
