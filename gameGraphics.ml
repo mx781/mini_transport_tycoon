@@ -40,6 +40,12 @@ let fruit = get_img "images/fruit.png" |> make_image
 let oil = get_img "images/oil.png" |> make_image
 let drugs = get_img "images/drugs.png" |> make_image
 let wood = get_img "images/lumber.png" |> make_image
+(* Small Resources *)
+let tech_s = get_img "images/elect_s.png" |> make_image
+let fruit_s = get_img "images/fruit_s.png" |> make_image
+let oil_s = get_img "images/oil_s.png" |> make_image
+let drugs_s = get_img "images/drugs_s.png" |> make_image
+let wood_s = get_img "images/lumber_s.png" |> make_image
 (* No Resources *)
 let notech = get_img "images/notech.png" |> make_image
 let nofruit = get_img "images/nofruit.png" |> make_image
@@ -120,6 +126,11 @@ let string_of_float flt =
   if String.index str '.' = (String.length str - 2) then str ^ "0" else
   str
 
+let get_some opt =
+  match opt with
+  | Some v -> v
+  | _ -> failwith "Always check None before using get_some"
+
 let player_color pid =
   match pid with
   | -1 -> default_color
@@ -175,7 +186,15 @@ let draw_vehicle (v:GameElements.vehicle) : unit =
   set_color black;
   fill_circle x y 10;
   set_color (player_color v.v_owner_id);
-  fill_circle x y 8
+  fill_circle x y 8;
+  if v.cargo = None then () else (
+    let img = match (get_some v.cargo).t with
+              | Electronics -> tech_s
+              | Oil -> oil_s
+              | Iron -> drugs_s
+              | Lumber -> wood_s
+              | Produce -> fruit_s in
+    draw_image img (x-10) (y+20) )
 
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
@@ -267,11 +286,6 @@ let draw_game_state (gs:GameElements.game_state) : unit =
 
 let is_cancelled (x,y) =
   y < start_height+button_height-9*spacing && y > start_height-9*spacing
-
-let get_some opt =
-  match opt with
-  | Some v -> v
-  | _ -> failwith "Always check None before using get_some"
 
 let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
   let (x,y) = if click then let stat = wait_next_event [Button_down] in
