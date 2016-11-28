@@ -495,6 +495,7 @@ let rec rec_draw_circles p_win =
     draw_image truck_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
     draw_image car_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
     draw_image drugs (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_image gameover (screen_width/2) (screen_height);
     Unix.sleepf 0.003;
     rec_draw_circles p_win; ()
 
