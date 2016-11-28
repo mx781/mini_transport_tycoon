@@ -4,6 +4,8 @@
  open InputProcessing
  open DataProcessing
 
+
+
 exception EndGame
 
 let buy_vehicle v st =
@@ -11,9 +13,13 @@ let buy_vehicle v st =
     | Car -> car_price
     | Truck -> truck_price in
   let new_players = List.map
-    (fun p -> if p.p_id = v.v_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
+    (fun p ->
+      if p.p_id = v.v_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline "You cannot afford that vehicle." in p
+      else p) st.players in
+  if new_players = st.players then st else
   {st with vehicles = v::st.vehicles; players = new_players}
 
 let sell_vehicle v st =
@@ -46,9 +52,16 @@ let buy_connection c st =
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let cost = road_unit_cost*.(c.length**road_length_cost_exponent) in
   let new_players = List.map
-    (fun p -> if p.p_id = c.c_owner_id
-              then {p with money = (p.money -. cost)}
-              else p) st.players in
+    (fun p ->
+      if p.p_id = c.c_owner_id
+      then if p.money -. cost >= 0.0
+           then {p with money = (p.money -. cost)}
+           else let () = print_endline ("You cannot afford that road. It costs $"
+             ^ (string_of_float (GameGraphics.two_dec cost))) in p
+      else p) st.players in
+  if st.players = new_players
+  then st
+  else
   {st with graph = new_graph; players = new_players}
 
 let sell_connection c st =
