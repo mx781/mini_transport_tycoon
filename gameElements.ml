@@ -86,7 +86,7 @@ module Connection = struct
   let equal e1 e2 = e1.l_start = e2.l_start && e1.l_end = e2.l_end
   let hash = Hashtbl.hash
   let default = {
-    c_owner_id = 4;
+    c_owner_id = (-1);
     l_start= 0;
     l_end =  0;
     length= 2.0;

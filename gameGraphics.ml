@@ -105,6 +105,16 @@ let string_of_float flt =
   if String.index str '.' = (String.length str - 2) then str ^ "0" else
   str
 
+let player_color pid =
+  match pid with
+  | -1 -> default_color
+  | 0 -> red
+  | 1 -> blue
+  | 2 -> yellow
+  | 3 -> green
+  | 4 -> white
+  | _ -> black
+
 (******************************GRAPHICS****************************************)
 
 let open_screen size =
@@ -121,12 +131,17 @@ let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   lineto x2 y2
 
 let draw_ograph grph : unit =
-  GameElements.Map.iter_edges
-    (fun v1 v2 -> draw_line
-      ((round ((GameElements.Map.V.label v1).l_x) / 2 * !scale),
-      (round ((GameElements.Map.V.label v1).l_y)/ 2 * !scale))
-      ((round ((GameElements.Map.V.label v2).l_x)/ 2 * !scale),
-      (round ((GameElements.Map.V.label v2).l_y)/ 2 * !scale))
+  let label = GameElements.Map.V.label in
+  GameElements.Map.iter_edges_e
+    (fun (v1, e, v2) ->
+      let pos1 = ( (round (label v1).l_x)/ 2 * !scale,
+                   (round (label v1).l_y)/ 2 * !scale ) in
+      let pos2 = ( (round (label v2).l_x)/ 2 * !scale,
+                   (round (label v2).l_y)/ 2 * !scale ) in
+      draw_line pos1 pos2;
+      let pid = e.c_owner_id in
+      if pid < 0 then ()
+      else draw_line ~color:(player_color pid) ~width:4 pos1 pos2
      )  grph;
 
   GameElements.Map.iter_vertex
@@ -141,7 +156,12 @@ let draw_vehicle (v:GameElements.vehicle) : unit =
             | GameElements.Truck -> truck_img) in
   let x = round ((v.x -. 30.0) /. 2. *. (float_of_int !scale)) in
   let y = (round ((v.y -. 15.0) /. 2. *. (float_of_int !scale))) in
-  Graphics.draw_image pic x y
+  Graphics.draw_image pic x y;
+  set_color black;
+  fill_circle x y 10;
+  set_color (player_color v.v_owner_id);
+  fill_circle x y 8
+
 
 let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   match vs with
@@ -149,8 +169,14 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
+  let x = 800 in
+  let y = (550-p.p_id*30) in
+  set_color black;
+  fill_circle (x-10) (y+10) 10;
+  set_color (player_color p.p_id);
+  fill_circle (x-10) (y+10) 8;
   draw_str ("P"^string_of_int p.p_id^":$"^
-            string_of_float(two_dec p.money)) 800 (550-p.p_id*30)
+            string_of_float(two_dec p.money)) x y
   (*  moveto (p.p_id) (10*p.p_id);
    draw_string ("Player " ^ (string_of_int p.p_id) ^
                 ": $" ^(string_of_float p.money)) *)
@@ -202,7 +228,7 @@ let draw_info_box x y v =
     ) loc.produces
 
   let draw_hover grph =
-  let stat = wait_next_event [Poll] in
+  let stat = wait_next_event [Poll;Button_down;Button_up] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
   let close_enough = 30 in
@@ -223,7 +249,7 @@ let draw_game_state (gs:GameElements.game_state) : unit =
 
 (******************************INPUT******************************************)
 
-let rec get_loc_near grph =
+let rec get_loc_near ?(l_id = (-1)) grph =
   let stat = wait_next_event [Button_down] in
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let loc = ref None in
@@ -235,8 +261,9 @@ let rec get_loc_near grph =
               && (abs (y*2/ !scale - round y1) < close_enough)
                                   then loc := Some v else () ) grph;
   match !loc with
-  | Some v -> v
-  | None -> (* print_endline "Not a valid location"; *) get_loc_near grph
+  | Some v when (labl v).l_id <> l_id -> v
+  | _ -> (* print_endline "Not a valid location"; *)
+         get_loc_near ~l_id:l_id grph
 
 let rec get_auto_near gs =
   let stat = wait_next_event [Button_down] in
@@ -257,7 +284,7 @@ let get_start_end grph =
   print_endline "Select a start location.";
   let start_loc = get_loc_near grph in
   print_endline "Select an end location.";
-  let end_loc = get_loc_near grph in
+  let end_loc = get_loc_near ~l_id:(GameElements.Map.V.label start_loc).l_id grph in
   (start_loc, end_loc)
 
 let pick_cargo () =
@@ -266,11 +293,10 @@ let pick_cargo () =
 let quit gs =
   print_endline "Game saved in myGame.json\n";
   DataProcessing.save_file gs "myGame.json";
-  close_graph ();
   EndGame
 
-let rec pause () =
-  let _ = wait_next_event [Button_down] in
+let rec pause () =(*
+  let _ = wait_next_event [Button_down] in *)
   print_endline "Game Paused. Click anywhere to continue\n";
   Pause
 
@@ -324,9 +350,9 @@ let sell_auto (gs:GameElements.game_state) player_id =
   sell_vehicle player_id auto
 
 let click_buttons (gs:GameElements.game_state) player_id =
-  let stat = wait_next_event [Poll] in
-  let x = stat.mouse_x in
-  let y = stat.mouse_y in
+  let status = wait_next_event [Poll;Button_up;Button_down] in
+  let x = status.mouse_x in
+  let y = status.mouse_y in
   if not (button_down () && x < button_width) then Nothing
   else (
     if y < start_height+button_height
