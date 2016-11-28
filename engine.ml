@@ -61,23 +61,18 @@ let buy_connection c st =
   {st with graph = new_graph; players = new_players}
 
 let sell_connection c st =
-  print_endline "here";
   let loc1 = get_loc c.l_start st.graph in
   let loc2 = get_loc c.l_end st.graph in
-  print_endline "here";
   let vertices = Map.fold_vertex
-    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc2.l_id
                    then vx::acc
                    else acc
     ) st.graph [] in
-    print_endline "here";
   let new_graph = match vertices with
     | l1::l2::[] -> Map.remove_edge_e st.graph (Map.find_edge st.graph l1 l2)
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
-    print_endline "here";
   let gain = (road_unit_cost*.(c.length**road_length_cost_exponent))
     *.sell_back_percentage in
-    print_endline "here";
   let new_players = List.map
     (fun p -> if p.p_id = c.c_owner_id
               then {p with money = (p.money +. gain)}
@@ -88,7 +83,7 @@ let change_connection_owner c st =
   let loc1 = get_loc c.l_start st.graph in
   let loc2 = get_loc c.l_end st.graph in
   let vertices = Map.fold_vertex
-    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc1.l_id
+    (fun vx acc -> if vx.l_id = loc1.l_id || vx.l_id = loc2.l_id
                    then vx::acc
                    else acc
     ) st.graph [] in
