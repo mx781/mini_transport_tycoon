@@ -122,6 +122,7 @@ let get_route (loc1:int) (loc2:int) state (p_id:int)=
 
 
 (*Stuff that chooses AI movement based on a list of connections*)
+(*TODO: Fix quantity bought.*)
 let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id =
   (*Create a new graph with only these connections.*)
   (* let debug = if vehicle.cargo = None then true else failwith "vehicle not empty" in *)
@@ -131,13 +132,13 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
     match vehicle.v_loc with
     |None -> failwith "Passive vehicle with no location, talk to Dan"
     |Some loc -> loc in
-  print_endline (string_of_int cur_loc);
+  (* print_endline (string_of_int cur_loc); *)
   let loc_details = get_loc_details graph cur_loc in
   let goods = loc_details.produces in
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
   (*Need to fix use of 1 here: TODO*)
   if f max_profits > 0. then
-    (print_endline "asdf2";
+    ((* print_endline "asdf2"; *)
     let new_path =
       try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
       |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
@@ -153,7 +154,7 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
     |None ->
       ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
         Some (max_profits) else None) in
-    print_endline (string_of_int (List.hd destinations)^"HALP");
+    (* print_endline (string_of_int (List.hd destinations)^"HALP"); *)
     [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = 1})});
     SetVehicleDestination ({vehicle with destination = destinations; status = Driving})])
   else
@@ -174,28 +175,72 @@ let rec get_good_cost goods_list good =
   |h :: t -> if h.resource = good then ((* print_endline (string_of_float (h.price) ^"asdf"); *) Some h.price) else get_good_cost t good
   |[] -> None
 
-(*Gets location with the cheapest good.*)
+(*Gets location with the cheapest good. TODO: Remove.*)
 (*Returns a price (NOT PROFIT), a location option, and a good option*)
 let rec get_cheapest graph goods =
   match goods with
   |h :: t ->
-    ((print_endline "ASDFASDFASDF");
+    ((* (print_endline "ASDFASDFASDF"); *)
     let this_cheapest =
     (Map.fold_vertex (fun x y ->
       match get_good_cost x.produces h with
       |None -> y
       |Some price ->
-    if price < f y then ((print_endline "two"); (price, Some x, Some h) )else y) graph (200000.0, None, None)) in
+    if price < f y then ((* (print_endline "two");  *)(price, Some x, Some h) )else y) graph (200000.0, None, None)) in
     let next_cheapest = get_cheapest graph t in
     if f this_cheapest < f next_cheapest then this_cheapest else next_cheapest)
   |[] -> (200000.0, None, None)
 
+(*Returns the price, location option, and good option describing the location with
+ *a good at the cheapest and most expensive prices (produces/accepts).
+ *CHEAPEST FIRST, MOST EXPENSIVE SECOND*)
+let good_loc_info graph good =
+  Map.fold_vertex (fun x y ->
+    let cheaper =
+    match get_good_cost x.produces good with
+    |None -> fst y
+    |Some price ->
+      if price < f (fst y) then (price, Some x, Some good) else fst y in
+    let expensive =
+    match get_good_cost x.accepts good with
+    |None -> snd y
+    |Some price ->
+      if price > f (snd y) then (price, Some x, Some good) else snd y in
+      (cheaper,expensive))
+  graph ((large_float, None, None),(small_float, None, None))
+
+(*Same as above, but returns the most expensive. Save lines later.*)
+(* let exp_good_loc graph good =
+  Map.fold_vertex (fun x y ->
+    match get_good_cost x.accepts good with
+    |None -> y
+    |Some price ->
+      if price > f y then (price, Some x, Some good) else y)
+  graph (small_float, None, None) *)
+
+(*TODO: Use refs to determine above information, as well as roads built*)
+(*TODO: Make vehicle selection random*)
+
+(*Returns the price, location option, and good option containing the cheapest and
+ *most expensive goods.
+ *Used for profit calculations.*)
+(*Going to need some AI_info stuff for this :( *)
+let get_good_diffs graph goods =
+  List.map (fun x -> good_loc_info graph x) goods
+
+(*Gets the greatest differential from from the result in get_good_locs*)
+let get_greatest_dif good_dif =
+  List.fold_left (fun x y -> let new_diff = (f (snd y) -. f (fst y)) in
+    let old_diff = (f (snd x) -. f (fst x)) in
+    if old_diff < new_diff then y else x)
+    ((large_float, None, None),(small_float, None, None)) good_dif
+
 (*Returns an end_loc based on income. Also checks if the road has already been built*)
-(*CAUSES AN ERROR*)
- let rec build_road graph location good price (ai_info:ai_stuff) c_info =
+ let rec build_road graph location good price (ai_info:ai_stuff) c_info loc2=
+  print_endline ("TESTF");
   Map.fold_vertex (fun x y ->
     let good_price =
-      if get_good_cost x.accepts good = None then (0.) else (print_endline "asdfasdf";
+      if get_good_cost x.accepts good = None then (0.) else ((* print_endline "asdfasdf"; *)
       get_o (get_good_cost x.accepts good)) in
     let length = hypot (location.l_x-.x.l_x) (location.l_y-. x.l_y) in
     (*Check if price exceeds previous max*)
@@ -203,11 +248,11 @@ let rec get_cheapest graph goods =
     (*Check if road can be bought*)
     road_unit_cost*.(length**road_length_cost_exponent) +. car_price <=  c_info.money
     then
-     (print_endline "asdf4";
+     ( print_endline "asdf4";
       Some x)
     else
-     ((* print_endline (string_of_float (f (get_o ((get_o (!ai_info)) (c_info.p_id, None))) +. 0.000001));*)
-     (*  print_endline (string_of_float (good_price -. price)^"ONE");
+     ( (* print_endline (string_of_float (f (get_o ((get_o (!ai_info)) (c_info.p_id, None))) +. 0.000001));
+       print_endline (string_of_float (good_price -. price)^"ONE");
       print_endline (string_of_float (road_unit_cost*.(length**road_length_cost_exponent) +. car_price)); *)
       y)
     ) graph None
@@ -216,13 +261,18 @@ let rec get_cheapest graph goods =
 (*Determines what road to buy. Uses information based on the greatest profit.*)
 let buy_c_road graph (ai_info:ai_stuff) c_info =
   let goods = [Lumber; Iron; Oil; Electronics; Produce] in
-  let test_goods = [Produce] in
   (*Gets cheapest out of all locations*)
-  let cheapest = get_cheapest graph goods in
+  let price_difs = get_good_diffs graph goods in
+  let cheapest = get_greatest_dif price_difs in
+(*   let cheapest = get_cheapest graph goods in
   let loc = get_o (s cheapest) in
   let price = f cheapest in
-  let the_good = get_o (t cheapest) in
-  if !ai_info <> None then
+  let the_good = get_o (t cheapest) in *)
+  let loc1 = get_o (s (fst cheapest)) in
+  let price = f (fst cheapest) in
+  let the_good = get_o (t (fst cheapest)) in
+  let loc2 = get_o (s (snd cheapest)) in
+  (* if !ai_info <> None then
     (
     let new_loc = build_road graph loc the_good price ai_info c_info in
     match new_loc with
@@ -231,15 +281,24 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
     (let new_length = hypot (loc.l_x -. loc2.l_x) (loc.l_y -. loc2.l_y) in
     (Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
       l_end = loc.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc)))
-  else (None, Some loc)
+  else (None, Some loc) *)
+  let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
+  if road_unit_cost*.(new_length**road_length_cost_exponent) +. car_price <= c_info.money then
+    Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
+    l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc1
+  else
+    None, Some loc1
 
 
 (*Buys a vehicle for AI*)
 let buy_vehicle c_info initial_loc =
-  print_endline (string_of_int initial_loc.l_id);
+ (*  print_endline (string_of_int initial_loc.l_id); *)
   BuyVehicle {v_owner_id =c_info.p_id; speed = car_speed;capacity =car_capacity;
     v_t = Car; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
+
+(*Iterates over all the edges to determine whether a road exists*)
+let edge_exists graph initial_loc final_loc = failwith "unimplemented"
 
 (*This uses the current game state to determine how the AI should make a move.
 ( p_id refers to the id of the AI *)
@@ -264,17 +323,21 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
  (*Finally, buy vehicles*) (*TODO: Remove tests*)
-  if fst buy_road = None && c_money <= car_price *. 400. then
-
+  if fst buy_road = None && c_money <= car_price *. buy_vehicle_condition then
+    (*If money not high enough, don't buy vehicle*)
     vehicle_processes
-  else if fst buy_road = None && c_money > car_price *. 400. then
+  else if fst buy_road = None && c_money > car_price *. buy_vehicle_condition then
     ((* print_endline "findme"; *)
     (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
   else
-  (print_endline "findme";
+  ((* print_endline "findme"; *)
     (buy_vehicle c_player_info (get_o (snd buy_road)))
     :: (get_o (fst buy_road)) :: vehicle_processes)
 
+(*TODO: Fix buy vehicle condition (determine when not profitable)*)
+  (*Requires a field that checks the average profit per vehicle and the
+   *number of vehicles.*)
+(*TODO: Include ref that takes into account number of roads built*)
 
 
 

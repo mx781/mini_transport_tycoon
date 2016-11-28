@@ -442,7 +442,7 @@
                 "lend": 1,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 225.6
             },
             {
                 "owner": -1,
@@ -450,7 +450,7 @@
                 "lend": 0,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 305.3
             },
             {
                 "owner": -1,
@@ -458,7 +458,7 @@
                 "lend": 0,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 269.3
             },
             {
                 "owner": -1,
@@ -466,7 +466,7 @@
                 "lend": 7,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 292.7
             },
             {
                 "owner": -1,
@@ -474,7 +474,7 @@
                 "lend": 7,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 186.8
             },
             {
                 "owner": -1,
@@ -482,7 +482,7 @@
                 "lend": 8,
                 "age": 0,
                 "speed": 3.0,
-                "length": 2.0
+                "length": 158.1
             }
         ]
     }

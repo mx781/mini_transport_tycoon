@@ -135,7 +135,9 @@ let truck_speed = 2.0
 let car_capacity = 25
 let truck_capacity = 100
 let price_update_steps = 10
-
+let buy_vehicle_condition = 2.
+let large_float = 200000.0
+let small_float = 0.0
 
 
 (* let form_connection map player_id loc1 loc2 =
