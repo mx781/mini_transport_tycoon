@@ -338,8 +338,8 @@ let buy_road (gs:GameElements.game_state) player_id =
 let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
-  print_endline "Road sold.\n"; Nothing
-(*   sell_road player_id start_loc end_loc gs.graph *)
+  print_endline "Road sold.\n";
+  sell_road player_id start_loc end_loc gs.graph
 
 let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle.";
