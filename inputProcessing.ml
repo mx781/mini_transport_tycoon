@@ -239,11 +239,14 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
   SetVehicleDestination(v)
 
 let buy_vehicle_cargo player_id v_old r_type graph=
+  let vehicle_max = match v_old.v_t with
+    | Car -> car_capacity
+    | Truck -> truck_capacity in
   match v_old.v_loc with
     | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
     | Some location ->
       let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location graph).produces in
-      let maxq = accepts.current in
+      let maxq = min accepts.current vehicle_max in
       let v =
         if v_old.v_owner_id = player_id
         then {v_old with cargo = Some {t= r_type; quantity = maxq;}}
