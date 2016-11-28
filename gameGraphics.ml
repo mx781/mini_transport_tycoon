@@ -7,6 +7,10 @@ let default_color = 0xCD853F
 let scale =  ref 2 (* No longer supported *)
 let button_width = 93
 let button_height = 50
+let screen_width = 500
+let screen_height = 300
+
+(******************************IMAGES*****************************************)
 
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
@@ -14,8 +18,6 @@ let make_transp img =
 
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
-
-(******************************IMAGES*****************************************)
 
 let _ = open_graph " 380x380"
 (* 8Bit live wallpaper by Nysis*)
@@ -33,6 +35,7 @@ let sellroad = get_img "images/sellroad.png" |> make_image
 let addcargo = get_img "images/addcargo.png" |> make_image
 let moveauto = get_img "images/moveauto.png" |> make_image
 let sellauto = get_img "images/sellauto.png" |> make_image
+let confirm = get_img "images/confirm.png" |> make_image
 let cancel = get_img "images/cancel.png" |> make_image
 (* Resources *)
 let tech = get_img "images/elect.png" |> make_image
@@ -145,7 +148,7 @@ let player_color pid =
 
 let open_screen size =
   scale := (int_of_string size);
-  resize_window (500* !scale) (300* !scale)
+  resize_window (screen_width* !scale) (screen_height* !scale)
 
 let draw_start () =
   draw_image start_screen 0 0
@@ -221,7 +224,7 @@ let rec draw_players (ps:Player.player list) : unit =
   | [] -> ()
 
 let spacing = 25 * !scale
-let start_height = 250 * !scale
+let start_height = 275 * !scale
 
 let draw_buttons () =
   draw_image save 0 start_height;
@@ -229,15 +232,17 @@ let draw_buttons () =
   draw_image buycar 0 (start_height-2*spacing);
   draw_image buytruck 0 (start_height-3*spacing);
   draw_image buyroad 0 (start_height-4*spacing);
-  draw_image sellroad 0 (start_height-5*spacing);
+  draw_image moveauto 0 (start_height-5*spacing);
   draw_image addcargo 0 (start_height-6*spacing);
-  draw_image moveauto 0 (start_height-7*spacing);
-  draw_image sellauto 0 (start_height-8*spacing);
-  draw_image cancel 0 (start_height-9*spacing)
+  draw_image sellauto 0 (start_height-7*spacing);
+  draw_image sellroad 0 (start_height-8*spacing);
+  draw_image confirm 0 (start_height-10*spacing);
+  draw_image cancel 0 (start_height-11*spacing)
 
 let draw_info_box x y v =
   let box_height = 100 in
-  (set_color white; fill_rect x y 150 box_height);
+  set_color black; fill_rect (x-2) (y-2) 154 (box_height+4);
+  set_color white; fill_rect x y 150 box_height;
   let loc = GameElements.Map.V.label v in
   set_color black;
   (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1";*)
@@ -285,7 +290,16 @@ let draw_game_state (gs:GameElements.game_state) : unit =
 (******************************INPUT******************************************)
 
 let is_cancelled (x,y) =
-  y < start_height+button_height-9*spacing && y > start_height-9*spacing
+  y < start_height+button_height-11*spacing && y > start_height-11*spacing
+
+let is_confirmed (x,y) =
+  y < start_height+button_height-10*spacing && y > start_height-10*spacing
+
+let rec wait_confirm () =
+  let stat = wait_next_event [Button_down] in
+  let pos = (stat.mouse_x, stat.mouse_y) in
+  if is_cancelled pos || is_confirmed pos
+  then is_confirmed pos else wait_confirm ()
 
 let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
   let (x,y) = if click then let stat = wait_next_event [Button_down] in
@@ -392,14 +406,18 @@ let buy_truck (gs:GameElements.game_state) player_id =
 let buy_road (gs:GameElements.game_state) player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "Road bought.\n";
+  print_endline "Road will cost $\nConfirm to buy.";
+  let confirmed = wait_confirm () in
+  if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
 let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "Road sold.\n";
+  print_endline "You will earn $\nConfirm to sell.";
+  let confirmed = wait_confirm () in
+  if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
 
 let add_cargo (gs:GameElements.game_state) player_id =
@@ -412,7 +430,9 @@ let add_cargo (gs:GameElements.game_state) player_id =
   if loc = None then Nothing else (
   let cargo = pick_cargo (get_some loc) in
   if cargo = None then Nothing else (
-  print_endline "Cargo Added.\n";
+  print_endline "That will cost $\nConfirm to buy.";
+  let confirmed = wait_confirm () in
+  if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
 let move_auto (gs:GameElements.game_state) player_id =
@@ -449,13 +469,28 @@ let click_buttons (gs:GameElements.game_state) player_id =
     if y < start_height+button_height-4*spacing
        && y > start_height-4*spacing then buy_road gs player_id else
     if y < start_height+button_height-5*spacing
-       && y > start_height-5*spacing then sell_road gs player_id else
+       && y > start_height-5*spacing then move_auto gs player_id else
     if y < start_height+button_height-6*spacing
        && y > start_height-6*spacing then add_cargo gs player_id else
     if y < start_height+button_height-7*spacing
-       && y > start_height-7*spacing then move_auto gs player_id else
+       && y > start_height-7*spacing then sell_auto gs player_id else
     if y < start_height+button_height-8*spacing
-       && y > start_height-8*spacing then sell_auto gs player_id
-    (*Cancel doesn't do anything by itself*)
+       && y > start_height-8*spacing then sell_road gs player_id
+    (*Cancel and Confirm don't do anything by itself*)
     else Nothing
   )
+
+let rec rec_draw_circles color =
+    set_color color;
+    fill_circle (Random.int 800) (Random.int 800) 20;
+    fill_circle (Random.int 800) (Random.int 800) 20;
+    draw_image truck_img (Random.int 800) (Random.int 800);
+    draw_image car_img (Random.int 800) (Random.int 800);
+    draw_image drugs (Random.int 800) (Random.int 800);
+    Unix.sleepf 0.003;
+    rec_draw_circles color; ()
+
+  let draw_winner p_win st =
+    draw_game_state st;
+    rec_draw_circles (player_color p_win); ()
+
