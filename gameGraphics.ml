@@ -310,8 +310,8 @@ let quit gs =
   DataProcessing.save_file gs "myGame.json";
   EndGame
 
-let rec pause () =(*
-  let _ = wait_next_event [Button_down] in *)
+let rec pause () =
+  let _ = wait_next_event [Button_down] in
   print_endline "Game Paused. Click anywhere to continue\n";
   Pause
 
@@ -338,8 +338,9 @@ let buy_road (gs:GameElements.game_state) player_id =
 let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
+  if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
   print_endline "Road sold.\n";
-  sell_road player_id start_loc end_loc gs.graph
+  sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
 
 let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle.";
