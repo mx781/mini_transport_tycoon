@@ -184,7 +184,7 @@ let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
   | [] -> ()
 
 let draw_player_info (p:Player.player) : unit =
-  let x = 800 in
+  let x = 780 in
   let y = (550-p.p_id*30) in
   set_color black;
   fill_circle (x-10) (y+10) 10;
@@ -341,12 +341,15 @@ let rec pick_cargo loc =
   if is_cancelled (x,y) then None else
   if y > res_start+button_height || y < res_start
     then pick_cargo loc else
+  let cargo =
   if x > button_width && x < button_width+res_space then Some Electronics else
   if x > button_width+res_space && x < button_width+2*res_space then Some Oil else
   if x > button_width+2*res_space && x < button_width+3*res_space then Some Produce else
   if x > button_width+3*res_space && x < button_width+4*res_space then Some Lumber else
   if x > button_width+4*res_space && x < button_width+5*res_space then Some Iron else
-  pick_cargo loc
+  pick_cargo loc in
+  if cargo = None then None else
+  if List.exists ((=) (get_some cargo)) resource_list then cargo else pick_cargo loc
 
 let quit gs =
   print_endline "Game saved in myGame.json\n";
