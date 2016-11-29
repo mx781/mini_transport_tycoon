@@ -84,7 +84,6 @@ let get_good_profit graph good curr_loc =
         |_ -> true
       with
         |Not_found -> false in
-
     if new_path && profit > f y && good.current > 10
     then (profit, Some x, Some good) else y) graph
   (0., None, None)
@@ -130,9 +129,22 @@ let get_quantity vehicle r_type location curr_money=
     | Truck -> truck_capacity in
   let accepts = List.find (fun gp -> gp.resource = r_type) location.produces in
   let maxq = min accepts.current vehicle_max in
-  let maxq'= min maxq ( int_of_float (curr_money /. accepts.price)) in
+  let maxq'= min maxq (int_of_float (curr_money /. accepts.price)) in
     maxq'
 
+(*Gets a new location close to the vehicle. First checks if other locations are accessible.
+ *The second is the result of the movement.*)
+let get_new_dest graph_access curr_loc =
+  Map.fold_edges_e (fun x y -> let r = Random.int (2) in
+    if r = 0 then
+      if (f x).l_id = curr_loc.l_id then (Some (t x), Some (t x))
+      else if (t x).l_id = curr_loc.l_id then (Some (f x), Some (f x))
+      else y
+    else
+      if (f x).l_id = curr_loc.l_id then (fst y, Some (t x))
+      else if (t x).l_id = curr_loc.l_id then (fst y, Some (f x))
+      else y)
+    graph_access (None, None)
 
 (*Stuff that chooses AI movement based on a list of connections*)
 (*TODO: Fix quantity bought.*)
@@ -149,7 +161,7 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
   let loc_details = get_loc_details graph cur_loc in
   let goods = loc_details.produces in
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
-  (*Need to fix use of 1 here: TODO*)
+  (*PROFITS FROM CURRENT LOCATION*)
   if f max_profits > 0. then
     (* print_endline "asdf2"; *)
     let the_good = (get_o (t max_profits)).resource in
@@ -169,7 +181,7 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
       |None ->
         ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
           Some (max_profits) else None) in
-      print_endline (string_of_int (List.hd destinations) ^ "halp");
+      (* print_endline (string_of_int (List.hd destinations) ^ "halp"); *)
       [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = q})});
       SetVehicleDestination ({vehicle with destination = destinations; status = Driving})]
     else []
@@ -183,12 +195,22 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
     |None ->
       ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
         Some (max_profits) else None) in
-    []
+    match get_new_dest new_graph loc_details with
+    |None, None -> []
+    |None, Some loc1 -> []
+    |Some loc1, Some loc2->
+      [SetVehicleDestination ({vehicle with destination = [loc1.l_id]; status = Driving})]
+
+(*Gets total capacity from a list*)
+let rec get_vehicle_capacity v_list total=
+  match v_list with
+  |h :: t -> get_vehicle_capacity t (total + h.capacity)
+  |[] -> total
 
 (*Get good cost at a particular location. None if the good is not sold there.*)
 let rec get_good_cost goods_list good =
   match goods_list with
-  |h :: t -> if h.resource = good then ((* print_endline (string_of_float (h.price) ^"asdf"); *) Some h.price) else get_good_cost t good
+  |h :: t -> if h.resource = good then Some h.price else get_good_cost t good
   |[] -> None
 
 (*Gets location with the cheapest good. TODO: Remove.*)
@@ -253,14 +275,14 @@ let get_greatest_dif good_dif =
 
 (*Returns an end_loc based on income. Also checks if the road has already been built*)
  let rec build_road graph location good price (ai_info:ai_stuff) c_info loc2=
-  print_endline ("TESTF");
+  (* print_endline ("TESTF"); *)
   Map.fold_vertex (fun x y ->
     let good_price =
       if get_good_cost x.accepts good = None then (0.) else ((* print_endline "asdfasdf"; *)
       get_o (get_good_cost x.accepts good)) in
     let length = hypot (location.l_x-.x.l_x) (location.l_y-. x.l_y) in
     (*Check if price exceeds previous max*)
-    if (good_price -. price) >= f (get_o ((get_o (!ai_info)) (c_info.p_id, None))) +. 0.000001 &&
+    if (good_price -. price) >= f (get_o ((get_o (!ai_info)) (c_info.p_id, None))) &&
     (*Check if road can be bought*)
     road_unit_cost*.(length**road_length_cost_exponent) +. car_price <=  c_info.money
     then
@@ -310,25 +332,30 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
 let buy_vehicle c_info initial_loc =
  (*  print_endline (string_of_int initial_loc.l_id); *)
   let rand_value = Random.int (2) in
-  BuyVehicle {v_owner_id =c_info.p_id; speed = car_speed;capacity =car_capacity;
-    v_t = if rand_value = 0 then Car else Truck; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
+  let v_speed = if rand_value = 0 then car_speed else truck_speed in
+  let v_capacity = if rand_value = 0 then car_capacity else truck_capacity in
+  let v_new_t = if rand_value = 0 then Car else Truck in
+  BuyVehicle {v_owner_id =c_info.p_id; speed = v_speed ;capacity =v_capacity;
+    v_t = v_new_t; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
 (*Iterates over all the edges to determine whether a road exists*)
 let edge_exists graph initial_loc final_loc = failwith "unimplemented"
+
 
 (*This uses the current game state to determine how the AI should make a move.
 ( p_id refers to the id of the AI *)
 let make_c_move (state: game_state) c_id =
   let c_player = get_player c_id state.players in
   (*Current money*)
- (*   print_endline "asdf"; *)
+   (*  print_endline "asdf3"; *)
   let c_money = c_player.money in
   (*DEBUGGER (REMOVE LINE LATER)*)
   if c_player.p_type = Human then failwith "not a computer, TALK TO DAN" else
   let c_vehicles = get_owned_vehicles c_id state.vehicles in
   let c_connections = get_roads c_id state.graph in
   let c_player_info = get_p_info c_id state.players in
+  let total_capacity = get_vehicle_capacity c_vehicles 0 in
   (*First, check for waiting vehicles*)
   let vehicle_processes =
     match activate_vehicles c_vehicles with
@@ -338,16 +365,21 @@ let make_c_move (state: game_state) c_id =
     |None -> [] in
   (*Next, check if it's plausible to build a road somewhere. RETURNS AN OPTION*)
   (*ERROR*)
+ (*  print_endline "ASDF"; *)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
  (*Finally, buy vehicles*) (*TODO: Remove tests*)
-  if fst buy_road = None && c_money <= truck_price *. buy_vehicle_condition then
+ (* print_endline "FIND ME"; *)
+  if fst buy_road = None && c_money <= truck_price *. buy_vehicle_condition ||
+    total_capacity > max_total_capacity then
     (*If money not high enough, don't buy vehicle*)
-    vehicle_processes
-  else if fst buy_road = None && c_money > truck_price *. buy_vehicle_condition then
-    ((* print_endline "findme"; *)
+    ((* print_endline "ASDf" ;*)
+    vehicle_processes)
+  else if fst buy_road = None && c_money > truck_price *. buy_vehicle_condition
+    && total_capacity <= max_total_capacity then
+    ((* print_endline "findme" ;*)
     (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
   else
-  ((* print_endline "findme"; *)
+  ((*  print_endline "findme3" ;*)
     (buy_vehicle c_player_info (get_o (snd buy_road)))
     :: (get_o (fst buy_road)) :: vehicle_processes)
 
