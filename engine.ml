@@ -128,6 +128,7 @@ let set_v_cargo v st =
     | None -> failwith "cannot buy 0 cargo" in
   let t_gp = List.find (fun gp -> gp.resource = crgo.t) buy_location'.produces in
   let cost = t_gp.price *. (float_of_int crgo.quantity) in
+  if t_gp.current - crgo.quantity < 0 then st else
   let new_gp = {t_gp with current = t_gp.current - crgo.quantity} in
   let new_gp_list = List.map
     (fun gp -> if gp = t_gp then new_gp else gp) buy_location'.produces in
