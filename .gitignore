@@ -7,3 +7,4 @@ piqi/_build/*
 #setup.sh#
 .omakedb.lock
 env.sh
+myGame.json
