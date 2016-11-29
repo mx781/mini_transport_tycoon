@@ -395,7 +395,6 @@ let buy_car (gs:GameElements.game_state) player_id =
   print_endline ("Select a start location." ^ "\nThe car will cost $"
     ^ (string_of_float car_price));
   match get_loc_near gs.graph with None -> (print_endline "Cancelled\n"; Nothing) | Some loc ->
-  print_endline "Car bought.\n";
   InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
 let buy_truck (gs:GameElements.game_state) player_id =
@@ -404,7 +403,6 @@ let buy_truck (gs:GameElements.game_state) player_id =
   match get_loc_near gs.graph with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some loc ->
-  print_endline "Truck bought.\n";
   InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
 let buy_road (gs:GameElements.game_state) player_id =
@@ -446,16 +444,14 @@ let move_auto (gs:GameElements.game_state) player_id =
   match get_auto_near gs with None -> (print_endline "Cancelled"; Nothing) | Some auto ->
   print_endline "Choose destination.";
   match get_loc_near gs.graph with None -> (print_endline "Cancelled"; Nothing) | Some dest ->
-  print_endline "Your vehicle is en route.\n";
   let l = match auto.v_loc with
     | None -> failwith "vehicle has no location"
     | Some loc -> get_loc loc gs.graph in
   set_vehicle_dest player_id auto l dest gs
 
 let sell_auto (gs:GameElements.game_state) player_id =
-  print_endline "Pick a vehicle to sell.";
+  print_endline "Pick a vehicle to sell for\n\tCar: $50.00 \n\tTruck:$100.00";
   match get_auto_near gs with None -> (print_endline "Cancelled\n"; Nothing) | Some auto ->
-  print_endline "Vehicle is sold.\n";
   sell_vehicle player_id auto
 
 let click_buttons (gs:GameElements.game_state) player_id =

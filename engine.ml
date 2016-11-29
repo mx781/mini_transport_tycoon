@@ -121,7 +121,7 @@ let set_v_cargo v st =
          else None
     else acc) st.graph None in
   let buy_location' = match buy_location with
-    | None -> failwith"vehicle is not at a valid location"
+    | None -> failwith "vehicle is not at a valid location"
     | Some l -> l in
   let crgo = match v.cargo with
     | Some c -> c
@@ -203,8 +203,7 @@ let rec main_loop st =
   print_endline
   "                               Game Over                               ";
   print_endline
-  "#########################################################################";
-  raise e
+  "#########################################################################"
 
 let init_game fname scale =
   GameGraphics.open_screen scale;

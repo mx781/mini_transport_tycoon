@@ -375,6 +375,9 @@ let init_vehicle player_id v_type start_loc_id graph=
     destination= [];
     v_loc = Some start_loc_id;
   } in
+  let () = match v.v_t with
+         | Car -> print_endline "Car purchased. \n";
+         | Truck -> print_endline "Truck purchased.\n"; in
   BuyVehicle(v)
 
 let buy_road player_id l1_id l2_id graph =
@@ -387,9 +390,9 @@ let buy_road player_id l1_id l2_id graph =
         | _ -> failwith "invalid connection" in
     if connection.c_owner_id <> -1
     then if connection.c_owner_id = player_id
-    then let () = print_endline "You already have a road here." in Nothing
-    else let () = print_endline "You cannot buy an opponent's road." in Nothing
-    else PurchaseRoad({connection with c_owner_id = player_id; length = c_length;})
+    then let () = print_endline "You already have a road here.\n" in Nothing
+    else let () = print_endline "You cannot buy an opponent's road.\n" in Nothing
+    else let () = print_endline "Road purchased.\n" in PurchaseRoad({connection with c_owner_id = player_id; length = c_length;})
   with
     Not_found ->
     let c =
@@ -401,7 +404,7 @@ let buy_road player_id l1_id l2_id graph =
       c_age= 0;
       c_speed = 5.0; (*not used yet, completely arbitrary*)
     } in
-    AddRoad(c)
+    print_endline "Road purchased.\n"; AddRoad(c)
 
 let sell_road player_id l1 l2 graph =
   try
@@ -409,15 +412,18 @@ let sell_road player_id l1 l2 graph =
     let c' = match c with
     |(_,c,_) -> c in
     if c'.c_owner_id = player_id then DeleteRoad(c') else
-    let () = print_endline "You cannot sell a road you do not own." in Nothing
+    let () = print_endline "You cannot sell a road you do not own.\n" in Nothing
   with
   | _ -> Nothing
 
 let sell_vehicle player_id v =
   if v.v_owner_id = player_id
-  then SellVehicle(v)
+  then (let () = match v.v_t with
+         | Car -> print_endline "Car sold. \n";
+         | Truck -> print_endline "Truck sold.\n"; in
+         SellVehicle(v))
   else
-  let () = print_endline "You cannot sell that vehicle, you do not own it!" in
+  let () = print_endline "You cannot sell that vehicle, you do not own it!\n" in
   Nothing
 
 let set_vehicle_dest player_id v_old start_loc end_loc st =
@@ -437,16 +443,16 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
       v_old with destination = first_dest::dest_list;
       status = stat;
     }
-    else let () = print_endline "You cannot route that vehicle, you do not own it!" in v_old
+    else let () = print_endline "You cannot route that vehicle, you do not own it!\n" in v_old
   in
-  SetVehicleDestination(v)
+  print_endline "Vehicle enroute.\n"; SetVehicleDestination(v)
 
 let buy_vehicle_cargo player_id v_old r_type st =
   let vehicle_max = match v_old.v_t with
     | Car -> car_capacity
     | Truck -> truck_capacity in
   match v_old.v_loc with
-    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
+    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods\n"; Nothing
     | Some location ->
       let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location st.graph).produces in
       let player = List.find (fun p -> p.p_id = player_id) st.players in
@@ -455,5 +461,5 @@ let buy_vehicle_cargo player_id v_old r_type st =
       let v =
         if v_old.v_owner_id = player_id
         then {v_old with cargo = Some {t= r_type; quantity = maxq';}}
-        else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!" in v_old
-      in BuyVehicleCargo(v)
+        else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!\n" in v_old
+      in (print_endline "Cargo purchased.\n"; BuyVehicleCargo(v))
