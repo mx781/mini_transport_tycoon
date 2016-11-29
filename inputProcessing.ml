@@ -196,7 +196,10 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
       ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
         Some (max_profits) else None) in
     match get_new_dest new_graph loc_details with
-    |None, None -> []
+    (*Vehicle is stuck. Buy a road if possible or sell if not.*)
+    |None, None ->
+      [SellVehicle vehicle]
+    (*Choosing not to move due to randomness*)
     |None, Some loc1 -> []
     |Some loc1, Some loc2->
       [SetVehicleDestination ({vehicle with destination = [loc1.l_id]; status = Driving})]
@@ -247,17 +250,7 @@ let good_loc_info graph good =
       (cheaper,expensive))
   graph ((large_float, None, None),(small_float, None, None))
 
-(*Same as above, but returns the most expensive. Save lines later.*)
-(* let exp_good_loc graph good =
-  Map.fold_vertex (fun x y ->
-    match get_good_cost x.accepts good with
-    |None -> y
-    |Some price ->
-      if price > f y then (price, Some x, Some good) else y)
-  graph (small_float, None, None) *)
-
 (*TODO: Use refs to determine above information, as well as roads built*)
-(*TODO: Make vehicle selection random*)
 
 (*Returns the price, location option, and good option containing the cheapest and
  *most expensive goods.
