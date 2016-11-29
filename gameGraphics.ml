@@ -446,9 +446,9 @@ let add_cargo gs player_id =
   if loc = None then Nothing else (
   let cargo = pick_cargo (get_some loc) in
   if cargo = None then Nothing else (
-  print_endline "That will cost $\nConfirm to buy.";
+  (* print_endline "That will cost $\nConfirm to buy.";
   let confirmed = wait_confirm () in
-  (* if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
+  if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
   buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
 let move_auto gs player_id =
