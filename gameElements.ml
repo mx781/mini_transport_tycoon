@@ -138,6 +138,7 @@ let price_update_steps = 10
 let buy_vehicle_condition = 2.
 let large_float = 200000.0
 let small_float = 0.0
+let max_total_capacity = 301
 
 
 (* let form_connection map player_id loc1 loc2 =
@@ -252,7 +253,6 @@ let update_waiting v =
 
 (*Currently only works for driving vehicles*)
 let update_vehicle graph players st v =
-  print_endline (if v.status = Driving then "driving" else "not driving");
   match v.status with
     | Driving -> update_driving_v players graph v st
     | Waiting -> update_waiting v
