@@ -392,13 +392,15 @@ let rec pause () =
   Pause
 
 let buy_car (gs:GameElements.game_state) player_id =
-  print_endline "Select a start location.";
+  print_endline ("Select a start location." ^ "\nThe car will cost $"
+    ^ (string_of_float car_price));
   match get_loc_near gs.graph with None -> (print_endline "Cancelled\n"; Nothing) | Some loc ->
   print_endline "Car bought.\n";
   InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
 let buy_truck (gs:GameElements.game_state) player_id =
-  print_endline "Select a start location.";
+  print_endline ("Select a start location." ^ "\nThe truck will cost $"
+    ^ (string_of_float truck_price));
   match get_loc_near gs.graph with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some loc ->
@@ -408,7 +410,8 @@ let buy_truck (gs:GameElements.game_state) player_id =
 let buy_road (gs:GameElements.game_state) player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "Road will cost $\nConfirm to buy.";
+  let cost = calculate_buy_road_cost (get_some start_loc) (get_some end_loc) gs.graph in
+  print_endline ("The road will cost $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to buy.");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
@@ -417,7 +420,8 @@ let sell_road (gs:GameElements.game_state) player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "You will earn $\nConfirm to sell.";
+  let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
+  print_endline ("You will earn $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to sell.");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)

@@ -121,6 +121,17 @@ let get_route (loc1:int) (loc2:int) state (p_id:int)=
     Some (List.map (fun x -> (t x).l_id) (fst new_path))
 
 
+(*Gets the maximum quantity that can taken by a vehicle*)
+let get_quantity vehicle r_type location curr_money=
+  let vehicle_max = match vehicle.v_t with
+    | Car -> car_capacity
+    | Truck -> truck_capacity in
+  let accepts = List.find (fun gp -> gp.resource = r_type) location.produces in
+  let maxq = min accepts.current vehicle_max in
+  let maxq'= min maxq ( int_of_float (curr_money /. accepts.price)) in
+    maxq'
+
+
 (*Stuff that chooses AI movement based on a list of connections*)
 (*TODO: Fix quantity bought.*)
 let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id =
@@ -138,25 +149,28 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
   (*Need to fix use of 1 here: TODO*)
   if f max_profits > 0. then
-    ((* print_endline "asdf2"; *)
-    let new_path =
-      try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
-      |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
-    let destinations = List.map (fun x -> (t x).l_id) (fst new_path) in
+    (* print_endline "asdf2"; *)
     let the_good = (get_o (t max_profits)).resource in
-    (*TODO: FIX*)
-   let () = match !ai_info with
-    |Some funct ->
-      (*FIX*)
-      let old_funct = get_o (!ai_info) in
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else old_funct x)
-    |None ->
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else None) in
-    (* print_endline (string_of_int (List.hd destinations)^"HALP"); *)
-    [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = 1})});
-    SetVehicleDestination ({vehicle with destination = destinations; status = Driving})])
+    let q = get_quantity vehicle the_good loc_details curr_m in
+    if q > 0 || vehicle.cargo <> None then
+      let new_path =
+        try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
+        |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
+      let destinations = List.map (fun x -> (t x).l_id) (fst new_path) in
+      (*TODO: FIX*)
+      let () = match !ai_info with
+      |Some funct ->
+        (*FIX*)
+        let old_funct = get_o (!ai_info) in
+        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
+          Some (max_profits) else old_funct x)
+      |None ->
+        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
+          Some (max_profits) else None) in
+      print_endline (string_of_int (List.hd destinations) ^ "halp");
+      [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = q})});
+      SetVehicleDestination ({vehicle with destination = destinations; status = Driving})]
+    else []
   else
     let () = match !ai_info with
     |Some funct ->
@@ -338,15 +352,8 @@ let make_c_move (state: game_state) c_id =
   (*Requires a field that checks the average profit per vehicle and the
    *number of vehicles.*)
 (*TODO: Include ref that takes into account number of roads built*)
-
-
-
-
-
-
-
-
-
+(*TODO: move vehicles if frozen....*)
+(*TODO: build more than one road*)
 
 
 
@@ -446,7 +453,7 @@ let buy_vehicle_cargo player_id v_old r_type st =
     | Car -> car_capacity
     | Truck -> truck_capacity in
   match v_old.v_loc with
-    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods"; Nothing
+    | None -> print_endline "Please route your vehicle to a market before attempting to purchase goods"; Nothing
     | Some location ->
       let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location st.graph).produces in
       let player = List.find (fun p -> p.p_id = player_id) st.players in
