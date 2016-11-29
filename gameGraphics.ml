@@ -331,6 +331,7 @@ let rec get_auto_near gs =
     (fun v -> let (x1,y1) = round v.x, round v.y in
               if (abs (x*2/ !scale - x1) < close_enough)
               && (abs (y*2/ !scale - y1) < close_enough)
+              && v.v_owner_id = 0
                                   then auto := Some v else () ) gs.vehicles;
   match !auto with
   | Some v -> Some v
