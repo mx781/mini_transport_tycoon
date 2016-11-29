@@ -210,11 +210,16 @@ let update_driving_v players graph v st =
                      | None -> ()
                      | Some g ->  sell_cargo v' g players graph st; in
                    v'
-        | h::h2::t -> { v with x = new_x; y = new_y;
-                        age = v.age + 1;
-                        destination = h2::t;
-                        v_loc = Some h
-                      }
+        | h::h2::t ->
+        try
+          let e = Map.find_edge graph (get_loc h graph) (get_loc h2 graph) in
+          { v with x = dest_x; y = dest_y;
+            age = v.age + 1;
+            destination = h2::t;
+            v_loc = Some h
+          }
+        with Not_found ->
+          {v with age = v.age + 1; destination = []; status = Waiting}
         | _ -> failwith "unexpected vehicle destination pattern")
     else if Random.float 1.0 < breakdown_chance then
     {v with age = v.age + 1; status = Broken}
