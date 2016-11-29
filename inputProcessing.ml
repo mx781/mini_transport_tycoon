@@ -250,8 +250,6 @@ let good_loc_info graph good =
       (cheaper,expensive))
   graph ((large_float, None, None),(small_float, None, None))
 
-(*TODO: Use refs to determine above information, as well as roads built*)
-
 (*Returns the price, location option, and good option containing the cheapest and
  *most expensive goods.
  *Used for profit calculations.*)
@@ -259,11 +257,23 @@ let good_loc_info graph good =
 let get_good_diffs graph goods =
   List.map (fun x -> good_loc_info graph x) goods
 
-(*Gets the greatest differential from from the result in get_good_locs*)
-let get_greatest_dif good_dif =
+(*Iterates over all the edges to determine whether a road exists*)
+let edge_exists graph initial_loc final_loc =
+  Map.fold_edges_e (fun x y -> if (f x).l_id = initial_loc.l_id &&
+    (t x).l_id = final_loc.l_id || (f x).l_id = final_loc.l_id &&
+    (t x).l_id = initial_loc.l_id then true else false) graph false
+
+
+(*Gets one of the greatest diffs from from the result in get_good_locs*)
+(*TODO: Fix manner of getting greatest diffs. RIGHT NOW IT'S A HACK*)
+let get_greatest_dif good_dif graph =
   List.fold_left (fun x y -> let new_diff = (f (snd y) -. f (fst y)) in
     let old_diff = (f (snd x) -. f (fst x)) in
-    if old_diff < new_diff then y else x)
+    let has_been_built =
+      if s (snd x) <> None && s (fst x) <> None then
+        edge_exists graph (get_o (s (snd x))) (get_o (s (fst x)))
+      else false in
+    if old_diff < new_diff && (not has_been_built) then y else x)
     ((large_float, None, None),(small_float, None, None)) good_dif
 
 (*Returns an end_loc based on income. Also checks if the road has already been built*)
@@ -294,25 +304,11 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
   let goods = [Lumber; Iron; Oil; Electronics; Produce] in
   (*Gets cheapest out of all locations*)
   let price_difs = get_good_diffs graph goods in
-  let cheapest = get_greatest_dif price_difs in
-(*   let cheapest = get_cheapest graph goods in
-  let loc = get_o (s cheapest) in
-  let price = f cheapest in
-  let the_good = get_o (t cheapest) in *)
+  let cheapest = get_greatest_dif price_difs graph in
   let loc1 = get_o (s (fst cheapest)) in
   let price = f (fst cheapest) in
   let the_good = get_o (t (fst cheapest)) in
   let loc2 = get_o (s (snd cheapest)) in
-  (* if !ai_info <> None then
-    (
-    let new_loc = build_road graph loc the_good price ai_info c_info in
-    match new_loc with
-    |None -> (None, Some loc)
-    |Some loc2 ->
-    (let new_length = hypot (loc.l_x -. loc2.l_x) (loc.l_y -. loc2.l_y) in
-    (Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
-      l_end = loc.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc)))
-  else (None, Some loc) *)
   let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
   if road_unit_cost*.(new_length**road_length_cost_exponent) +. car_price <= c_info.money then
     Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
@@ -331,9 +327,6 @@ let buy_vehicle c_info initial_loc =
   BuyVehicle {v_owner_id =c_info.p_id; speed = v_speed ;capacity =v_capacity;
     v_t = v_new_t; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
-
-(*Iterates over all the edges to determine whether a road exists*)
-let edge_exists graph initial_loc final_loc = failwith "unimplemented"
 
 
 (*This uses the current game state to determine how the AI should make a move.
@@ -385,7 +378,8 @@ let make_c_move (state: game_state) c_id =
 (*INVENTORY CHECK *)
 
 
-
+(*Have the vehicle, how much money its made, and its steps (how much money
+ *made over time) -> build more vehicles at that location *)
 
 
 
