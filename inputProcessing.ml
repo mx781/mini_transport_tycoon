@@ -84,7 +84,9 @@ let get_good_profit graph good curr_loc =
         |_ -> true
       with
         |Not_found -> false in
-    if new_path && profit > f y then (profit, Some x, Some good) else y) graph
+
+    if new_path && profit > f y && good.current > 10
+    then (profit, Some x, Some good) else y) graph
   (0., None, None)
 
 (*See if item exists in any particular location that can be connected
@@ -307,8 +309,9 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
 (*Buys a vehicle for AI*)
 let buy_vehicle c_info initial_loc =
  (*  print_endline (string_of_int initial_loc.l_id); *)
+  let rand_value = Random.int (2) in
   BuyVehicle {v_owner_id =c_info.p_id; speed = car_speed;capacity =car_capacity;
-    v_t = Car; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
+    v_t = if rand_value = 0 then Car else Truck; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
 (*Iterates over all the edges to determine whether a road exists*)
@@ -337,10 +340,10 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
  (*Finally, buy vehicles*) (*TODO: Remove tests*)
-  if fst buy_road = None && c_money <= car_price *. buy_vehicle_condition then
+  if fst buy_road = None && c_money <= truck_price *. buy_vehicle_condition then
     (*If money not high enough, don't buy vehicle*)
     vehicle_processes
-  else if fst buy_road = None && c_money > car_price *. buy_vehicle_condition then
+  else if fst buy_road = None && c_money > truck_price *. buy_vehicle_condition then
     ((* print_endline "findme"; *)
     (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
   else
@@ -354,8 +357,7 @@ let make_c_move (state: game_state) c_id =
 (*TODO: Include ref that takes into account number of roads built*)
 (*TODO: move vehicles if frozen....*)
 (*TODO: build more than one road*)
-
-
+(*INVENTORY CHECK *)
 
 
 
