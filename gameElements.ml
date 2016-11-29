@@ -185,6 +185,21 @@ let sell_cargo v g players graph st =
   let player' = {player with money = player.money +. new_money} in
   st.players <- List.map (fun p -> if p = player then player' else p) players
 
+let distance l1 l2 =
+  ((l1.l_x -. l2.l_x)**2.0 +. (l1.l_y -. l2.l_y)**2.0)**0.5
+
+let calculate_sell_road_cost start_l end_l =
+  let length = distance start_l end_l in
+  (road_unit_cost*.(length**road_length_cost_exponent)) *.sell_back_percentage
+
+let calculate_buy_road_cost start_l end_l graph =
+  let length = distance start_l end_l in
+  try ignore (Map.find_edge graph start_l end_l);
+    (road_rights_unit_cost *. length)
+  with Not_found ->
+    (road_unit_cost*.(length**road_length_cost_exponent))
+
+
 let update_driving_v players graph v st =
   let dest = Map.fold_vertex
     (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
@@ -210,11 +225,16 @@ let update_driving_v players graph v st =
                      | None -> ()
                      | Some g ->  sell_cargo v' g players graph st; in
                    v'
-        | h::h2::t -> { v with x = new_x; y = new_y;
-                        age = v.age + 1;
-                        destination = h2::t;
-                        v_loc = Some h
-                      }
+        | h::h2::t ->
+        try
+          let e = Map.find_edge graph (get_loc h graph) (get_loc h2 graph) in
+          { v with x = dest_x; y = dest_y;
+            age = v.age + 1;
+            destination = h2::t;
+            v_loc = Some h
+          }
+        with Not_found ->
+          {v with age = v.age + 1; destination = []; status = Waiting}
         | _ -> failwith "unexpected vehicle destination pattern")
     else if Random.float 1.0 < breakdown_chance then
     {v with age = v.age + 1; status = Broken}
@@ -227,6 +247,7 @@ let update_waiting v =
 
 (*Currently only works for driving vehicles*)
 let update_vehicle graph players st v =
+  print_endline (if v.status = Driving then "driving" else "not driving");
   match v.status with
     | Driving -> update_driving_v players graph v st
     | Waiting -> update_waiting v

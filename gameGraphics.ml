@@ -181,7 +181,7 @@ let draw_ograph grph : unit =
      draw_image house
        ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
 
-let draw_vehicle (v:GameElements.vehicle) : unit =
+let draw_vehicle (v:vehicle) : unit =
   let pic = (match v.v_t with
             | Car -> car_img
             | Truck -> truck_img) in
@@ -202,7 +202,7 @@ let draw_vehicle (v:GameElements.vehicle) : unit =
     draw_image img (x-10) (y+20) )
 
 
-let rec draw_vehicles (vs:GameElements.vehicle list) : unit =
+let rec draw_vehicles (vs:vehicle list) : unit =
   match vs with
   | v::t -> draw_vehicles t; draw_vehicle v
   | [] -> ()
@@ -245,7 +245,7 @@ let draw_info_box x y v =
   let box_height = 100 in
   set_color black; fill_rect (x-2) (y-2) 154 (box_height+4);
   set_color white; fill_rect x y 150 box_height;
-  let loc = GameElements.Map.V.label v in
+  let loc = Map.V.label v in
   set_color black;
   (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1";*)
   moveto (x+10) (y+ box_height - 20);
@@ -274,14 +274,14 @@ let draw_info_box x y v =
   let x = stat.mouse_x in
   let y = stat.mouse_y in
   let close_enough = 30 in
-  let labl = GameElements.Map.V.label in
-  GameElements.Map.iter_vertex
+  let labl = Map.V.label in
+  Map.iter_vertex
     (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
               if (abs (x*2/ !scale - round x1) < close_enough)
               && (abs (y*2/ !scale - round y1) < close_enough)
                              then draw_info_box x y v else ()) grph
 
-let draw_game_state (gs:GameElements.game_state) : unit =
+let draw_game_state (gs:game_state) : unit =
   draw_image bg 0 0;
   draw_players gs.players;
   draw_ograph gs.graph;
@@ -309,8 +309,8 @@ let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
               else pos in
   let loc = ref None in
   let close_enough = 30 in
-  let labl = GameElements.Map.V.label in
-  GameElements.Map.iter_vertex
+  let labl = Map.V.label in
+  Map.iter_vertex
     (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
               if (abs (x*2/ !scale - round x1) < close_enough)
               && (abs (y*2/ !scale - round y1) < close_enough)
@@ -326,7 +326,7 @@ let rec get_auto_near gs =
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let auto = ref None in
   let close_enough = 30 in
-  let labl = GameElements.Map.V.label in
+  let labl = Map.V.label in
   List.iter
     (fun v -> let (x1,y1) = round v.x, round v.y in
               if (abs (x*2/ !scale - x1) < close_enough)
@@ -344,26 +344,26 @@ let get_start_end grph =
   if start_loc = None then (None, None) else
   (print_endline "Select an end location.";
   let end_loc =
-    get_loc_near ~l_id:(GameElements.Map.V.label (get_some start_loc)).l_id grph in
+    get_loc_near ~l_id:(Map.V.label (get_some start_loc)).l_id grph in
   (start_loc, end_loc))
 
 let rec pick_cargo loc =
   let res_start = start_height-6*spacing in
   let res_space = 56 in
   let resource_list = List.map (fun prod -> prod.resource) loc.produces in
-  if List.exists ((=) GameElements.Electronics) resource_list
+  if List.exists ((=) Electronics) resource_list
     then draw_image tech button_width res_start
     else draw_image notech button_width res_start;
-  if List.exists ((=) GameElements.Oil) resource_list
+  if List.exists ((=) Oil) resource_list
     then draw_image oil (button_width+res_space) res_start
     else draw_image nooil (button_width+res_space) res_start;
-  if List.exists ((=) GameElements.Produce) resource_list
+  if List.exists ((=) Produce) resource_list
     then draw_image fruit (button_width+2*res_space) res_start
     else draw_image nofruit (button_width+2*res_space) res_start;
-  if List.exists ((=) GameElements.Lumber) resource_list
+  if List.exists ((=) Lumber) resource_list
     then draw_image wood (button_width+3*res_space) res_start
     else draw_image nowood (button_width+3*res_space) res_start;
-  if List.exists ((=) GameElements.Iron) resource_list
+  if List.exists ((=) Iron) resource_list
     then draw_image drugs (button_width+4*res_space) res_start
     else draw_image nodrugs (button_width+4*res_space) res_start;
   let stat = wait_next_event [Button_down] in
@@ -372,14 +372,21 @@ let rec pick_cargo loc =
   if y > res_start+button_height || y < res_start
     then pick_cargo loc else
   let cargo =
-  if x > button_width && x < button_width+res_space then Some Electronics else
-  if x > button_width+res_space && x < button_width+2*res_space then Some Oil else
-  if x > button_width+2*res_space && x < button_width+3*res_space then Some Produce else
-  if x > button_width+3*res_space && x < button_width+4*res_space then Some Lumber else
-  if x > button_width+4*res_space && x < button_width+5*res_space then Some Iron else
-  pick_cargo loc in
+  if x > button_width && x < button_width+res_space
+    then Some Electronics else
+  if x > button_width+res_space && x < button_width+2*res_space
+    then Some Oil else
+  if x > button_width+2*res_space && x < button_width+3*res_space
+    then Some Produce else
+  if x > button_width+3*res_space && x < button_width+4*res_space
+    then Some Lumber else
+  if x > button_width+4*res_space && x < button_width+5*res_space
+    then Some Iron
+  else
+    pick_cargo loc in
   if cargo = None then None else
-  if List.exists ((=) (get_some cargo)) resource_list then cargo else pick_cargo loc
+  if List.exists ((=) (get_some cargo)) resource_list
+  then cargo else pick_cargo loc
 
 let quit gs =
   print_endline "Game saved in myGame.json\n";
@@ -391,41 +398,50 @@ let rec pause () =
   print_endline "Game Paused. Click anywhere to continue\n";
   Pause
 
-let buy_car (gs:GameElements.game_state) player_id =
-  print_endline "Select a start location.";
-  match get_loc_near gs.graph with None -> (print_endline "Cancelled\n"; Nothing) | Some loc ->
+let buy_car (gs:game_state) player_id =
+  print_endline ("Select a start location." ^ "\nThe car will cost $"
+    ^ (string_of_float car_price));
+  match get_loc_near gs.graph with
+  | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some loc ->
   print_endline "Car bought.\n";
   InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
-let buy_truck (gs:GameElements.game_state) player_id =
-  print_endline "Select a start location.";
+let buy_truck (gs:game_state) player_id =
+  print_endline ("Select a start location." ^ "\nThe truck will cost $"
+    ^ (string_of_float truck_price));
   match get_loc_near gs.graph with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some loc ->
   print_endline "Truck bought.\n";
   InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
-let buy_road (gs:GameElements.game_state) player_id =
+let buy_road gs player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
-  if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "Road will cost $\nConfirm to buy.";
+  if start_loc = None || end_loc = None
+  then (print_endline "Cancelled\n"; Nothing) else (
+  let cost = calculate_buy_road_cost (get_some start_loc) (get_some end_loc) gs.graph in
+  print_endline ("The road will cost $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to buy.");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
-let sell_road (gs:GameElements.game_state) player_id =
+let sell_road gs player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
-  print_endline "You will earn $\nConfirm to sell.";
+  let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
+  print_endline ("You will earn $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to sell.");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
 
-let add_cargo (gs:GameElements.game_state) player_id =
+let add_cargo gs player_id =
   print_endline "Pick a vehicle.";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some auto when auto.status = Driving ->
+    (print_endline "Vehicle must be stopped at a location."; Nothing)
   | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
   let loc = get_loc_near ~click:false ~pos:(round auto.x, round auto.y) gs.graph in
@@ -434,10 +450,10 @@ let add_cargo (gs:GameElements.game_state) player_id =
   if cargo = None then Nothing else (
   print_endline "That will cost $\nConfirm to buy.";
   let confirmed = wait_confirm () in
-  if not confirmed then (print_endline "Cancelled\n"; Nothing) else
+  (* if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
   buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
-let move_auto (gs:GameElements.game_state) player_id =
+let move_auto gs player_id =
   print_endline "Pick a vehicle to move.";
   match get_auto_near gs with None -> (print_endline "Cancelled"; Nothing) | Some auto ->
   print_endline "Choose destination.";
@@ -448,13 +464,14 @@ let move_auto (gs:GameElements.game_state) player_id =
     | Some loc -> get_loc loc gs.graph in
   set_vehicle_dest player_id auto l dest gs
 
-let sell_auto (gs:GameElements.game_state) player_id =
+let sell_auto gs player_id =
   print_endline "Pick a vehicle to sell.";
-  match get_auto_near gs with None -> (print_endline "Cancelled\n"; Nothing) | Some auto ->
-  print_endline "Vehicle is sold.\n";
-  sell_vehicle player_id auto
+  match get_auto_near gs with
+  | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some auto -> print_endline "Vehicle is sold.\n";
+                 sell_vehicle player_id auto
 
-let click_buttons (gs:GameElements.game_state) player_id =
+let click_buttons gs player_id =
   let status = wait_next_event [Poll;Button_up;Button_down] in
   let x = status.mouse_x in
   let y = status.mouse_y in
@@ -485,15 +502,24 @@ let click_buttons (gs:GameElements.game_state) player_id =
 let rec rec_draw_circles p_win =
    let color = (player_color p_win) in
     set_color color;
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    fill_circle (Random.int screen_width * !scale) (Random.int screen_height * !scale) 20;
-    fill_circle (Random.int screen_width * !scale) (Random.int screen_height * !scale) 20;
-    draw_image truck_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    draw_image car_img (Random.int screen_width * !scale) (Random.int screen_height * !scale);
-    draw_image drugs (Random.int screen_width * !scale) (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    fill_circle (Random.int screen_width * !scale)
+                (Random.int screen_height * !scale) 20;
+    fill_circle (Random.int screen_width * !scale)
+                (Random.int screen_height * !scale) 20;
+    draw_image truck_img (Random.int screen_width * !scale)
+                         (Random.int screen_height * !scale);
+    draw_image car_img (Random.int screen_width * !scale)
+                       (Random.int screen_height * !scale);
+    draw_image drugs (Random.int screen_width * !scale)
+                     (Random.int screen_height * !scale);
     draw_image gameover (screen_width/2) (screen_height);
     Unix.sleepf 0.003;
     rec_draw_circles p_win; ()
