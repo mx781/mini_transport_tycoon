@@ -430,7 +430,7 @@ let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle.";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
-  | Some auto when auto.status = Driving -> (print_enline "Vehicle must be stopped at a location."; Nothing)
+  | Some auto when auto.status = Driving -> (print_endline "Vehicle must be stopped at a location."; Nothing)
   | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
   let loc = get_loc_near ~click:false ~pos:(round auto.x, round auto.y) gs.graph in
