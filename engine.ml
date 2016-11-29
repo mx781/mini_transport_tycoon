@@ -149,19 +149,21 @@ let set_v_cargo v st =
   else {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
 
 
-let rec handle_processes proclist st =
+let rec handle_processes proclist st road_bought =
   match proclist with
     | [] -> st
-    | BuyVehicle(v)::t -> handle_processes t (buy_vehicle v st)
-    | SellVehicle(v)::t -> handle_processes t (sell_vehicle v st)
-    | SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st)
-    | BuyVehicleCargo(v)::t -> handle_processes t (set_v_cargo v st)
-    | AddRoad(c)::t -> handle_processes t (buy_connection c st)
-    | DeleteRoad(c)::t -> handle_processes t (sell_connection c st)
-    | PurchaseRoad(c)::t -> handle_processes t (change_connection_owner c st)
-    | Pause::t-> handle_processes t ({st with paused = not st.paused})
+    | BuyVehicle(v)::t -> handle_processes t (buy_vehicle v st) road_bought
+    | SellVehicle(v)::t -> handle_processes t (sell_vehicle v st) road_bought
+    | SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st) road_bought
+    | BuyVehicleCargo(v)::t -> handle_processes t (set_v_cargo v st) road_bought
+    | AddRoad(c)::t ->
+        handle_processes t (if road_bought then st else buy_connection c st) true
+    | DeleteRoad(c)::t -> handle_processes t (sell_connection c st) road_bought
+    | PurchaseRoad(c)::t ->
+        handle_processes t (if road_bought then st else change_connection_owner c st) true
+    | Pause::t-> handle_processes t ({st with paused = not st.paused}) road_bought
     | EndGame::t -> raise EndGame
-    | Nothing:: t -> handle_processes t st
+    | Nothing:: t -> handle_processes t st road_bought
 
 let rec generate_processes st players procs =
   match players with
@@ -184,7 +186,7 @@ let rec main_loop st =
     if p_win <> (-1) then GameGraphics.draw_winner p_win st else
     GameGraphics.draw_game_state st;
     let processes = generate_processes st st.players [] in
-    let st' = handle_processes processes st in
+    let st' = handle_processes processes st false in
     let new_vehicles = update_vehicles st'.vehicles st'.graph st'.players st' in
     let new_graph = update_locations st'.graph st'.game_age in
     let st'' = { vehicles = new_vehicles;
