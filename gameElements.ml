@@ -247,6 +247,7 @@ let update_waiting v =
 
 (*Currently only works for driving vehicles*)
 let update_vehicle graph players st v =
+  print_endline (if v.status = Driving then "driving" else "not driving");
   match v.status with
     | Driving -> update_driving_v players graph v st
     | Waiting -> update_waiting v

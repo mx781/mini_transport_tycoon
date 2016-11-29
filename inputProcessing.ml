@@ -84,7 +84,9 @@ let get_good_profit graph good curr_loc =
         |_ -> true
       with
         |Not_found -> false in
-    if new_path && profit > f y then (profit, Some x, Some good) else y) graph
+
+    if new_path && profit > f y && good.current > 10
+    then (profit, Some x, Some good) else y) graph
   (0., None, None)
 
 (*See if item exists in any particular location that can be connected
@@ -121,6 +123,17 @@ let get_route (loc1:int) (loc2:int) state (p_id:int)=
     Some (List.map (fun x -> (t x).l_id) (fst new_path))
 
 
+(*Gets the maximum quantity that can taken by a vehicle*)
+let get_quantity vehicle r_type location curr_money=
+  let vehicle_max = match vehicle.v_t with
+    | Car -> car_capacity
+    | Truck -> truck_capacity in
+  let accepts = List.find (fun gp -> gp.resource = r_type) location.produces in
+  let maxq = min accepts.current vehicle_max in
+  let maxq'= min maxq ( int_of_float (curr_money /. accepts.price)) in
+    maxq'
+
+
 (*Stuff that chooses AI movement based on a list of connections*)
 (*TODO: Fix quantity bought.*)
 let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id =
@@ -138,25 +151,28 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
   (*Need to fix use of 1 here: TODO*)
   if f max_profits > 0. then
-    ((* print_endline "asdf2"; *)
-    let new_path =
-      try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
-      |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
-    let destinations = List.map (fun x -> (t x).l_id) (fst new_path) in
+    (* print_endline "asdf2"; *)
     let the_good = (get_o (t max_profits)).resource in
-    (*TODO: FIX*)
-   let () = match !ai_info with
-    |Some funct ->
-      (*FIX*)
-      let old_funct = get_o (!ai_info) in
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else old_funct x)
-    |None ->
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else None) in
-    (* print_endline (string_of_int (List.hd destinations)^"HALP"); *)
-    [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = 1})});
-    SetVehicleDestination ({vehicle with destination = destinations; status = Driving})])
+    let q = get_quantity vehicle the_good loc_details curr_m in
+    if q > 0 || vehicle.cargo <> None then
+      let new_path =
+        try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
+        |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
+      let destinations = List.map (fun x -> (t x).l_id) (fst new_path) in
+      (*TODO: FIX*)
+      let () = match !ai_info with
+      |Some funct ->
+        (*FIX*)
+        let old_funct = get_o (!ai_info) in
+        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
+          Some (max_profits) else old_funct x)
+      |None ->
+        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
+          Some (max_profits) else None) in
+      print_endline (string_of_int (List.hd destinations) ^ "halp");
+      [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = q})});
+      SetVehicleDestination ({vehicle with destination = destinations; status = Driving})]
+    else []
   else
     let () = match !ai_info with
     |Some funct ->
@@ -293,8 +309,9 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
 (*Buys a vehicle for AI*)
 let buy_vehicle c_info initial_loc =
  (*  print_endline (string_of_int initial_loc.l_id); *)
+  let rand_value = Random.int (2) in
   BuyVehicle {v_owner_id =c_info.p_id; speed = car_speed;capacity =car_capacity;
-    v_t = Car; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
+    v_t = if rand_value = 0 then Car else Truck; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
 (*Iterates over all the edges to determine whether a road exists*)
@@ -323,10 +340,10 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
  (*Finally, buy vehicles*) (*TODO: Remove tests*)
-  if fst buy_road = None && c_money <= car_price *. buy_vehicle_condition then
+  if fst buy_road = None && c_money <= truck_price *. buy_vehicle_condition then
     (*If money not high enough, don't buy vehicle*)
     vehicle_processes
-  else if fst buy_road = None && c_money > car_price *. buy_vehicle_condition then
+  else if fst buy_road = None && c_money > truck_price *. buy_vehicle_condition then
     ((* print_endline "findme"; *)
     (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
   else
@@ -338,17 +355,9 @@ let make_c_move (state: game_state) c_id =
   (*Requires a field that checks the average profit per vehicle and the
    *number of vehicles.*)
 (*TODO: Include ref that takes into account number of roads built*)
-
-
-
-
-
-
-
-
-
-
-
+(*TODO: move vehicles if frozen....*)
+(*TODO: build more than one road*)
+(*INVENTORY CHECK *)
 
 
 
