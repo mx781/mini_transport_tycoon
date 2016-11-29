@@ -270,7 +270,7 @@ let new_gp g_a gp =
   current = min
     (gp.current + (if g_a mod gp.steps_to_inc = 0 then 1 else 0)) (gp.capacity);
   price = max (gp.price +. if g_a mod price_update_steps = 0
-    then (0.02*. (2.0*.(Random.float gp.natural_price) -. gp.natural_price))
+    then (0.05*. (2.0*.(Random.float gp.natural_price) -. gp.natural_price))
     else 0.0) 0.0;
   }
 
