@@ -426,6 +426,7 @@ let add_cargo (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle.";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
+  | Some auto when auto.status = Driving -> (print_enline "Vehicle must be stopped at a location."; Nothing)
   | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
   let loc = get_loc_near ~click:false ~pos:(round auto.x, round auto.y) gs.graph in
@@ -434,7 +435,7 @@ let add_cargo (gs:GameElements.game_state) player_id =
   if cargo = None then Nothing else (
   print_endline "That will cost $\nConfirm to buy.";
   let confirmed = wait_confirm () in
-  if not confirmed then (print_endline "Cancelled\n"; Nothing) else
+  (* if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
   buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
 let move_auto (gs:GameElements.game_state) player_id =
