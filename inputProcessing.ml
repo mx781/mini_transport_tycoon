@@ -390,6 +390,24 @@ let buy_vehicle c_info initial_loc =
     v_t = v_new_t; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
+(*Returns a place to put a vehicle given the current map that will earn
+ * the vehicle profits.*)
+(*Uses a boolean to determine when to stop searching. *)
+(* Always returns the first profitable location. (Would be tedious to do more.) *)
+let get_loc_vehicle c_connections=
+  let empty = Map.empty in
+  let new_graph = add_edges empty c_connections in
+  Map.fold_vertex (fun x y->
+     if snd y then y
+     else
+      let goods_list = x.produces in
+      let max_profits = get_good_loc new_graph goods_list 200. x in
+      if f max_profits > 0. then
+        (s max_profits, true)
+      else
+        y
+  ) new_graph (None, false)
+
 (*Gets a location for a vehicle *)
 (*This uses the current game state to determine how the AI should make a move.
 ( p_id refers to the id of the AI *)
@@ -438,7 +456,7 @@ let make_c_move (state: game_state) c_id =
     vehicle_processes
  *)
   if fst buy_road <> None && num_only_c_connections < 3 then
-    (if c_money > truck_price *. buy_vehicle_condition
+    (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >=0 then
     (get_o (fst buy_road)) :: (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc))::
     vehicle_processes
@@ -446,10 +464,14 @@ let make_c_move (state: game_state) c_id =
        (get_o (fst buy_road)) :: vehicle_processes)
   else
     ((* print_endline (string_of_bool (total_capacity <= max_total_capacity)); *)
-    (if c_money > truck_price *. buy_vehicle_condition
+    (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >= 0 then
     ((* print_endline "ASDF"; *)
     (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc)):: vehicle_processes)
+    else if c_money > truck_price && total_capacity <= max_total_capacity then
+      match fst (get_loc_vehicle c_connections) with
+      |None -> vehicle_processes
+      |Some loc -> (buy_vehicle c_player_info loc) :: vehicle_processes
     else
       vehicle_processes))
 (*TODO: Fix buy vehicle condition (determine when not profitable)*)
