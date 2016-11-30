@@ -28,11 +28,16 @@ let f (x, _, _) = x
 let s (_,y,_) = y
 let t (_,_,z) = z
 
-(*Gets roads from player as a list*)
+(*Gets roads accessible from player as a list*)
 let get_roads p_id graph=
   Map.fold_edges_e
     (fun x y->if (Map.E.label x).c_owner_id=p_id ||
       (Map.E.label x).c_owner_id = (-1) then x::y else y) graph []
+
+(*Gets computer player's roads*)
+let get_c_roads p_id graph =
+Map.fold_edges_e
+    (fun x y->if (Map.E.label x).c_owner_id=p_id then x::y else y) graph []
 
 (*Allows the AI to activate waiting vehicles*)
 let rec activate_vehicles v_list =
@@ -232,6 +237,18 @@ let rec get_cheapest graph goods =
     if f this_cheapest < f next_cheapest then this_cheapest else next_cheapest)
   |[] -> (200000.0, None, None)
 
+(*Iterates over all the edges to determine whether a road exists*)
+let edge_exists graph initial_loc final_loc =
+ (*  Map.fold_edges_e (fun x y -> if (f x).l_id = initial_loc.l_id &&
+    (t x).l_id = final_loc.l_id || (f x).l_id = final_loc.l_id &&
+    (t x).l_id = initial_loc.l_id then ((* print_endline "GUIDE DANG IT"; *) true) else
+  ) graph false *)
+  try
+    match Map.find_edge graph initial_loc final_loc with
+        |_ -> true
+  with
+    Not_found -> false
+
 (*Returns the price, location option, and good option describing the location with
  *a good at the cheapest and most expensive prices (produces/accepts).
  *CHEAPEST FIRST, MOST EXPENSIVE SECOND*)
@@ -241,13 +258,61 @@ let good_loc_info graph good =
     match get_good_cost x.produces good with
     |None -> fst y
     |Some price ->
-      if price < f (fst y) then (price, Some x, Some good) else fst y in
+      if s (snd y) <> None then
+        (if price < f (fst y) && not(edge_exists graph x (get_o (s (snd y))))then
+          (price, Some x, Some good)
+        else
+          fst y)
+      else
+        (if price < f (fst y) then (price, Some x, Some good) else fst y) in
     let expensive =
     match get_good_cost x.accepts good with
     |None -> snd y
     |Some price ->
-      if price > f (snd y) then (price, Some x, Some good) else snd y in
-      (cheaper,expensive))
+      if s (fst y) <> None then
+        (if price > f (snd y) && not(edge_exists graph x (get_o (s (fst y))))then
+          (price, Some x, Some good)
+        else
+          snd y)
+      else
+        (if price > f (snd y) then (price, Some x, Some good) else snd y) in
+      (*TODO: DEBUG*)
+      (cheaper,expensive)
+    )
+  graph ((large_float, None, None),(small_float, None, None))
+
+(*Returns the price, location option, and good option describing the location with
+ *a good at the cheapest and most expensive prices (produces/accepts).
+ *CHEAPEST FIRST, MOST EXPENSIVE SECOND. This is a more CPU intensive version
+ *of the first algorithm but is guaranteed to find all "profitable" roads.
+ *TODO: MAY NOT BE USED.*)
+let good_loc_info2 graph good =
+  Map.fold_vertex (fun x y ->
+    let cheaper =
+    match get_good_cost x.produces good with
+    |None -> fst y
+    |Some price ->
+      if s (snd y) <> None then
+        (if price < f (fst y) && not(edge_exists graph x (get_o (s (snd y))))then
+          (price, Some x, Some good)
+        else
+          fst y)
+      else
+        (if price < f (fst y) then (price, Some x, Some good) else fst y) in
+    let expensive =
+    match get_good_cost x.accepts good with
+    |None -> snd y
+    |Some price ->
+      if s (fst y) <> None then
+        (if price > f (snd y) && not(edge_exists graph x (get_o (s (fst y))))then
+          (price, Some x, Some good)
+        else
+          snd y)
+      else
+        (if price > f (snd y) then (price, Some x, Some good) else snd y) in
+      (*TODO: DEBUG*)
+      (cheaper,expensive)
+    )
   graph ((large_float, None, None),(small_float, None, None))
 
 (*Returns the price, location option, and good option containing the cheapest and
@@ -257,22 +322,15 @@ let good_loc_info graph good =
 let get_good_diffs graph goods =
   List.map (fun x -> good_loc_info graph x) goods
 
-(*Iterates over all the edges to determine whether a road exists*)
-let edge_exists graph initial_loc final_loc =
-  Map.fold_edges_e (fun x y -> if (f x).l_id = initial_loc.l_id &&
-    (t x).l_id = final_loc.l_id || (f x).l_id = final_loc.l_id &&
-    (t x).l_id = initial_loc.l_id then true else false) graph false
-
-
 (*Gets one of the greatest diffs from from the result in get_good_locs*)
 (*TODO: Fix manner of getting greatest diffs. RIGHT NOW IT'S A HACK*)
 let get_greatest_dif good_dif graph =
   List.fold_left (fun x y -> let new_diff = (f (snd y) -. f (fst y)) in
     let old_diff = (f (snd x) -. f (fst x)) in
     let has_been_built =
-      if s (snd x) <> None && s (fst x) <> None then
-        edge_exists graph (get_o (s (snd x))) (get_o (s (fst x)))
-      else false in
+      if s (snd y) <> None && s (fst y) <> None then
+        edge_exists graph (get_o (s (snd y))) (get_o (s (fst y)))
+      else true in
     if old_diff < new_diff && (not has_been_built) then y else x)
     ((large_float, None, None),(small_float, None, None)) good_dif
 
@@ -305,17 +363,21 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
   (*Gets cheapest out of all locations*)
   let price_difs = get_good_diffs graph goods in
   let cheapest = get_greatest_dif price_difs graph in
-  let loc1 = get_o (s (fst cheapest)) in
-  let price = f (fst cheapest) in
-  let the_good = get_o (t (fst cheapest)) in
-  let loc2 = get_o (s (snd cheapest)) in
-  let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
-  if road_unit_cost*.(new_length**road_length_cost_exponent) +. car_price <= c_info.money then
-    Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
-    l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc1
+  if s (fst cheapest) = None || s (snd cheapest) = None then
+    None, None
   else
-    None, Some loc1
+    let loc1 = get_o (s (fst cheapest)) in
+    let price = f (fst cheapest) in
+    let the_good = get_o (t (fst cheapest)) in
+    let loc2 = get_o (s (snd cheapest)) in
+    let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
+    if road_unit_cost*.(new_length**road_length_cost_exponent) +. truck_price <= c_info.money then
+      ((* if edge_exists graph loc1 loc2 then print_endline "failure" else print_endline (string_of_int loc1.l_id ^ string_of_int loc2.l_id); *)
 
+      Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
+      l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc1)
+    else
+      None, Some loc1
 
 (*Buys a vehicle for AI*)
 let buy_vehicle c_info initial_loc =
@@ -328,7 +390,7 @@ let buy_vehicle c_info initial_loc =
     v_t = v_new_t; cargo= None; age=0; status = Waiting; x=initial_loc.l_x;
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
-
+(*Gets a location for a vehicle *)
 (*This uses the current game state to determine how the AI should make a move.
 ( p_id refers to the id of the AI *)
 let make_c_move (state: game_state) c_id =
@@ -340,6 +402,12 @@ let make_c_move (state: game_state) c_id =
   if c_player.p_type = Human then failwith "not a computer, TALK TO DAN" else
   let c_vehicles = get_owned_vehicles c_id state.vehicles in
   let c_connections = get_roads c_id state.graph in
+  let only_c_connections = get_c_roads c_id state.graph in
+  let num_only_c_connections = List.length (only_c_connections) in
+  let first_v_loc =
+    if num_only_c_connections > 0 then
+      (f (List.hd only_c_connections)).l_id
+    else (-1) in
   let c_player_info = get_p_info c_id state.players in
   let total_capacity = get_vehicle_capacity c_vehicles 0 in
   (*First, check for waiting vehicles*)
@@ -355,8 +423,7 @@ let make_c_move (state: game_state) c_id =
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
  (*Finally, buy vehicles*) (*TODO: Remove tests*)
  (* print_endline "FIND ME"; *)
-  if fst buy_road = None && c_money <= truck_price *. buy_vehicle_condition ||
-    total_capacity > max_total_capacity then
+  (* if fst buy_road = None &&(c_money <= truck_price *. buy_vehicle_condition || total_capacity > max_total_capacity) then
     (*If money not high enough, don't buy vehicle*)
     ((* print_endline "ASDf" ;*)
     vehicle_processes)
@@ -364,11 +431,27 @@ let make_c_move (state: game_state) c_id =
     && total_capacity <= max_total_capacity then
     ((* print_endline "findme" ;*)
     (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
+  else if num_only_c_connections < 3 then
+   ((* print_endline "findme3"; *)
+     (get_o (fst buy_road)) :: vehicle_processes)
   else
-  ((*  print_endline "findme3" ;*)
-    (buy_vehicle c_player_info (get_o (snd buy_road)))
-    :: (get_o (fst buy_road)) :: vehicle_processes)
-
+    vehicle_processes
+ *)
+  if fst buy_road <> None && num_only_c_connections < 3 then
+    (if c_money > truck_price *. buy_vehicle_condition
+      && total_capacity <= max_total_capacity && first_v_loc >=0 then
+    (get_o (fst buy_road)) :: (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc))::
+    vehicle_processes
+    else
+       (get_o (fst buy_road)) :: vehicle_processes)
+  else
+    ((* print_endline (string_of_bool (total_capacity <= max_total_capacity)); *)
+    (if c_money > truck_price *. buy_vehicle_condition
+      && total_capacity <= max_total_capacity && first_v_loc >= 0 then
+    ((* print_endline "ASDF"; *)
+    (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc)):: vehicle_processes)
+    else
+      vehicle_processes))
 (*TODO: Fix buy vehicle condition (determine when not profitable)*)
   (*Requires a field that checks the average profit per vehicle and the
    *number of vehicles.*)

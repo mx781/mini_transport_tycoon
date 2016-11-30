@@ -13,27 +13,27 @@
         {
             "pid": 1,
             "ptype": {"AI": 2},
-            "money": 4000.0
+            "money": 8000.0
         },
         {
             "pid": 2,
             "ptype": {"AI": 2},
-            "money": 4000.0
+            "money": 8000.0
         },
         {
             "pid": 3,
             "ptype": {"AI": 2},
-            "money": 4000.0
+            "money": 8000.0
         },
         {
             "pid": 4,
             "ptype": {"AI": 2},
-            "money": 4000.0
+            "money": 8000.0
         },
         {
-            "pid": 4,
+            "pid": 5,
             "ptype": {"AI": 2},
-            "money": 4000.0
+            "money": 8000.0
         }
     ],
     "graph": {
