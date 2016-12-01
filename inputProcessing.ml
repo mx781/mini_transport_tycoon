@@ -340,7 +340,7 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
     let loc2 = get_o (s (snd cheapest)) in
     let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
     if road_unit_cost*.(new_length**road_length_cost_exponent) +.
-      truck_price + safe_amount <= c_info.money then
+      truck_price +. safe_amount <= c_info.money then
       ((* if edge_exists graph loc1 loc2 then print_endline "failure" else print_endline (string_of_int loc1.l_id ^ string_of_int loc2.l_id); *)
       Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
       l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}),
