@@ -140,11 +140,11 @@ let player_color pid =
   match pid with
   | -1 -> default_color
   | 0 -> red
-  | 1 -> blue
-  | 2 -> yellow
-  | 3 -> green
-  | 4 -> white
-  | _ -> black
+  | 1 -> yellow
+  | 2 -> blue
+  | 3 -> white
+  | 4 -> black
+  | _ -> green
 
 (******************************GRAPHICS****************************************)
 
@@ -473,7 +473,8 @@ let click_buttons gs player_id =
   let status = wait_next_event [Poll;Button_up;Button_down] in
   let x = status.mouse_x in
   let y = status.mouse_y in
-  if not (button_down () && x < button_width) then Nothing
+  if not (button_down () && x < button_width && x > 0) then Nothing
+  else if x > screen_width || x < 0 then pause ()
   else (
     if y < start_height+button_height
        && y > start_height then quit gs else
@@ -518,6 +519,8 @@ let rec rec_draw_circles p_win =
                        (Random.int screen_height * !scale);
     draw_image drugs (Random.int screen_width * !scale)
                      (Random.int screen_height * !scale);
+
+    fill_rect (screen_width/2) (screen_height) 460 100;
     draw_image gameover (screen_width/2) (screen_height);
     Unix.sleepf 0.003;
     rec_draw_circles p_win; ()
