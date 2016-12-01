@@ -180,13 +180,14 @@ let sell_cargo v g players graph st =
   let sell_l' = match sell_l with
     | None -> failwith "location does not exist"
     | Some l -> l in
-  let sell_price =
   try
-    (List.find (fun gp -> gp.resource = g.t) sell_l'.accepts).price
-  with _ -> 0.0 in
-  let new_money = (float_of_int g.quantity) *. sell_price in
-  let player' = {player with money = player.money +. new_money} in
-  st.players <- List.map (fun p -> if p = player then player' else p) players
+    let sell_price =
+    (List.find (fun gp -> gp.resource = g.t) sell_l'.accepts).price in
+    let new_money = (float_of_int g.quantity) *. sell_price in
+    let player' = {player with money = player.money +. new_money} in
+    st.players <- List.map (fun p -> if p = player then player' else p) players;
+    true
+  with _ -> false
 
 let distance l1 l2 =
   ((l1.l_x -. l2.l_x)**2.0 +. (l1.l_y -. l2.l_y)**2.0)**0.5
@@ -224,10 +225,13 @@ let update_driving_v players graph v st =
                      status = Waiting;
                      v_loc = Some h
                    } in
-                   let () = match v.cargo with
-                     | None -> ()
-                     | Some g ->  sell_cargo v' g players graph st; in
-                   v'
+                   let v'' = match v.cargo with
+                      | None -> v'
+                      | Some g ->
+                        {v' with cargo = if sell_cargo v' g players graph st
+                                         then None
+                                         else Some g} in
+                     v''
         | h::h2::t ->
         try
           let e = Map.find_edge graph (get_loc h graph) (get_loc h2 graph) in
@@ -267,7 +271,7 @@ let new_gp g_a gp =
   current = min
     (gp.current + (if g_a mod gp.steps_to_inc = 0 then 1 else 0)) (gp.capacity);
   price = max (gp.price +. if g_a mod price_update_steps = 0
-    then (0.02*. (2.0*.(Random.float gp.natural_price) -. gp.natural_price))
+    then (0.04*. (2.0*.(Random.float gp.natural_price) -. gp.natural_price))
     else 0.0) 0.0;
   }
 
