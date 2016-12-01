@@ -8,7 +8,7 @@
         {
             "pid": 0,
             "ptype": {"Human": true},
-            "money": 8000.0
+            "money": 199.0
         },
         {
             "pid": 1,
@@ -62,8 +62,8 @@
                     "stepstoinc": 50,
                     "current": 20,
                     "capacity": 40,
-                    "price": 1.5,
-                    "naturalprice": 1.5
+                    "price": 3.5,
+                    "naturalprice": 3.5
                   }
                 ],
                 "produces": [
@@ -103,8 +103,8 @@
                     "stepstoinc": 50,
                     "current": 20,
                     "capacity": 80,
-                    "price": 2.5,
-                    "naturalprice": 2.5
+                    "price": 7.5,
+                    "naturalprice": 7.5
                   }
                 ],
                 "produces": [
@@ -144,8 +144,8 @@
                     "stepstoinc": 50,
                     "current": 20,
                     "capacity": 400,
-                    "price": 1.9,
-                    "naturalprice": 1.9
+                    "price": 4.9,
+                    "naturalprice": 4.9
                   }
                 ],
                 "produces": [
@@ -177,8 +177,8 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 3.0,
-                    "naturalprice": 3.0
+                    "price": 3.8,
+                    "naturalprice": 3.8
                   },
                   {
                     "resource": {"Electronics": true},
@@ -218,16 +218,16 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 7.0,
-                    "naturalprice": 5.0
+                    "price": 8.0,
+                    "naturalprice": 4.0
                   },
                   {
                     "resource": {"Iron": true},
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 4.5,
-                    "naturalprice": 1.5
+                    "price": 6.5,
+                    "naturalprice": 6.5
                   }
                 ],
                 "produces": [
@@ -259,8 +259,8 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 2.0,
-                    "naturalprice": 2.0
+                    "price": 9.0,
+                    "naturalprice": 9.0
                   },
                   {
                     "resource": {"Lumber": true},
@@ -300,8 +300,8 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 1.0,
-                    "naturalprice": 1.0
+                    "price": 6.0,
+                    "naturalprice": 6.0
                   },
                   {
                     "resource": {"Oil": true},
@@ -390,8 +390,8 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 1.5,
-                    "naturalprice": 1.5
+                    "price": 3.5,
+                    "naturalprice": 3.5
                   }
                 ],
                 "produces": [
@@ -431,8 +431,8 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 2.5,
-                    "naturalprice": 2.5
+                    "price": 7.5,
+                    "naturalprice": 7.5
                   }
                 ],
                 "produces": [
