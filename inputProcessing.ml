@@ -176,30 +176,14 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
         try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
         |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
       let destinations = List.map (fun x -> (t x).l_id) (fst new_path) in
-      (*TODO: FIX*)
-      let () = match !ai_info with
-      |Some funct ->
-        (*FIX*)
-        let old_funct = get_o (!ai_info) in
-        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-          Some (max_profits) else old_funct x)
-      |None ->
-        ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-          Some (max_profits) else None) in
+      let new_cargo_vehicle =
+        {vehicle with cargo = Some ({t = the_good; quantity = q})} in
+      let new_dest_vehicle =
+        {vehicle with destination = destinations; status = Driving} in
       (* print_endline (string_of_int (List.hd destinations) ^ "halp"); *)
-      [BuyVehicleCargo ({vehicle with cargo = Some ({t = the_good; quantity = q})});
-      SetVehicleDestination ({vehicle with destination = destinations; status = Driving})]
+      [BuyVehicleCargo new_cargo_vehicle;SetVehicleDestination new_dest_vehicle]
     else []
   else
-    let () = match !ai_info with
-    |Some funct ->
-      (*FIX*)
-      let old_funct = get_o (!ai_info) in
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else old_funct x)
-    |None ->
-      ai_info := Some (fun x -> if x = (c_id, None) || x = (c_id, Some loc_details) then
-        Some (max_profits) else None) in
     match get_new_dest new_graph loc_details with
     (*Vehicle is stuck. Buy a road if possible or sell if not.*)
     |None, None ->
@@ -207,7 +191,8 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
     (*Choosing not to move due to randomness*)
     |None, Some loc1 -> []
     |Some loc1, Some loc2->
-      [SetVehicleDestination ({vehicle with destination = [loc1.l_id]; status = Driving})]
+      [SetVehicleDestination
+      ({vehicle with destination = [loc1.l_id]; status = Driving})]
 
 (*Gets total capacity from a list*)
 let rec get_vehicle_capacity v_list total=
@@ -220,22 +205,6 @@ let rec get_good_cost goods_list good =
   match goods_list with
   |h :: t -> if h.resource = good then Some h.price else get_good_cost t good
   |[] -> None
-
-(*Gets location with the cheapest good. TODO: Remove.*)
-(*Returns a price (NOT PROFIT), a location option, and a good option*)
-let rec get_cheapest graph goods =
-  match goods with
-  |h :: t ->
-    ((* (print_endline "ASDFASDFASDF"); *)
-    let this_cheapest =
-    (Map.fold_vertex (fun x y ->
-      match get_good_cost x.produces h with
-      |None -> y
-      |Some price ->
-    if price < f y then ((* (print_endline "two");  *)(price, Some x, Some h) )else y) graph (200000.0, None, None)) in
-    let next_cheapest = get_cheapest graph t in
-    if f this_cheapest < f next_cheapest then this_cheapest else next_cheapest)
-  |[] -> (200000.0, None, None)
 
 (*Iterates over all the edges to determine whether a road exists*)
 let edge_exists graph initial_loc final_loc =
@@ -259,7 +228,7 @@ let good_loc_info graph good =
     |None -> fst y
     |Some price ->
       if s (snd y) <> None then
-        (if price < f (fst y) && not(edge_exists graph x (get_o (s (snd y))))then
+        (if price < f (fst y)&& not(edge_exists graph x (get_o (s (snd y))))then
           (price, Some x, Some good)
         else
           fst y)
@@ -270,7 +239,7 @@ let good_loc_info graph good =
     |None -> snd y
     |Some price ->
       if s (fst y) <> None then
-        (if price > f (snd y) && not(edge_exists graph x (get_o (s (fst y))))then
+        (if price > f (snd y)&& not(edge_exists graph x (get_o (s (fst y))))then
           (price, Some x, Some good)
         else
           snd y)
@@ -293,7 +262,7 @@ let good_loc_info2 graph good =
     |None -> fst y
     |Some price ->
       if s (snd y) <> None then
-        (if price < f (fst y) && not(edge_exists graph x (get_o (s (snd y))))then
+        (if price < f(fst y)&& not(edge_exists graph x (get_o (s (snd y))))then
           (price, Some x, Some good)
         else
           fst y)
@@ -304,7 +273,7 @@ let good_loc_info2 graph good =
     |None -> snd y
     |Some price ->
       if s (fst y) <> None then
-        (if price > f (snd y) && not(edge_exists graph x (get_o (s (fst y))))then
+        (if price > f (snd y)&& not(edge_exists graph x (get_o (s (fst y))))then
           (price, Some x, Some good)
         else
           snd y)
@@ -342,10 +311,9 @@ let get_greatest_dif good_dif graph =
       if get_good_cost x.accepts good = None then (0.) else ((* print_endline "asdfasdf"; *)
       get_o (get_good_cost x.accepts good)) in
     let length = hypot (location.l_x-.x.l_x) (location.l_y-. x.l_y) in
-    (*Check if price exceeds previous max*)
-    if (good_price -. price) >= f (get_o ((get_o (!ai_info)) (c_info.p_id, None))) &&
     (*Check if road can be bought*)
-    road_unit_cost*.(length**road_length_cost_exponent) +. car_price <=  c_info.money
+    if road_unit_cost*.(length**road_length_cost_exponent) +. car_price <=
+      c_info.money
     then
      ( print_endline "asdf4";
       Some x)
@@ -371,11 +339,12 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
     let the_good = get_o (t (fst cheapest)) in
     let loc2 = get_o (s (snd cheapest)) in
     let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
-    if road_unit_cost*.(new_length**road_length_cost_exponent) +. truck_price <= c_info.money then
+    if road_unit_cost*.(new_length**road_length_cost_exponent) +.
+      truck_price + safe_amount <= c_info.money then
       ((* if edge_exists graph loc1 loc2 then print_endline "failure" else print_endline (string_of_int loc1.l_id ^ string_of_int loc2.l_id); *)
-
       Some (AddRoad {c_owner_id = c_info.p_id; l_start = loc2.l_id;
-      l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}), Some loc1)
+      l_end = loc1.l_id; length = new_length; c_age = 0; c_speed = 0.}),
+      Some loc1)
     else
       None, Some loc1
 
@@ -439,27 +408,12 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
  (*  print_endline "ASDF"; *)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
- (*Finally, buy vehicles*) (*TODO: Remove tests*)
- (* print_endline "FIND ME"; *)
-  (* if fst buy_road = None &&(c_money <= truck_price *. buy_vehicle_condition || total_capacity > max_total_capacity) then
-    (*If money not high enough, don't buy vehicle*)
-    ((* print_endline "ASDf" ;*)
-    vehicle_processes)
-  else if fst buy_road = None && c_money > truck_price *. buy_vehicle_condition
-    && total_capacity <= max_total_capacity then
-    ((* print_endline "findme" ;*)
-    (buy_vehicle c_player_info (get_o (snd buy_road))) :: vehicle_processes)
-  else if num_only_c_connections < 3 then
-   ((* print_endline "findme3"; *)
-     (get_o (fst buy_road)) :: vehicle_processes)
-  else
-    vehicle_processes
- *)
   if fst buy_road <> None && num_only_c_connections < 3 then
     (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >=0 then
-    (get_o (fst buy_road)) :: (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc))::
-    vehicle_processes
+      (get_o (fst buy_road)) ::
+      (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc))::
+      vehicle_processes
     else
        (get_o (fst buy_road)) :: vehicle_processes)
   else
@@ -467,7 +421,8 @@ let make_c_move (state: game_state) c_id =
     (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >= 0 then
     ((* print_endline "ASDF"; *)
-    (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc)):: vehicle_processes)
+    (buy_vehicle c_player_info (get_loc_details state.graph first_v_loc))::
+    vehicle_processes)
     else if c_money > truck_price && total_capacity <= max_total_capacity then
       match fst (get_loc_vehicle c_connections) with
       |None -> vehicle_processes

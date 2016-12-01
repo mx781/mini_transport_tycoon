@@ -139,6 +139,7 @@ let buy_vehicle_condition = 2.
 let large_float = 200000.0
 let small_float = 0.0
 let max_total_capacity = 201
+let safe_amount = 50.0
 
 let ai_in = ref (fun (id: int) -> (-1))
 
