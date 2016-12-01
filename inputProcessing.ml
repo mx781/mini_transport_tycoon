@@ -379,6 +379,12 @@ let get_loc_vehicle c_connections=
         y
   ) new_graph (None, false)
 
+(*Sells roads if this would get over the end goal*)
+let sell_c_roads connections =
+  List.fold_left (fun x y ->
+    (road_unit_cost*.((s y).length**road_length_cost_exponent) *.sell_back_percentage)
+    +. x) 0. connections
+
 (*Gets a location for a vehicle *)
 (*This uses the current game state to determine how the AI should make a move.
 ( p_id refers to the id of the AI *)
@@ -410,7 +416,11 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
  (*  print_endline "ASDF"; *)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
-  if fst buy_road <> None && num_only_c_connections < 3 then
+  (*Determine whether it's OK to sell a road*)
+  let sell_road_value = sell_c_roads only_c_connections in
+  if sell_road_value +. c_money >= win_condition then
+    List.map (fun x -> DeleteRoad (s x)) only_c_connections
+  else if fst buy_road <> None && num_only_c_connections < 3 then
     (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >=0 then
       (get_o (fst buy_road)) ::
