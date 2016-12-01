@@ -42,7 +42,8 @@ Map.fold_edges_e
 (*Allows the AI to activate waiting vehicles*)
 let rec activate_vehicles v_list =
   match v_list with
-  |h :: t -> if h.status = Waiting then Some h else activate_vehicles t
+  |h :: t ->  if h.status = Waiting && h. cargo = None then Some h
+              else activate_vehicles t
   |[] -> None
 
 (*Gets details about location from graph.*)
@@ -171,7 +172,8 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
     (* print_endline "asdf2"; *)
     let the_good = (get_o (t max_profits)).resource in
     let q = get_quantity vehicle the_good loc_details curr_m in
-    if q > 0 || vehicle.cargo <> None then
+    if q > 0 then
+      (
       let new_path =
         try Dijkstra.shortest_path new_graph loc_details (get_o (s max_profits)) with
         |Not_found -> failwith "trying to get path that doesn't exist??, TALK TO DAN" in
@@ -179,9 +181,9 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
       let new_cargo_vehicle =
         {vehicle with cargo = Some ({t = the_good; quantity = q})} in
       let new_dest_vehicle =
-        {vehicle with destination = destinations; status = Driving} in
+        {new_cargo_vehicle with destination = destinations; status = Driving} in
       (* print_endline (string_of_int (List.hd destinations) ^ "halp"); *)
-      [BuyVehicleCargo new_cargo_vehicle;SetVehicleDestination new_dest_vehicle]
+      [BuyVehicleCargo new_cargo_vehicle;SetVehicleDestination new_dest_vehicle])
     else []
   else
     match get_new_dest new_graph loc_details with
