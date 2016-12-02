@@ -142,7 +142,7 @@ let set_v_cargo v st =
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
-           else let () = print_endline "You cannot afford that cargo." in p
+           else p
       else p) st.players in
   if st.players = new_players
   then st
