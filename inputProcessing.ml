@@ -142,15 +142,10 @@ let get_quantity vehicle r_type location curr_money=
  *The second is the result of the movement.*)
 let get_new_dest graph_access curr_loc =
   Map.fold_edges_e (fun x y -> let r = Random.int (2) in
-    if r = 0 then
-      if (f x).l_id = curr_loc.l_id then (Some (t x), Some (t x))
-      else if (t x).l_id = curr_loc.l_id then (Some (f x), Some (f x))
-      else y
-    else
-      if (f x).l_id = curr_loc.l_id then (fst y, Some (t x))
-      else if (t x).l_id = curr_loc.l_id then (fst y, Some (f x))
-      else y)
-    graph_access (None, None)
+    let will_move = if r = 0 then Some (t x) else fst y in
+    if (f x).l_id = curr_loc.l_id then (will_move, Some (t x))
+    else if (t x).l_id = curr_loc.l_id then (will_move, Some (f x))
+    else y) graph_access (None, None)
 
 (*Stuff that chooses AI movement based on a list of connections*)
 (*TODO: Fix quantity bought.*)
