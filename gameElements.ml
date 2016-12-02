@@ -120,6 +120,8 @@ end
 
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
+module PathCheck = Graph.Path.Check(Map)
+
 let fps = 24.0
 let car_price = 100.0
 let truck_price = 200.0
@@ -136,17 +138,24 @@ let car_capacity = 25
 let truck_capacity = 100
 let price_update_steps = 10
 let buy_vehicle_condition = 2.
+
+let min_bought = 10
 let large_float = 200000.0
 let small_float = 0.0
 let max_total_capacity = 201
 let safe_amount = 20.0
 let min_profit = 4.0 (*minimum profit for AI to build a road*)
 let max_connections = 3 (*maximum number of connections for AI*)
+let island_total = 4 (*Required to build a road between one and another*)
+
+let path_checker = PathCheck.create Map.empty
 
 (*May or may not be used*)
-let ai_in = ref (fun (id: int) -> (-1))
+(*If used: returns an ID to set a starting vehicle at.*)
+let ai_starting_loc = ref (fun (id: int) -> (-1))
 
-
+(*Used to determine the road an AI wants*)
+let ai_road = ref (fun (id : int) -> (-2, -2))
 
 (* let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;

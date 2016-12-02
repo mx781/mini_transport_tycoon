@@ -90,7 +90,7 @@ let get_good_profit graph good curr_loc =
         |_ -> true
       with
         |Not_found -> false in
-    if new_path && profit > f y && good.current > 10
+    if new_path && profit > f y && good.current > min_bought
     then (profit, Some x, Some good) else y) graph
   (0., None, None)
 
@@ -141,11 +141,17 @@ let get_quantity vehicle r_type location curr_money=
 (*Gets a new location close to the vehicle. First checks if other locations are accessible.
  *The second is the result of the movement.*)
 let get_new_dest graph_access curr_loc =
-  Map.fold_edges_e (fun x y -> let r = Random.int (2) in
-    let will_move = if r = 0 then Some (t x) else fst y in
-    if (f x).l_id = curr_loc.l_id then (will_move, Some (t x))
-    else if (t x).l_id = curr_loc.l_id then (will_move, Some (f x))
-    else y) graph_access (None, None)
+  Map.fold_edges_e (fun x y -> let () = Random.self_init() in
+    let r = Random.int (2) in
+    if r = 0 || y = None then
+      (if (f x).l_id = curr_loc.l_id then Some (t x)
+      else if (t x).l_id = curr_loc.l_id then Some (f x)
+      else y)
+    else y) graph_access None
+
+(*Gets the number of locations connected to loc1 and loc2; ideally used to
+ *determine if an AI is buying a road that only connects two locations...*)
+let get_graph_islands graph loc1 loc2 = failwith "unimplemented"
 
 (*Stuff that chooses AI movement based on a list of connections*)
 (*TODO: Fix quantity bought.*)
@@ -181,15 +187,14 @@ let make_vehicle_move vehicle c_connections graph curr_m (ai_info:ai_stuff) c_id
       [BuyVehicleCargo new_cargo_vehicle;SetVehicleDestination new_dest_vehicle])
     else []
   else
+    ((* print_endline "TEST@"; *)
     match get_new_dest new_graph loc_details with
     (*Vehicle is stuck. Buy a road if possible or sell if not.*)
-    |None, None ->
-      [SellVehicle vehicle]
+    |None -> [SellVehicle vehicle]
     (*Choosing not to move due to randomness*)
-    |None, Some loc1 -> []
-    |Some loc1, Some loc2->
+    |Some loc1 ->
       [SetVehicleDestination
-      ({vehicle with destination = [loc1.l_id]; status = Driving})]
+      ({vehicle with destination = [loc1.l_id]; status = Driving})])
 
 (*Gets total capacity from a list*)
 let rec get_vehicle_capacity v_list total=
@@ -212,12 +217,6 @@ let edge_exists graph initial_loc final_loc =
   ) graph false
 
 (*Does the same as edge_exists, but includes public roads*)
-let edge_exists_any graph initial_loc final_loc =
- try
-    match Map.find_edge graph initial_loc final_loc with
-        |_ -> true
-  with
-    Not_found -> false
 
 (*Returns the price, location option, and good option describing the location with
  *a good at the cheapest and most expensive prices (produces/accepts).
@@ -328,6 +327,7 @@ let buy_c_road graph (ai_info:ai_stuff) c_info =
 (*Buys a vehicle for AI*)
 let buy_vehicle c_info initial_loc =
  (*  print_endline (string_of_int initial_loc.l_id); *)
+  let () = Random.self_init() in
   let rand_value = Random.int (2) in
   let v_speed = if rand_value = 0 then car_speed else truck_speed in
   let v_capacity = if rand_value = 0 then car_capacity else truck_capacity in
