@@ -127,7 +127,7 @@ let sell_back_percentage = 0.6
 let road_unit_cost = 0.3
 let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.4
-let win_condition = 10000.0
+let win_condition = 2000.0
 
 let breakdown_chance = 0.0000
 let car_speed = 4.0

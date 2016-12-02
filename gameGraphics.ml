@@ -70,7 +70,13 @@ let n7 = get_img "font/7.png" |> make_image
 let n8 = get_img "font/8.png" |> make_image
 let n9 = get_img "font/9.png" |> make_image
 let n0 = get_img "font/0.png" |> make_image
+let e = get_img "font/E.png" |> make_image
 let p = get_img "font/P.png" |> make_image
+let s = get_img "font/S.png" |> make_image
+let n = get_img "font/N.png" |> make_image
+let i = get_img "font/I.png" |> make_image
+let r = get_img "font/R.png" |> make_image
+let w = get_img "font/W.png" |> make_image
 let dot = get_img "font/dot.png" |> make_image
 let colon = get_img "font/colon.png" |> make_image
 let dollar = get_img "font/dollar.png" |> make_image
@@ -79,7 +85,13 @@ let dollar = get_img "font/dollar.png" |> make_image
 
 let img_of_str str =
   match str with
+  | "E" -> e
+  | "I" -> i
+  | "N" -> n
   | "P" -> p
+  | "R" -> r
+  | "S" -> s
+  | "W" -> w
   | "1" -> n1
   | "2" -> n2
   | "3" -> n3
@@ -289,6 +301,49 @@ let draw_game_state (gs:game_state) : unit =
   draw_buttons ();
   draw_hover gs.graph
 
+
+let rec rec_draw_circles p_win gs =
+   let col = (player_color p_win) in
+   let color = if col = black then white else col in
+  (*   draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale);
+    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
+             (Random.int screen_height * !scale); *)
+(*     fill_circle (Random.int screen_width * !scale)
+                (Random.int screen_height * !scale) 20;
+    fill_circle (Random.int screen_width * !scale)
+                (Random.int screen_height * !scale) 20; *)
+    draw_image truck_img (Random.int screen_width * !scale)
+                         (Random.int screen_height * !scale);
+    draw_image car_img (Random.int screen_width * !scale)
+                       (Random.int screen_height * !scale);
+   draw_image house (Random.int screen_width * !scale)
+                       (Random.int screen_height * !scale);
+(*     draw_image drugs (Random.int screen_width * !scale)
+                     (Random.int screen_height * !scale); *)
+    set_color black;
+    fill_rect (screen_width/2-10) (screen_height-60) 480 170;
+    set_color color;
+    fill_rect (screen_width/2) (screen_height-50) 460 150;
+    draw_image gameover (screen_width/2) (screen_height);
+    draw_str ("WINNER IS: P" ^ (string_of_int p_win)) (screen_width/2+120) (screen_height -30);
+    set_color black;
+    fill_rect 740 370 240 220;
+    set_color color;
+    fill_rect 750 380 220 200;
+    draw_players gs.players;
+    Unix.sleepf 0.004;
+    rec_draw_circles p_win; ()
+
+  let draw_winner p_win gs =
+    draw_ograph gs.graph;
+    draw_vehicles gs.vehicles;
+    rec_draw_circles p_win gs; ()
+
 (******************************INPUT******************************************)
 
 let is_cancelled (x,y) =
@@ -497,35 +552,4 @@ let click_buttons gs player_id =
     (*Cancel and Confirm don't do anything by itself*)
     else Nothing
   )
-
-let rec rec_draw_circles p_win =
-   let color = (player_color p_win) in
-    set_color color;
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    fill_circle (Random.int screen_width * !scale)
-                (Random.int screen_height * !scale) 20;
-    fill_circle (Random.int screen_width * !scale)
-                (Random.int screen_height * !scale) 20;
-    draw_image truck_img (Random.int screen_width * !scale)
-                         (Random.int screen_height * !scale);
-    draw_image car_img (Random.int screen_width * !scale)
-                       (Random.int screen_height * !scale);
-    draw_image drugs (Random.int screen_width * !scale)
-                     (Random.int screen_height * !scale);
-
-    fill_rect (screen_width/2) (screen_height) 460 100;
-    draw_image gameover (screen_width/2) (screen_height);
-    Unix.sleepf 0.003;
-    rec_draw_circles p_win; ()
-
-  let draw_winner p_win st =
-    draw_game_state st;
-    rec_draw_circles p_win; ()
 
