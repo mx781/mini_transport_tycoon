@@ -203,13 +203,18 @@ let rec get_good_cost goods_list good =
   |h :: t -> if h.resource = good then Some h.price else get_good_cost t good
   |[] -> None
 
-(*Iterates over all the edges to determine whether a road exists*)
+(*Iterates over all the edges to determine whether a road exists THAT IS NOT
+ *PUBLIC*)
+ (*TODO: Fix use of (s x) possibly*)
 let edge_exists graph initial_loc final_loc =
- (*  Map.fold_edges_e (fun x y -> if (f x).l_id = initial_loc.l_id &&
+  Map.fold_edges_e (fun x y -> if y = true || ((f x).l_id = initial_loc.l_id &&
     (t x).l_id = final_loc.l_id || (f x).l_id = final_loc.l_id &&
-    (t x).l_id = initial_loc.l_id then ((* print_endline "GUIDE DANG IT"; *) true) else
-  ) graph false *)
-  try
+    (t x).l_id = initial_loc.l_id) (* && (s x).c_owner_id <> (-1)  *)then (true) else false
+  ) graph false
+
+(*Does the same as edge_exists, but includes public roads*)
+let edge_exists_cond graph initial_loc final_loc =
+ try
     match Map.find_edge graph initial_loc final_loc with
         |_ -> true
   with
@@ -224,6 +229,7 @@ let good_loc_info graph good =
     match get_good_cost x.produces good with
     |None -> fst y
     |Some price ->
+      (*USE PATH.CHECK*)
       if s (snd y) <> None then
         (if price < f (fst y)&& not(edge_exists graph x (get_o (s (snd y))))then
           (price, Some x, Some good)
@@ -374,11 +380,20 @@ let get_loc_vehicle c_connections=
         y
   ) new_graph (None, false)
 
-(*Sells roads if this would get over the end goal*)
+(*Determines value of all owned roads if sold*)
 let sell_c_roads connections =
   List.fold_left (fun x y ->
     (road_unit_cost*.((s y).length**road_length_cost_exponent) *.sell_back_percentage)
     +. x) 0. connections
+
+(*Determines sell value of all the vehicles owned*)
+let sell_c_vehicles vehicles =
+  List.fold_left (fun x y ->
+    let vehicle_price =
+      match y.v_t with
+      |Car -> car_price
+      |Truck -> truck_price in
+    vehicle_price *.sell_back_percentage +. x) 0. vehicles
 
 (*Gets a location for a vehicle *)
 (*This uses the current game state to determine how the AI should make a move.
@@ -411,10 +426,12 @@ let make_c_move (state: game_state) c_id =
   (*ERROR*)
  (*  print_endline "ASDF"; *)
   let buy_road = buy_c_road state.graph state.ai_info c_player_info in
-  (*Determine whether it's OK to sell a road*)
+  (*Determine whether it's OK to sell roads + vehicles*)
   let sell_road_value = sell_c_roads only_c_connections in
-  if sell_road_value +. c_money >= win_condition then
-    List.map (fun x -> DeleteRoad (s x)) only_c_connections
+  let sell_vehicle_value = sell_c_vehicles c_vehicles in
+  if sell_road_value +. sell_vehicle_value +. c_money >= win_condition then
+    List.map (fun x -> DeleteRoad (s x)) only_c_connections @
+    List.map (fun x -> SellVehicle x) c_vehicles
   else if fst buy_road <> None && num_only_c_connections < 3 then
     (if c_money > truck_price
       && total_capacity <= max_total_capacity && first_v_loc >=0 then
