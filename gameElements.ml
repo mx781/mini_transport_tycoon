@@ -140,8 +140,12 @@ let large_float = 200000.0
 let small_float = 0.0
 let max_total_capacity = 201
 let safe_amount = 20.0
+let min_profit = 4.0 (*minimum profit for AI to build a road*)
+let max_connections = 3 (*maximum number of connections for AI*)
 
+(*May or may not be used*)
 let ai_in = ref (fun (id: int) -> (-1))
+
 
 
 (* let form_connection map player_id loc1 loc2 =
