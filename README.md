@@ -25,6 +25,16 @@ libfreetype6-dev libgif-dev` This will install the required image libraries.
 the required opam packages for OCaml.
 4. Finally, run `make` to compile and launch the game.
 
+In some marginal cases, the initial run of `make` generates an error saying
+"Package piqirun.ext not found". This can be resolved by running `make clean`, 
+and then re-running `make`.
+
+Since MTT has a lot of dependencies and updates to a fresh VM might cause
+compatibility issues, additional errors might occur. In such an event, the
+development team will gladly assist you in resolving them. Please send an email
+to mk2228@cornell.edu, jtg98@cornell.edu, dl556@cornell.edu, prw55@cornell.edu, 
+and we will get back to you ASAP.
+
 Instructions: macOS
 ------------------------------
 
