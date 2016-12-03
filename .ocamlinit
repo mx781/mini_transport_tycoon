@@ -22,9 +22,22 @@ print_string "Loading DataProcessing components...";;
 #load "piqi/graph_piqi_ext.cmo";;
 #load "piqi/gamestate_piqi.cmo";;
 #load "piqi/gamestate_piqi_ext.cmo";;
-#load "dataProcessing.cmo";;
 
 print_endline " Done!";;
 
+#require "ocamlgraph";;
+#require "graphics";;
+#require "camlimages.all";;
+#load "dataProcessing.cmo";;
+#load "inputProcessing.cmo";;
+#load "gameElements.cmo";;
+#load "gameGraphics.cmo";;
+#load "engine.cmo";;
+
+
+
 (* load dataProcessing for convenience *)
 open DataProcessing;;
+open GameElements;;
+open Player;;
+open Engine;;
