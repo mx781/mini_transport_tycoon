@@ -19,7 +19,7 @@ let make_transp img =
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
-let _ = open_graph ""
+let _ = open_graph ""; set_window_title "Mini Transport Tycoon - by Dan, Jon, Max, and Pat"
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
 let title_screen = get_img "images/title.png" |> make_image
@@ -176,6 +176,7 @@ let draw_start () =
   draw_image help (x+2*button_width) y
 
 let rec title_click () =
+  draw_start ();
   let status = wait_next_event [Button_down] in
   let b_x = 100 in
   let b_y = 80 in
@@ -369,7 +370,8 @@ let rec rec_draw_circles p_win gs =
 (******************************INPUT******************************************)
 
 let is_cancelled (x,y) =
-  y < start_height+button_height-11*spacing && y > start_height-11*spacing
+  (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
+  (y < start_height+button_height && y > start_height-1*spacing)
 
 let is_confirmed (x,y) =
   y < start_height+button_height-10*spacing && y > start_height-10*spacing

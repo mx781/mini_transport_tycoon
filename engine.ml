@@ -234,7 +234,7 @@ let rec init_game fname opt =
       (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
     (* DataProcessing.save_file final_gs "data/gamesave.json" *)
     (* DataProcessing.save_file init_gs "data/gamesave.json"; *)
-    Unix.sleepf 1.;
+    Unix.sleepf 0.5;
     title_screen ()
   with
   | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
