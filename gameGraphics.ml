@@ -27,6 +27,10 @@ let title_screen = get_img "images/mini.png" |> make_image
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
 (* Buttons *)
+let newgame = get_img "images/newgame.png" |> make_image
+let loadgame = get_img "images/loadgame.png" |> make_image
+let help = get_img "images/help.png" |> make_image
+
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
@@ -57,7 +61,7 @@ let nooil = get_img "images/nooil.png" |> make_image
 let nodrugs = get_img "images/nodrugs.png" |> make_image
 let nowood = get_img "images/nolumber.png" |> make_image
 
-let house = get_img "images/house.png" |> make_image
+let house = get_img "images/mansion.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let gameover = get_img "images/gameover.png" |> make_image
 
@@ -169,9 +173,9 @@ let draw_start () =
   let y = 80 in
   let x = 100 in
   draw_image title_screen 0 0;
-  draw_image save x y;
-  draw_image pause (x+button_width) y;
-  draw_image pause (x+2*button_width) y
+  draw_image newgame x y;
+  draw_image loadgame (x+button_width) y;
+  draw_image help (x+2*button_width) y
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
