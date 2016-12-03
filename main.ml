@@ -7,4 +7,4 @@ let _  =
     "               Welcome to Mini Transport Tycoon.                       ";
   print_endline
     "***********************************************************************\n";
-  Engine.title_screen ()
+  Engine.title_screen Player.Medium
