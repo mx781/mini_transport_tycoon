@@ -102,6 +102,8 @@ type ai_stuff =  ((int * location option ->
                   (float * location option * goods_profile option)
                   option) option) ref
 
+
+
 type game_state = {
   vehicles : vehicle list;
   graph: Map.t;
@@ -149,6 +151,12 @@ let safe_amount = 20.0
 let min_profit = 4.0 (*minimum profit for AI to build a road*)
 let max_connections = 3 (*maximum number of connections for AI*)
 let island_total = 4 (*Required to build a road between one and another*)
+let ai_max_level = 500
+let easy_ai_level = 1
+let medium_ai_level = 5
+let hard_ai_level = 40
+let brutal_ai_level = 500
+
 
 let path_checker = PathCheck.create Map.empty
 
@@ -319,6 +327,18 @@ let buy_vehicle vehicle player location v_list spd cpt =
     status = Waiting; x = location.l_x; y = location.l_y; destination = [];
     speed = spd; age = 0; capacity = cpt; v_loc = None} in
   new_vehicle :: v_list
+
+let set_p_dif gd p =
+  match (p.p_type,gd) with
+    | (Human,_) -> p
+    | (AI(_),Easy) -> {p with p_type = AI(easy_ai_level)}
+    | (AI(_),Medium) -> {p with p_type = AI(medium_ai_level)}
+    | (AI(_),Hard) -> {p with p_type = AI(hard_ai_level)}
+    | (AI(_),Brutal) -> {p with p_type = AI(brutal_ai_level)}
+
+let set_game_difficulty gd st =
+  let new_players = List.map (set_p_dif gd) st.players in
+  {st with players = new_players}
 
 (*Sells cargo at given location given a vehicle. Returns a tuple containing
  *the new vehicle and the new money value*)

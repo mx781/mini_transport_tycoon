@@ -1,4 +1,4 @@
- type p_type =
+type p_type =
     | Human
     | AI of int (*AI skill level*)
 
@@ -7,10 +7,15 @@
     p_id : int;
     p_type : p_type;
     money: float;
-}
+  }
 
-let l_update p_lst =
-  p_lst
+type ai_game_difficulty =
+  | Easy
+  | Medium
+  | Hard
+  | Brutal
+
+
 
 
 
