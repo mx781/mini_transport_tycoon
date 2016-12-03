@@ -5,6 +5,7 @@
  open DataProcessing
 
 exception EndGame
+exception Quit
 
 let buy_vehicle v st =
   let cost = match v.v_t with
@@ -206,6 +207,7 @@ let rec main_loop st =
      | EndGame | Graphics.Graphic_failure _ ->
         print_endline "Game Over, autosaving to data/autosave.json";
         DataProcessing.save_file st "data/autosave.json"
+     | Quit -> ()
      | _ ->
         print_endline "Unexpected error, attempting save to data/failsave.json";
         DataProcessing.save_file st "data/failsave.json"
@@ -215,44 +217,6 @@ let round flt =
 
 let two_dec flt =
   float_of_int (round (flt *. 100.)) /. 100.
-
-let rec init_game fname opt =
-  try
-    Graphics.resize_window 1000 600;
-    let start_t = Unix.time () in
-    let init_gs = DataProcessing.load_file fname in
-    main_loop init_gs;
-    gameover ();
-    print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-    Unix.sleepf 0.5;
-    title_screen ()
-  with
-  | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
-  | e -> raise EndGame
-
-and title_screen () =
-  try
-    GameGraphics.draw_start ();
-    let opt = GameGraphics.title_click () in
-    let file_name = if opt = 1 then "data/game.json" else if opt = 2 then (
-    print_endline "\nPlease enter the name of the game file you want to load.\n";
-    print_string  "> "; read_line () ) else failwith "Not an option yet" in
-    init_game file_name opt
-  with
-     | EndGame | Graphics.Graphic_failure _ ->
-        print_endline "\nGoodbye"
-     | _ ->
-        print_endline ("Unexpected error, attempting save to data/failsave.json");
-        print_endline "\nBye"
-
-and gameover () =
-  print_endline
-  "\n#######################################################################";
-  print_endline
-  "                                Game Over                                ";
-  print_endline
-  "#######################################################################"
 
 let instr () =
    print_string
@@ -270,3 +234,50 @@ let instr () =
   print_endline "           buys exclusive right to that road\n";
   print_endline
     "***********************************************************************\n"
+
+
+let rec init_game fname =
+  try
+    Graphics.resize_window 1000 600;
+    let start_t = Unix.time () in
+    let init_gs = DataProcessing.load_file fname in
+    main_loop init_gs;
+    gameover ();
+    print_endline ("\nGame Duration: " ^
+      (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
+    Unix.sleepf 0.5;
+    title_screen ()
+  with
+  | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
+  | Quit -> raise Quit
+  | e -> raise EndGame
+
+and title_screen () =
+  try
+    GameGraphics.draw_start ();
+    let opt = GameGraphics.title_click () in
+    let file_name =
+    if opt = 1 then "data/game.json"
+    else if opt = 2 then (
+      print_endline "\nPlease enter the name of the game file you want to load.\n";
+      print_string  "> "; read_line () )
+    else if opt = 3 then (instr (); (*help screen*) title_screen ())
+    else if opt = 4 then (*difficulty*) title_screen ()
+    else if opt = 5 then raise Quit
+    else failwith "Not an option yet" in
+    init_game file_name
+  with
+     | EndGame | Graphics.Graphic_failure _ ->
+        "\nGoodbye"
+     | Quit -> "\nBye"
+     | e -> raise e
+        print_endline ("Unexpected error, attempting save to data/failsave.json");
+        "\nBye"
+
+and gameover () =
+  print_endline
+  "\n#######################################################################";
+  print_endline
+  "                                Game Over                                ";
+  print_endline
+  "#######################################################################"
