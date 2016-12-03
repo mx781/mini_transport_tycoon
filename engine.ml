@@ -222,13 +222,12 @@ let round flt =
 let two_dec flt =
   float_of_int (round (flt *. 100.)) /. 100.
 
-<<<<<<< HEAD
 let rec init_game fname opt =
   try
     Graphics.resize_window 1000 600;
     let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
-    main_loop init_gs;
+    let final_gs = main_loop init_gs in
     print_endline
     "\n#########################################################################";
     print_endline
@@ -237,7 +236,8 @@ let rec init_game fname opt =
     "#########################################################################";
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-    DataProcessing.save_file init_gs "data/gamesave.json";
+    (* DataProcessing.save_file final_gs "data/gamesave.json" *)
+    (* DataProcessing.save_file init_gs "data/gamesave.json"; *)
     Unix.sleepf 1.;
     title_screen ()
   with
@@ -274,13 +274,3 @@ and title_screen () =
     print_endline "           buys exclusive right to that road\n";
     print_endline
       "***********************************************************************\n"
-=======
-let init_game fname scale =
-  GameGraphics.open_screen scale;
-  let start_t = Unix.time () in
-  let init_gs = DataProcessing.load_file fname in
-  let final_gs = main_loop init_gs in
-  print_endline ("\nGame Duration: " ^
-    (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-  (* DataProcessing.save_file final_gs "data/gamesave.json" *)
->>>>>>> 13841ec255d240c01de243f44dbbe5b1fbb767a4
