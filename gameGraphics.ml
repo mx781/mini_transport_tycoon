@@ -22,7 +22,7 @@ let get_img img =
 let _ = open_graph " 500x500"
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
-let title_screen = get_img "images/mini.png" |> make_image
+let title_screen = get_img "images/title.png" |> make_image
 (* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
@@ -61,7 +61,7 @@ let nooil = get_img "images/nooil.png" |> make_image
 let nodrugs = get_img "images/nodrugs.png" |> make_image
 let nowood = get_img "images/nolumber.png" |> make_image
 
-let house = get_img "images/mansion.png" |> make_image
+let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let gameover = get_img "images/gameover.png" |> make_image
 
@@ -172,6 +172,7 @@ let open_screen size =
 let draw_start () =
   let y = 80 in
   let x = 100 in
+  draw_image bg 0 0;
   draw_image title_screen 0 0;
   draw_image newgame x y;
   draw_image loadgame (x+button_width) y;

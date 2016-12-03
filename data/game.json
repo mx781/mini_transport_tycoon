@@ -47,7 +47,7 @@
             {
                 "id": 0,
                 "lx": 510.0,
-                "ly": 290.0,
+                "ly": 320.0,
                 "accepts": [
                   {
                     "resource": {"Oil": true},
@@ -415,8 +415,8 @@
             },
             {
                 "id": 9,
-                "lx": 410.0,
-                "ly": 540.0,
+                "lx": 420.0,
+                "ly": 530.0,
                 "accepts": [
                   {
                     "resource": {"Electronics": true},
