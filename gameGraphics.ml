@@ -12,14 +12,19 @@ let screen_height = 300
 
 (******************************IMAGES*****************************************)
 
+(* Changes white to transparency *)
 let make_transp img =
   let replace = Array.map (fun col -> if col = white then transp else col) in
   Array.map (fun arr -> replace arr) img
 
+(* Loads image from files to color array array *)
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
-let _ = open_graph ""; set_window_title "Mini Transport Tycoon - by Dan, Jon, Max, and Pat"
+(* Opens graph so we can preload some images *)
+let _ = open_graph "";
+        set_window_title "Mini Transport Tycoon - by Dan, Jon, Max, and Pat"
+
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
 let title_screen = get_img "images/title.png" |> make_image
@@ -66,11 +71,11 @@ let nofruit = get_img "images/nofruit.png" |> make_image
 let nooil = get_img "images/nooil.png" |> make_image
 let nodrugs = get_img "images/nodrugs.png" |> make_image
 let nowood = get_img "images/nolumber.png" |> make_image
-
+(* Other *)
 let house = get_img "images/house.png" |> make_image
 let bg = get_img "images/bg.png" |> make_image
 let gameover = get_img "images/gameover.png" |> make_image
-
+(* Handmade font *)
 let n1 = get_img "font/1.png" |> make_image
 let n2 = get_img "font/2.png" |> make_image
 let n3 = get_img "font/3.png" |> make_image
@@ -94,6 +99,7 @@ let dollar = get_img "font/dollar.png" |> make_image
 
 (******************************HELPER FUNCTIONS********************************)
 
+(* For converting strings into pictures *)
 let img_of_str str =
   match str with
   | "E" -> e
@@ -118,6 +124,7 @@ let img_of_str str =
   | "$" -> dollar
   | _ -> dot
 
+(* Resource to String, so resource types can be printed *)
 let rtos r =
   match r with
   | Lumber -> "Wood"
@@ -126,6 +133,7 @@ let rtos r =
   | Electronics -> "Tech"
   | Produce -> "Fruit"
 
+(**)
 let rec chr_lst str =
   match str with
   | "" ->[]
@@ -171,6 +179,7 @@ let player_color pid =
 
 (******************************GRAPHICS****************************************)
 
+(* Draws the title screen, now with buttons! *)
 let draw_start () =
   resize_window 500 500;
   let y = 100 in
@@ -184,25 +193,7 @@ let draw_start () =
   draw_image settings (x+offset) (y-button_height);
   draw_image exit (x+button_width+offset) (y-button_height)
 
-let rec settings () =
-  let y = 70 in
-  let x = 200 in
-  let spacing = button_height+button_height in
-  draw_image bg 0 0;
-  draw_image brutal x y;
-  draw_image hard x (y+spacing);
-  draw_image medium x (y+2*spacing);
-  draw_image easy x (y+3*spacing);
-  let status = wait_next_event [Button_down] in
-  let sx, sy = status.mouse_x, status.mouse_y in
-  if (sx < x+button_width && sx > x) then (
-    if sy < y+button_height && sy > y then Player.Brutal else
-    if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
-    if sy < y+2*spacing+button_height && sy > y+2*spacing then Player.Medium else
-    if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
-    settings () )
-  else settings ()
-
+(* Get clicks for title screen *)
 let rec title_click () =
   draw_start ();
   let status = wait_next_event [Button_down] in
@@ -222,13 +213,35 @@ let rec title_click () =
     title_click () )
   else title_click ()
 
+(* Draws difficulty options and returns them on mouse click *)
+let rec settings () =
+  let y = 70 in
+  let x = 200 in
+  let spacing = button_height+button_height in
+  draw_image bg 0 0;
+  draw_image brutal x y;
+  draw_image hard x (y+spacing);
+  draw_image medium x (y+2*spacing);
+  draw_image easy x (y+3*spacing);
+  let status = wait_next_event [Button_down] in
+  let sx, sy = status.mouse_x, status.mouse_y in
+  if (sx < x+button_width && sx > x) then (
+    if sy < y+button_height && sy > y then Player.Brutal else
+    if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
+    if sy < y+2*spacing+button_height && sy > y+2*spacing then Player.Medium else
+    if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
+    settings () )
+  else settings ()
 
+
+(* Draws a line from one point to another *)
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
   set_line_width (!scale * width);
   moveto x1 y1;
   lineto x2 y2
 
+(* Iterates over edges and vertexes of our map and draws it *)
 let draw_ograph grph : unit =
   let label = Map.V.label in
   Map.iter_edges_e
@@ -249,6 +262,7 @@ let draw_ograph grph : unit =
      draw_image house
        ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
 
+(* Draws a vehicle at its location, now with cargo icons and color labels! *)
 let draw_vehicle (v:vehicle) : unit =
   let pic = (match v.v_t with
             | Car -> car_img
@@ -269,13 +283,12 @@ let draw_vehicle (v:vehicle) : unit =
               | Produce -> fruit_s in
     draw_image img (x-10) (y+20) )
 
-
+(* Draws all vehicle in list *)
 let rec draw_vehicles (vs:vehicle list) : unit =
-  match vs with
-  | v::t -> draw_vehicles t; draw_vehicle v
-  | [] -> ()
+  List.iter draw_vehicle vs
 
-let draw_player_info (p:Player.player) : unit =
+(* Draws a player's color and their score *)
+let draw_score (p:Player.player) : unit =
   let x = 780 in
   let y = (550-p.p_id*30) in
   set_color black;
@@ -284,18 +297,16 @@ let draw_player_info (p:Player.player) : unit =
   fill_circle (x-10) (y+10) 8;
   draw_str ("P"^string_of_int p.p_id^":$"^
             string_of_float(two_dec p.money)) x y
-  (*  moveto (p.p_id) (10*p.p_id);
-   draw_string ("Player " ^ (string_of_int p.p_id) ^
-                ": $" ^(string_of_float p.money)) *)
 
-let rec draw_players (ps:Player.player list) : unit =
-  match ps with
-  | p::t -> draw_players t; draw_player_info p
-  | [] -> ()
+(* Draws all scores *)
+let draw_scores (ps:Player.player list) : unit =
+  List.iter draw_score ps
 
+(* Constants for button drawing and clicking *)
 let spacing = 25 * !scale
 let start_height = 275 * !scale
 
+(* Draws all of the in game buttons *)
 let draw_buttons () =
   draw_image save 0 start_height;
   draw_image pause 0 (start_height-spacing);
@@ -309,13 +320,14 @@ let draw_buttons () =
   draw_image confirm 0 (start_height-10*spacing);
   draw_image cancel 0 (start_height-11*spacing)
 
+(* Draws the product info associated with each vertex *)
 let draw_info_box x y v =
   let box_height = 100 in
   set_color black; fill_rect (x-2) (y-2) 154 (box_height+4);
   set_color white; fill_rect x y 150 box_height;
   let loc = Map.V.label v in
   set_color black;
-  (* set_font "-misc-dejavu sans mono-bold-r-normal--256-0-0-0-m-0-iso8859-1";*)
+  (* set_text_size 20; (* Damn you OCaml *)*)
   moveto (x+10) (y+ box_height - 20);
   draw_string "Accepts:";
   rmoveto (-(fst (text_size "Accepts:"))) 0;
@@ -337,7 +349,8 @@ let draw_info_box x y v =
     rmoveto (-fst (text_size str)) 0;
     ) loc.produces
 
-  let draw_hover grph =
+(* Draws an info box when mouse is hovering near a location *)
+let draw_hover grph =
   let stat = wait_next_event [Poll;Button_down;Button_up] in
   let x = stat.mouse_x in
   let y = stat.mouse_y in
@@ -349,58 +362,47 @@ let draw_info_box x y v =
               && (abs (y*2/ !scale - round y1) < close_enough)
                              then draw_info_box x y v else ()) grph
 
+(* Draws the whole game to be played, Engine will call this each loop *)
 let draw_game_state (gs:game_state) : unit =
   draw_image bg 0 0;
-  draw_players gs.players;
+  draw_scores gs.players;
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
   draw_buttons ();
   draw_hover gs.graph
 
-
-let rec rec_draw_circles p_win gs =
+(* This function is a secret, complete the game to see it in action *)
+let rec fin p_win gs =
    let col = (player_color p_win) in
    let color = if col = black then white else col in
-  (*   draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale);
-    draw_str ("P" ^ (string_of_int p_win)) (Random.int screen_width * !scale)
-             (Random.int screen_height * !scale); *)
-(*     fill_circle (Random.int screen_width * !scale)
-                (Random.int screen_height * !scale) 20;
-    fill_circle (Random.int screen_width * !scale)
-                (Random.int screen_height * !scale) 20; *)
     draw_image truck_img (Random.int screen_width * !scale)
                          (Random.int screen_height * !scale);
     draw_image car_img (Random.int screen_width * !scale)
                        (Random.int screen_height * !scale);
    draw_image house (Random.int screen_width * !scale)
                        (Random.int screen_height * !scale);
-(*     draw_image drugs (Random.int screen_width * !scale)
-                     (Random.int screen_height * !scale); *)
     set_color black;
     fill_rect (screen_width/2-10) (screen_height-60) 480 170;
     set_color color;
     fill_rect (screen_width/2) (screen_height-50) 460 150;
     draw_image gameover (screen_width/2) (screen_height);
-    draw_str ("WINNER IS: P" ^ (string_of_int p_win)) (screen_width/2+120) (screen_height -30);
+    draw_str ("WINNER IS: P" ^ (string_of_int p_win))
+       (screen_width/2+120) (screen_height - 30);
     set_color black;
     fill_rect 740 370 240 220;
     set_color color;
     fill_rect 750 380 220 200;
-    draw_players gs.players;
+    draw_scores gs.players;
     Unix.sleepf 0.004;
-    rec_draw_circles p_win gs
+    fin p_win gs
 
-  let draw_winner p_win gs =
-    draw_ograph gs.graph;
-    draw_vehicles gs.vehicles;
-    rec_draw_circles p_win gs
+(* Engine calls this if it detects someone has won, draws end game screen *)
+let draw_winner p_win gs =
+  draw_ograph gs.graph;
+  draw_vehicles gs.vehicles;
+  fin p_win gs
 
-(******************************INPUT******************************************)
+(******************************INPUT FROM GRAPHICS*****************************)
 
 let is_cancelled (x,y) =
   (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
