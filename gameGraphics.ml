@@ -169,27 +169,35 @@ let player_color pid =
 
 let draw_start () =
   resize_window 500 500;
-  let y = 80 in
+  let y = 100 in
   let x = 100 in
+  let offset = button_width/2 in
   draw_image bg 0 0;
   draw_image title_screen 0 0;
   draw_image newgame x y;
   draw_image loadgame (x+button_width) y;
-  draw_image help (x+2*button_width) y
+  draw_image help (x+2*button_width) y;
+  draw_image settings (x+offset) (y-button_height);
+  draw_image exit (x+button_width+offset) (y-button_height)
 
 let rec title_click () =
   draw_start ();
   let status = wait_next_event [Button_down] in
   let b_x = 100 in
-  let b_y = 80 in
+  let b_y = 100 in
+  let offset = button_width/2 in
   let x = status.mouse_x in
   let y = status.mouse_y in
-  if not (button_down () && y < b_y+button_height && y > b_y) then title_click ()
-  else (
+  if (y < b_y+button_height && y > b_y) then (
     if x < b_x+button_width && x > b_x then 1 else
     if x < b_x+2*button_width && x > b_x+button_width then 2 else
     if x < b_x+3*button_width && x > b_x+button_width then 3 else
     title_click () )
+  else if (y < b_y && y > b_y-button_height) then (
+    if x < b_x+button_width+offset && x > b_x+offset then 4 else
+    if x < b_x+2*button_width+offset && x > b_x+button_width+offset then 5 else
+    title_click () )
+  else title_click ()
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
