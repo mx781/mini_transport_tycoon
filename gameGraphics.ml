@@ -180,6 +180,20 @@ let draw_start () =
   draw_image settings (x+offset) (y-button_height);
   draw_image exit (x+button_width+offset) (y-button_height)
 
+let settings () =
+  print_endline "settings";
+  let y = 100 in
+  let x = 100 in
+  draw_image bg 0 0;
+  print_endline "drawing";
+  draw_image newgame x y;
+  draw_image loadgame (x+button_width) y;
+  draw_image help (x+2*button_width) y;
+  let status = wait_next_event [Button_down] in
+  let sx, sy = status.mouse_x, status.mouse_y in
+  ()
+
+
 let rec title_click () =
   draw_start ();
   let status = wait_next_event [Button_down] in

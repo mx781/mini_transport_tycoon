@@ -235,7 +235,7 @@ let instr () =
     "***********************************************************************\n"
 
 
-let rec init_game fname =
+let rec init_game fname : unit =
   try
     Graphics.resize_window 1000 600;
     let start_t = Unix.time () in
@@ -247,31 +247,32 @@ let rec init_game fname =
     Unix.sleepf 0.5;
     title_screen ()
   with
-  | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
   | Quit -> raise Quit
-  | e -> raise EndGame
+(*   | Failure _ -> print_endline e; print_endline "\nNot a valid game file"; title_screen ()
+  | e -> raise EndGame *)
 
-and title_screen () =
+and title_screen () : unit =
   try
     GameGraphics.draw_start ();
     let opt = GameGraphics.title_click () in
-    let file_name =
-    if opt = 1 then "data/game.json"
+    if opt = 1 then init_game "data/game.json"
     else if opt = 2 then (
       print_endline "\nPlease enter the name of the game file you want to load.\n";
-      print_string  "> "; read_line () )
+      print_string  "> "; init_game (read_line ()) )
     else if opt = 3 then (instr (); (*help screen*) title_screen ())
-    else if opt = 4 then GameGraphics.settings (); title_screen ()
+    else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
-    else failwith "Not an option yet" in
-    init_game file_name
-  with
-     | EndGame | Graphics.Graphic_failure _ ->
+    else raise Quit
+  with _ -> ()
+     (* | EndGame | Graphics.Graphic_failure _ ->
         "\nGoodbye"
-     | Quit -> "\nBye"
+     | Quit -> gameover(); "\nBye"
      | e -> raise e
         print_endline ("Unexpected error, attempting save to data/failsave.json");
-        "\nBye"
+        "\nBye" *)
+
+ and settings_screen () =
+    GameGraphics.settings ()
 
 and gameover () =
   print_endline
