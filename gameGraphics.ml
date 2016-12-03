@@ -574,7 +574,7 @@ let move_auto gs player_id =
   InputProcessing.set_vehicle_dest player_id auto l dest gs
 
 let sell_auto (gs:GameElements.game_state) player_id =
-  print_endline "Pick a vehicle to sell for\n\tCar: $50.00 \n\tTruck:$100.00";
+  print_endline "Pick a vehicle to sell for\n\tCar: $60.00 \n\tTruck:$120.00";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some auto -> InputProcessing.sell_vehicle player_id auto
