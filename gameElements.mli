@@ -155,3 +155,6 @@ val update_vehicles : vehicle list -> Map.t -> player list-> game_state ->
 
 (*Updates location info (Mainly in terms of price fluctuations *)
 val update_locations : Map.t -> int -> Map.t
+
+(*Ensures that all AI have the set difficulty*)
+val set_game_difficulty : ai_game_difficulty -> game_state -> game_state
