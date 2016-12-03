@@ -100,6 +100,7 @@ module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
 type ai_stuff =  ((int * location option -> (float * location option* goods_profile option) option)
     option) ref
+
 type game_state = {
   vehicles : vehicle list;
   graph: Map.t;
@@ -131,6 +132,7 @@ let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.4
 let win_condition = 2000.0
 
+
 let breakdown_chance = 0.0000
 let car_speed = 4.0
 let truck_speed = 2.0
@@ -147,6 +149,7 @@ let safe_amount = 20.0
 let min_profit = 4.0 (*minimum profit for AI to build a road*)
 let max_connections = 3 (*maximum number of connections for AI*)
 let island_total = 4 (*Required to build a road between one and another*)
+let ai_max_level = 100
 
 let path_checker = PathCheck.create Map.empty
 

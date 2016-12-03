@@ -374,6 +374,10 @@ let sell_c_vehicles vehicles =
 ( p_id refers to the id of the AI *)
 let make_c_move (state: game_state) c_id =
   let c_player = get_player c_id state.players in
+  let delay = match c_player.p_type with
+    | Human -> failwith "human not expected"
+    | AI(l) -> 200/l in
+  if (Random.int delay <> 0) then [] else
   (*Current money*)
    (*  print_endline "asdf3"; *)
   let c_money = c_player.money in

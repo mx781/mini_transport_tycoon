@@ -12,7 +12,7 @@
         },
         {
             "pid": 1,
-            "ptype": {"AI": 2},
+            "ptype": {"AI": 1},
             "money": 400.0
         },
         {
@@ -22,17 +22,17 @@
         },
         {
             "pid": 3,
-            "ptype": {"AI": 2},
+            "ptype": {"AI": 5},
             "money": 400.0
         },
         {
             "pid": 4,
-            "ptype": {"AI": 2},
+            "ptype": {"AI": 25},
             "money": 400.0
         },
         {
             "pid": 5,
-            "ptype": {"AI": 2},
+            "ptype": {"AI": 200},
             "money": 400.0
         }
     ],
