@@ -240,7 +240,8 @@ let rec init_game fname dif : unit =
     Graphics.resize_window 1000 600;
     let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
-    main_loop init_gs;
+    let init_gs' = set_game_difficulty dif init_gs in
+    main_loop init_gs';
     gameover ();
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
@@ -250,6 +251,7 @@ let rec init_game fname dif : unit =
   | Quit -> raise Quit
 (*   | Failure _ -> print_endline e; print_endline "\nNot a valid game file"; title_screen ()
   | e -> raise EndGame *)
+
 
 and title_screen (dif:ai_game_difficulty) : unit =
   try

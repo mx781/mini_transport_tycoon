@@ -166,7 +166,7 @@ let ai_max_level = 500
 let easy_ai_level = 1
 let medium_ai_level = 5
 let hard_ai_level = 40
-let brutal_ai_level = 500
+let brutal_ai_level = 400
 
 
 (*Used to find size of connected portions given a particular player*)
