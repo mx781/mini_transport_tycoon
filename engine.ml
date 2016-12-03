@@ -261,7 +261,7 @@ and title_screen () =
       print_endline "\nPlease enter the name of the game file you want to load.\n";
       print_string  "> "; read_line () )
     else if opt = 3 then (instr (); (*help screen*) title_screen ())
-    else if opt = 4 then (*difficulty*) title_screen ()
+    else if opt = 4 then GameGraphics.settings (); title_screen ()
     else if opt = 5 then raise Quit
     else failwith "Not an option yet" in
     init_game file_name
