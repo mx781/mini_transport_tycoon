@@ -4,8 +4,6 @@ open Gameelements_piqi.Vehicle
 open Gameelements_piqi.Good
 open Player_piqi.Player
 open Graph_piqi.Graph
-(* open Gamestate_piqi.Gamestate *)
-
 
 (*TODO: use global helpers, remove dupes *)
 let f (x, _, _) = x
@@ -22,9 +20,6 @@ type graph = GameElements.Map.t
 type game_state = GameElements.game_state
 
 (* Conversion functions between Piqi objects and native OCaml objects *)
-(* for Vehicle *)
-(* TODO: split out into smaller, reusable functions (good, vehstatus, vehtype)*)
-(* TODO: rename funcs for clarity*)
 
 (* Resource *)
 let resource_of_piqiresource pres = 
@@ -47,7 +42,7 @@ let resource_to_piqiresource res =
 let vehicle_of_vehicle: Gameelements_piqi.vehicle -> GameElements.vehicle =
   (fun pv -> 
     let open GameElements in match pv with
-    | {owner=o; t=t; speed=sp; capacity = cap; cargo=cg; age=age'; status=st;
+    | {owner=o; t=t; speed=sp; capacity=cap; cargo=cg; age=age'; status=st;
       x=x'; y=y'; destination=dst; loc=vloc} ->
       let t' = match t with 
         | `car -> Car
@@ -82,7 +77,42 @@ let vehicle_of_vehicle: Gameelements_piqi.vehicle -> GameElements.vehicle =
       }
 )
 let vehicle_to_vehicle: GameElements.vehicle -> Gameelements_piqi.vehicle =
-(fun x -> failwith "veh")
+  (fun v -> 
+    match v with
+    | {v_owner_id=o; v_t=t; v_loc=loc; speed=sp; capacity=cap; cargo=cg;
+      age=age'; status=st; x=x'; y=y'; destination=dst;} ->
+      let t' = match t with 
+        | Car -> `car
+        | Truck -> `truck
+      in
+      let cg' = match cg with
+        | Some {t=t; quantity=q;} -> 
+          let t' = resource_to_piqiresource t in 
+          {t=t'; quant=q}
+      in
+      let st' = match st with 
+        | Waiting -> `waiting
+        | Driving -> `driving
+        | Broken -> `broken
+      in
+      let loc' = match loc with
+        | Some i -> `some i 
+        | None -> `none
+      in
+      {
+        owner = o;
+        t = t';
+        loc = loc';
+        speed = sp;
+        capacity = cap;
+        cargo = cg';
+        age = age';
+        status = st';
+        x = x';
+        y = y';
+        destination = dst;
+      }
+)
 
 (* Player *)
 let player_of_player: Player_piqi.player -> Player.player = (fun p -> 

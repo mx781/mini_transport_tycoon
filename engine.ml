@@ -180,8 +180,8 @@ let player_wins st =
 
 
 let rec main_loop st =
+  let start_t = Unix.time () in
   try
-    let start_t = Unix.time () in
     let p_win = player_wins st in
     if p_win <> (-1) then GameGraphics.draw_winner p_win st else
     GameGraphics.draw_game_state st;
@@ -189,24 +189,33 @@ let rec main_loop st =
     let st' = handle_processes processes st false in
     let new_vehicles = update_vehicles st'.vehicles st'.graph st'.players st' in
     let new_graph = update_locations st'.graph st'.game_age in
-    let st'' = { vehicles = new_vehicles;
-                graph = new_graph;
-                players = st'.players;
-                paused = st'.paused;
-                game_age = st'.game_age + 1;
-                ai_info = st.ai_info} in
+    let st'' = 
+      {
+        vehicles = new_vehicles;
+        graph = new_graph;
+        players = st'.players;
+        paused = st'.paused;
+        game_age = st'.game_age + 1;
+        ai_info = st.ai_info
+      }
+    in
     let time_elapsed = Unix.time () -. start_t in
     (* print_endline (string_of_float time_elapsed); *)
     let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0 then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     (* print_endline (string_of_float sleep_time); *)
     Unix.sleepf sleep_time;
-    main_loop st''
-  with e -> print_endline
-  "\n#########################################################################";
-  print_endline
-  "                               Game Over                               ";
-  print_endline
-  "#########################################################################"
+    main_loop st'';
+  with
+  | EndGame -> print_endline
+    "\n#######################################################################";
+    print_endline
+    "                               Game Over                                 ";
+    print_endline
+    "#########################################################################";
+    DataProcessing.save_file st "data/save.json"
+  | _ -> print_endline ("An error occurred, oh no! Attempting to save gamestate"
+    ^ "to data/failsave.json");
+    DataProcessing.save_file st "data/failsave.json"
 
 
 let round flt =
@@ -219,7 +228,7 @@ let init_game fname scale =
   GameGraphics.open_screen scale;
   let start_t = Unix.time () in
   let init_gs = DataProcessing.load_file fname in
-  main_loop init_gs;
+  let final_gs = main_loop init_gs in
   print_endline ("\nGame Duration: " ^
     (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-  DataProcessing.save_file init_gs "data/gamesave.json"
+  (* DataProcessing.save_file final_gs "data/gamesave.json" *)
