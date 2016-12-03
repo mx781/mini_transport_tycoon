@@ -140,7 +140,7 @@ let truck_price = 200.0
 let sell_back_percentage = 0.6
 let road_unit_cost = 0.3
 let road_length_cost_exponent = 1.2
-let road_rights_unit_cost = 0.4
+let road_rights_unit_cost = 0.65
 let win_condition = 2000.0
 
 let breakdown_chance = 0.0
@@ -163,7 +163,7 @@ let ai_max_level = 500
 let easy_ai_level = 1
 let medium_ai_level = 5
 let hard_ai_level = 40
-let brutal_ai_level = 500
+let brutal_ai_level = 400
 
 
 (* (*Used to find size of connected portions given a particular player*)
