@@ -225,12 +225,18 @@ let instr () =
   print_endline "                             Instructions";
   print_endline
     "***********************************************************************\n";
-  print_endline "Save/Quit: Saves the current game to a json file and closes the game.\n";
-  print_endline "Pause:     Pauses the game until the screen is clicked again\n";
-  print_endline "Buy Car:   Buys a car starting at a given location\n";
-  print_endline "Buy Truck: Buys a truck starting at a given location\n";
-  print_endline "Buy Road:  Buys a new road between two locations, or if a road exists,";
-  print_endline "           buys exclusive right to that road\n";
+  print_endline "Save/Quit:  Saves the current game to a json file and closes the game.\n";
+  print_endline "Pause:      Pauses the game until the screen is clicked again\n";
+  print_endline "Buy Car:    Buys a car starting at a given location\n";
+  print_endline "Buy Truck:  Buys a truck starting at a given location\n";
+  print_endline "Buy Road:   Buys a new road between two locations, or if a road exists,";
+  print_endline "            buys exclusive right to that road\n";
+  print_endline "Sell Road:  Sells an existing road between two locations if";
+  print_endline "            it exists and you own it\n";
+  print_endline "Sell Auto:  Sells an existing vehicle that you own\n";
+  print_endline "Add Cargo:  Buys cargo for a specific vehicle at a location\n";
+  print_endline "Confirm:    Confirm a selection (road purchase or sale) \n";
+  print_endline "Cancel:     Cancel a selection (of any above action) \n";
   print_endline
     "***********************************************************************\n"
 
