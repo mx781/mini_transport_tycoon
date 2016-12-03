@@ -204,16 +204,12 @@ let rec main_loop st =
     Unix.sleepf sleep_time;
     main_loop st'';
   with
-  | EndGame -> print_endline
-    "\n#######################################################################";
-    print_endline
-    "                               Game Over                                 ";
-    print_endline
-    "#########################################################################";
-    DataProcessing.save_file st "data/save.json"
-  | _ -> print_endline ("An error occurred, oh no! Attempting to save gamestate"
-    ^ "to data/failsave.json");
-    DataProcessing.save_file st "data/failsave.json"
+     | EndGame | Graphics.Graphic_failure _ ->
+        DataProcessing.save_file st "data/save.json"
+     | _ ->
+        DataProcessing.save_file st "data/failsave.json"
+
+
 
 
 let round flt =
@@ -253,8 +249,12 @@ and title_screen () =
     print_string  "> "; read_line () ) else failwith "Not an option yet" in
     init_game file_name opt
   with
-     | EndGame | Graphics.Graphic_failure _ -> print_endline "\nGoodbye"
-     | _ -> print_endline "\nBye"
+     | EndGame | Graphics.Graphic_failure _ ->
+        print_endline "\nGoodbye"
+     | _ ->
+        print_endline ("An error occurred, oh no! Attempting to save"
+                        ^ "gamestate to data/failsave.json");
+        print_endline "\nBye"
 
 
 
