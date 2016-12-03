@@ -19,7 +19,7 @@ let make_transp img =
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
-let _ = open_graph ""
+let _ = open_graph ""; set_window_title "Mini Transport Tycoon - by Dan, Jon, Max, and Pat"
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
 let title_screen = get_img "images/title.png" |> make_image
@@ -30,6 +30,8 @@ let truck_img = get_img "images/truck.png" |> make_image
 let newgame = get_img "images/newgame.png" |> make_image
 let loadgame = get_img "images/loadgame.png" |> make_image
 let help = get_img "images/help.png" |> make_image
+let exit = get_img "images/exit.png" |> make_image
+let settings = get_img "images/settings.png" |> make_image
 
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
@@ -167,26 +169,35 @@ let player_color pid =
 
 let draw_start () =
   resize_window 500 500;
-  let y = 80 in
+  let y = 100 in
   let x = 100 in
+  let offset = button_width/2 in
   draw_image bg 0 0;
   draw_image title_screen 0 0;
   draw_image newgame x y;
   draw_image loadgame (x+button_width) y;
-  draw_image help (x+2*button_width) y
+  draw_image help (x+2*button_width) y;
+  draw_image settings (x+offset) (y-button_height);
+  draw_image exit (x+button_width+offset) (y-button_height)
 
 let rec title_click () =
+  draw_start ();
   let status = wait_next_event [Button_down] in
   let b_x = 100 in
-  let b_y = 80 in
+  let b_y = 100 in
+  let offset = button_width/2 in
   let x = status.mouse_x in
   let y = status.mouse_y in
-  if not (button_down () && y < b_y+button_height && y > b_y) then title_click ()
-  else (
+  if (y < b_y+button_height && y > b_y) then (
     if x < b_x+button_width && x > b_x then 1 else
     if x < b_x+2*button_width && x > b_x+button_width then 2 else
     if x < b_x+3*button_width && x > b_x+button_width then 3 else
     title_click () )
+  else if (y < b_y && y > b_y-button_height) then (
+    if x < b_x+button_width+offset && x > b_x+offset then 4 else
+    if x < b_x+2*button_width+offset && x > b_x+button_width+offset then 5 else
+    title_click () )
+  else title_click ()
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
@@ -369,7 +380,8 @@ let rec rec_draw_circles p_win gs =
 (******************************INPUT******************************************)
 
 let is_cancelled (x,y) =
-  y < start_height+button_height-11*spacing && y > start_height-11*spacing
+  (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
+  (y < start_height+button_height && y > start_height-1*spacing)
 
 let is_confirmed (x,y) =
   y < start_height+button_height-10*spacing && y > start_height-10*spacing

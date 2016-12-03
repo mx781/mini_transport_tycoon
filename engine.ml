@@ -225,7 +225,7 @@ let rec init_game fname opt =
     gameover ();
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-    Unix.sleepf 1.;
+    Unix.sleepf 0.5;
     title_screen ()
   with
   | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
@@ -246,7 +246,7 @@ and title_screen () =
         print_endline ("Unexpected error, attempting save to data/failsave.json");
         print_endline "\nBye"
 
-and gameover () = 
+and gameover () =
   print_endline
   "\n#######################################################################";
   print_endline
