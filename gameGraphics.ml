@@ -22,11 +22,15 @@ let get_img img =
 let _ = open_graph " 500x500"
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
-let title_screen = get_img "images/mini.png" |> make_image
+let title_screen = get_img "images/title.png" |> make_image
 (* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
 (* Buttons *)
+let newgame = get_img "images/newgame.png" |> make_image
+let loadgame = get_img "images/loadgame.png" |> make_image
+let help = get_img "images/help.png" |> make_image
+
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
@@ -168,10 +172,11 @@ let open_screen size =
 let draw_start () =
   let y = 80 in
   let x = 100 in
+  draw_image bg 0 0;
   draw_image title_screen 0 0;
-  draw_image save x y;
-  draw_image pause (x+button_width) y;
-  draw_image pause (x+2*button_width) y
+  draw_image newgame x y;
+  draw_image loadgame (x+button_width) y;
+  draw_image help (x+2*button_width) y
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
