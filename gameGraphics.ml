@@ -525,7 +525,7 @@ let buy_road gs player_id =
   print_endline ("The road will cost $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to buy.");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
-  buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
+  InputProcessing.buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
 let sell_road gs player_id =
   print_endline "Pick two endpoints of the road to sell.";
@@ -535,7 +535,7 @@ let sell_road gs player_id =
   print_endline ("You will earn $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to sell.");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
-  sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
+  InputProcessing.sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
 
 let add_cargo gs player_id =
   print_endline "Pick a vehicle.";
@@ -552,7 +552,7 @@ let add_cargo gs player_id =
   (* print_endline "That will cost $\nConfirm to buy.";
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
-  buy_vehicle_cargo player_id auto (get_some cargo) gs) )
+  InputProcessing.buy_vehicle_cargo player_id auto (get_some cargo) gs) )
 
 let move_auto gs player_id =
   print_endline "Pick a vehicle to move.";
@@ -562,13 +562,13 @@ let move_auto gs player_id =
   let l = match auto.v_loc with
     | None -> failwith "vehicle has no location"
     | Some loc -> get_loc loc gs.graph in
-  set_vehicle_dest player_id auto l dest gs
+  InputProcessing.set_vehicle_dest player_id auto l dest gs
 
 let sell_auto (gs:GameElements.game_state) player_id =
   print_endline "Pick a vehicle to sell for\n\tCar: $50.00 \n\tTruck:$100.00";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
-  | Some auto -> sell_vehicle player_id auto
+  | Some auto -> InputProcessing.sell_vehicle player_id auto
 
 
 let click_buttons gs player_id =
