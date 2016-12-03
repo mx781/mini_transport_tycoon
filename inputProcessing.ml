@@ -149,7 +149,7 @@ let get_new_dest graph_access curr_loc =
 
 (*Gets the number of locations connected to elements in a loc_list; ideally used to
  *determine if an AI is buying a road that only connects two locations...*)
-let rec get_graph_islands graph loc_list num_connected c_id=
+(* let rec get_graph_islands graph loc_list num_connected c_id=
   let new_num_connected = ref num_connected in
   (* let () = print_endline (string_of_int (num_connected)) in *)
   match loc_list with
@@ -160,7 +160,7 @@ let rec get_graph_islands graph loc_list num_connected c_id=
       get_graph_islands graph t !new_num_connected c_id)
     else
       get_graph_islands graph t connected_s c_id
-  |[] -> num_connected
+  |[] -> num_connected *)
 
 (*Stuff that chooses AI movement based on a list of connections*)
 let make_vehicle_move vehicle c_connections graph curr_m c_id =
@@ -227,8 +227,7 @@ let edge_exists graph initial_loc final_loc =
 
 (*Used to determine whether a road can be sold or bought; it exists for the use
  * of good_loc_info. Var is_greater_than is used to determine the comparison
- * function to be used.
- *)
+ * function to be used. *)
 let better_deal is_greater_than info_compare info_other new_price new_good
   new_loc money graph=
   let comp = if is_greater_than then (>) else (<) in
@@ -329,8 +328,8 @@ let buy_c_road graph c_info=
     let the_good = get_o (t (fst most_profitable)) in
     let loc2 = get_o (s (snd most_profitable)) in
     let road_cost = calculate_buy_road_cost loc1 loc2 graph in
-    let num_islands = get_graph_islands graph [loc1;loc2] 0 c_info.p_id in
-    let () = print_endline (string_of_int (num_islands)) in
+  (*   let num_islands = get_graph_islands graph [loc1;loc2] 0 c_info.p_id in
+    let () = print_endline (string_of_int (num_islands)) in *)
     let new_length = hypot (loc1.l_x -. loc2.l_x) (loc2.l_y -. loc2.l_y) in
     if road_cost +. truck_price +. safe_amount <= c_info.money then
       (match Map.find_all_edges graph loc1 loc2 with
@@ -356,7 +355,7 @@ let buy_vehicle c_info initial_loc =
 (*Returns a place to put a vehicle given the current map that will earn
  * the vehicle profits.*)
 (*Uses a boolean to determine when to stop searching. *)
-(* Always returns the first profitable location. (Would be tedious to do more.) *)
+(* Always returns the first profitable location. (Would be tedious to do more.)*)
 let get_loc_vehicle c_connections=
   let empty = Map.empty in
   let new_graph = add_edges empty c_connections in
