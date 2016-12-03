@@ -243,7 +243,7 @@ let rec init_game fname =
     main_loop init_gs;
     gameover ();
     print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
+      (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
     Unix.sleepf 0.5;
     title_screen ()
   with

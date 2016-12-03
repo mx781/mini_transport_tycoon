@@ -151,7 +151,7 @@ let get_new_dest graph_access curr_loc =
  *determine if an AI is buying a road that only connects two locations...*)
 let rec get_graph_islands graph loc_list num_connected c_id=
   let new_num_connected = ref num_connected in
-  let () = print_endline (string_of_int (num_connected)) in
+  (* let () = print_endline (string_of_int (num_connected)) in *)
   match loc_list with
   |h :: t ->
     let connected_s = (!size_connected) h c_id in
