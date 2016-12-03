@@ -29,11 +29,6 @@
             "pid": 4,
             "ptype": {"AI": 2},
             "money": 400.0
-        },
-        {
-            "pid": 5,
-            "ptype": {"AI": 2},
-            "money": 400.0
         }
     ],
     "graph": {

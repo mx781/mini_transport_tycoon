@@ -466,8 +466,8 @@ let rec pick_cargo loc =
   then cargo else pick_cargo loc
 
 let quit gs =
-  (* print_endline "Game saved in myGame.json\n";
-  DataProcessing.save_file gs "myGame.json"; *)
+  print_endline "Saving game to data/save.json";
+  DataProcessing.save_file gs "data/save.json";
   EndGame
 
 let rec pause () =

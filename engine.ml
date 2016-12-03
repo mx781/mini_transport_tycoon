@@ -176,10 +176,9 @@ let player_wins st =
   with
     Not_found -> (-1)
 
-
 let rec main_loop st =
-  let start_t = Unix.time () in
   try
+    let start_t = Unix.time () in
     let p_win = player_wins st in
     if p_win <> (-1) then GameGraphics.draw_winner p_win st else
     GameGraphics.draw_game_state st;
@@ -205,12 +204,11 @@ let rec main_loop st =
     main_loop st'';
   with
      | EndGame | Graphics.Graphic_failure _ ->
-        DataProcessing.save_file st "data/save.json"
+        print_endline "Game Over, autosaving to data/autosave.json";
+        DataProcessing.save_file st "data/autosave.json"
      | _ ->
+        print_endline "Unexpected error, attempting save to data/failsave.json";
         DataProcessing.save_file st "data/failsave.json"
-
-
-
 
 let round flt =
   int_of_float (flt +. 0.5)
@@ -223,17 +221,10 @@ let rec init_game fname opt =
     Graphics.resize_window 1000 600;
     let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
-    let final_gs = main_loop init_gs in
-    print_endline
-    "\n#########################################################################";
-    print_endline
-    "                               Game Over                               ";
-    print_endline
-    "#########################################################################";
+    main_loop init_gs;
+    gameover ();
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-    (* DataProcessing.save_file final_gs "data/gamesave.json" *)
-    (* DataProcessing.save_file init_gs "data/gamesave.json"; *)
     Unix.sleepf 1.;
     title_screen ()
   with
@@ -252,25 +243,30 @@ and title_screen () =
      | EndGame | Graphics.Graphic_failure _ ->
         print_endline "\nGoodbye"
      | _ ->
-        print_endline ("An error occurred, oh no! Attempting to save"
-                        ^ "gamestate to data/failsave.json");
+        print_endline ("Unexpected error, attempting save to data/failsave.json");
         print_endline "\nBye"
 
+and gameover () = 
+  print_endline
+  "\n#######################################################################";
+  print_endline
+  "                                Game Over                                ";
+  print_endline
+  "#######################################################################"
 
-
- let instr () =
-     print_string
-      "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    print_endline
-      "***********************************************************************";
-    print_endline "                             Instructions";
-    print_endline
-      "***********************************************************************\n";
-    print_endline "Save/Quit: Saves the current game to a json file and closes the game.\n";
-    print_endline "Pause:     Pauses the game until the screen is clicked again\n";
-    print_endline "Buy Car:   Buys a car starting at a given location\n";
-    print_endline "Buy Truck: Buys a truck starting at a given location\n";
-    print_endline "Buy Road:  Buys a new road between two locations, or if a road exists,";
-    print_endline "           buys exclusive right to that road\n";
-    print_endline
-      "***********************************************************************\n"
+let instr () =
+   print_string
+    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+  print_endline
+    "***********************************************************************";
+  print_endline "                             Instructions";
+  print_endline
+    "***********************************************************************\n";
+  print_endline "Save/Quit: Saves the current game to a json file and closes the game.\n";
+  print_endline "Pause:     Pauses the game until the screen is clicked again\n";
+  print_endline "Buy Car:   Buys a car starting at a given location\n";
+  print_endline "Buy Truck: Buys a truck starting at a given location\n";
+  print_endline "Buy Road:  Buys a new road between two locations, or if a road exists,";
+  print_endline "           buys exclusive right to that road\n";
+  print_endline
+    "***********************************************************************\n"

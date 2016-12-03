@@ -12,16 +12,18 @@ let t (_,_,z) = z
 
 exception ParsingFailure
 
-(* Native typedefs need to be repeated manually -- opening the whole module
+(* Native typedefs need to be imported one by one -- opening the whole module
 * overrides the Piqi objects. *)
 type vehicle = GameElements.vehicle
 type player = Player.player
 type graph = GameElements.Map.t
 type game_state = GameElements.game_state
 
+(* ****************************************************************** *)
 (* Conversion functions between Piqi objects and native OCaml objects *)
+(* ****************************************************************** *)
 
-(* Resource *)
+(* Resource: Piqi to native type *)
 let resource_of_piqiresource pres = 
   let open GameElements in match pres with
   | `lumber -> Lumber
@@ -29,7 +31,7 @@ let resource_of_piqiresource pres =
   | `oil -> Oil
   | `electronics -> Electronics
   | `produce -> Produce
-
+(* Resource: Native type to Piqi *)
 let resource_to_piqiresource res = 
   match res with
   | Lumber -> `lumber
@@ -38,83 +40,83 @@ let resource_to_piqiresource res =
   | Electronics -> `electronics
   | Produce -> `produce
 
-(* Vehicle *)
+(* Vehicle: Piqi to native type*)
 let vehicle_of_vehicle: Gameelements_piqi.vehicle -> GameElements.vehicle =
-  (fun pv -> 
-    let open GameElements in match pv with
-    | {owner=o; t=t; speed=sp; capacity=cap; cargo=cg; age=age'; status=st;
-      x=x'; y=y'; destination=dst; loc=vloc} ->
-      let t' = match t with 
-        | `car -> Car
-        | `truck -> Truck
-      in
-      let cg' = match cg with
-        | {t=t; quant=q;} -> 
-          let t' = resource_of_piqiresource t in 
-          Some {t=t'; quantity=q}
-      in
-      let st' = match st with 
-        | `waiting -> Waiting
-        | `driving -> Driving
-        | `broken -> Broken
-      in
-      let vloc' = match vloc with
-        | `some i -> Some i
-        | `none -> None
-      in 
-      {
-        v_owner_id = o;
-        v_t = t';
-        v_loc = vloc';
-        speed = sp;
-        capacity = cap;
-        cargo = cg';
-        age = age';
-        status = st';
-        x = x';
-        y = y';
-        destination = dst;
-      }
+  (fun {owner=o; t=t; speed=sp; capacity=cap; cargo=cg; age=age'; status=st;
+      x=x'; y=y'; destination=dst; loc=vloc} -> 
+    let open GameElements in
+    let t' = match t with 
+      | `car -> Car
+      | `truck -> Truck
+    in
+    let cg' = match cg with
+      | `none -> None
+      | `some {t=t; quant=q;} -> 
+        let t' = resource_of_piqiresource t in 
+        Some {t=t'; quantity=q}
+    in
+    let st' = match st with 
+      | `waiting -> Waiting
+      | `driving -> Driving
+      | `broken -> Broken
+    in
+    let vloc' = match vloc with
+      | `some i -> Some i
+      | `none -> None
+    in 
+    {
+      v_owner_id = o;
+      v_t = t';
+      v_loc = vloc';
+      speed = sp;
+      capacity = cap;
+      cargo = cg';
+      age = age';
+      status = st';
+      x = x';
+      y = y';
+      destination = dst;
+    }
 )
+(* Vehicle: Native type to Piqi*)
 let vehicle_to_vehicle: GameElements.vehicle -> Gameelements_piqi.vehicle =
-  (fun v -> 
-    match v with
-    | {v_owner_id=o; v_t=t; v_loc=loc; speed=sp; capacity=cap; cargo=cg;
-      age=age'; status=st; x=x'; y=y'; destination=dst;} ->
-      let t' = match t with 
-        | Car -> `car
-        | Truck -> `truck
-      in
-      let cg' = match cg with
-        | Some {t=t; quantity=q;} -> 
-          let t' = resource_to_piqiresource t in 
-          {t=t'; quant=q}
-      in
-      let st' = match st with 
-        | Waiting -> `waiting
-        | Driving -> `driving
-        | Broken -> `broken
-      in
-      let loc' = match loc with
-        | Some i -> `some i 
-        | None -> `none
-      in
-      {
-        owner = o;
-        t = t';
-        loc = loc';
-        speed = sp;
-        capacity = cap;
-        cargo = cg';
-        age = age';
-        status = st';
-        x = x';
-        y = y';
-        destination = dst;
-      }
+  (fun {v_owner_id=o; v_t=t; v_loc=loc; speed=sp; capacity=cap; cargo=cg;
+    age=age'; status=st; x=x'; y=y'; destination=dst;} -> 
+    let t' = match t with 
+      | Car -> `car
+      | Truck -> `truck
+    in
+    let cg' = match cg with
+      | None -> `none
+      | Some {t=t; quantity=q;} -> 
+        let t' = resource_to_piqiresource t in 
+        `some {t=t'; quant=q}
+    in
+    let st' = match st with 
+      | Waiting -> `waiting
+      | Driving -> `driving
+      | Broken -> `broken
+    in
+    let loc' = match loc with
+      | Some i -> `some i 
+      | None -> `none
+    in
+    {
+      owner = o;
+      t = t';
+      loc = loc';
+      speed = sp;
+      capacity = cap;
+      cargo = cg';
+      age = age';
+      status = st';
+      x = x';
+      y = y';
+      destination = dst;
+    }
 )
 
-(* Player *)
+(* Player: Piqi to native type*)
 let player_of_player: Player_piqi.player -> Player.player = (fun p -> 
   let open Player in match p with
   | {pid=id; ptype=pt; money=m;} ->
@@ -128,51 +130,53 @@ let player_of_player: Player_piqi.player -> Player.player = (fun p ->
       money = m;
     }
 )
-let player_to_player: Player.player -> Player_piqi.player = (fun p ->
-  match p with
-  | {p_id=id'; p_type=pt; money=m;} -> 
-    let pt' = match pt with
-      | Human -> `human
-      | AI x -> `ai x
-    in
-    {
-      pid = id';
-      ptype = pt';
-      money = m;
-    }
+(* Player: Native type to Piqi*)
+let player_to_player: Player.player -> Player_piqi.player =
+(fun {p_id=id'; p_type=pt; money=m;} -> 
+  let pt' = match pt with
+    | Human -> `human
+    | AI x -> `ai x
+  in
+  {
+    pid = id';
+    ptype = pt';
+    money = m;
+  }
 )
 
-(* Goods Profile *)
+(* Goods Profile: Piqi to native type *)
 let goodsprofile_of_piqigoodsprofile: Gameelements_piqi.Goodsprofile.t -> GameElements.goods_profile = 
-(fun pgoodsprofile -> 
-  let open GameElements in match pgoodsprofile with 
-  | {resource=r; stepstoinc=sti; current=curr; capacity=cap; price=p;
+(fun {resource=r; stepstoinc=sti; current=curr; capacity=cap; price=p;
     naturalprice = np} ->
-    {
-      resource = resource_of_piqiresource r;
-      steps_to_inc = sti;
-      current = curr;
-      capacity = cap;
-      price = p;
-      natural_price = np;
-    }
+  let open GameElements in
+  {
+    resource = resource_of_piqiresource r;
+    steps_to_inc = sti;
+    current = curr;
+    capacity = cap;
+    price = p;
+    natural_price = np;
+  }
 )
+(* Goods Profile: Native type to Piqi *)
 let goodsprofile_to_piqigoodsprofile: GameElements.goods_profile -> Gameelements_piqi.Goodsprofile.t =
-(fun goodsprofile ->
-  match goodsprofile with
-  | {resource=r; steps_to_inc=sti; current=curr; capacity=cap; price=p;
-    natural_price=np} -> 
-    {
-      resource = resource_to_piqiresource r;
-      stepstoinc = sti;
-      current = curr;
-      capacity = cap;
-      price = p;
-      naturalprice = np;
-    }
+(fun {resource=r; steps_to_inc=sti; current=curr; capacity=cap; price=p;
+    natural_price=np} ->
+  {
+    resource = resource_to_piqiresource r;
+    stepstoinc = sti;
+    current = curr;
+    capacity = cap;
+    price = p;
+    naturalprice = np;
+  }
 )
 
-(* Graph *)
+(* **************************** *)
+(*  Graph Conversion functions  *)
+(* **************************** *)
+
+(* Graph node: Piqi to native type *)
 let node_of_piqinode: Gameelements_piqi.Location.t -> GameElements.location = 
 (fun pnode -> 
   let open GameElements in match pnode with
@@ -187,6 +191,7 @@ let node_of_piqinode: Gameelements_piqi.Location.t -> GameElements.location =
       produces = p';
     }
 )
+(* Graph node: Native type to Piqi *)
 let node_to_piqinode: GameElements.location -> Gameelements_piqi.Location.t =
 (fun node ->
   match node with
@@ -202,6 +207,7 @@ let node_to_piqinode: GameElements.location -> Gameelements_piqi.Location.t =
     }
 )
 
+(* Graph edge: Piqi to native type *)
 let edge_of_piqiedge: Gameelements_piqi.Connection.t -> GameElements.connection = 
 (fun pedge ->
   let open GameElements in match pedge with
@@ -215,6 +221,7 @@ let edge_of_piqiedge: Gameelements_piqi.Connection.t -> GameElements.connection 
       length = l;
     }
 )
+(* Graph edge: Native type to Piqi *)
 let edge_to_piqiedge: GameElements.connection -> Gameelements_piqi.Connection.t =
 (fun edge ->
   match edge with
@@ -249,6 +256,7 @@ let rec fetch_edge_nodes edges nodes edges_with_nodes =
     with
       | ParsingFailure -> failwith "node lookup exception"
 
+(* Graph: Piqi to native type *)
 let graph_of_graph: Graph_piqi.graph -> graph = (fun g ->
   let open GameElements in match g with
   | {nodes=ns; edges=es;} ->
@@ -259,7 +267,7 @@ let graph_of_graph: Graph_piqi.graph -> graph = (fun g ->
     List.fold_left (fun g (v1, e, v2) -> Map.add_edge_e g (v1, e, v2) )
       graph edges_with_nodes
 )
-
+(* Graph: Native type to Piqi *)
 let graph_to_graph: graph -> Graph_piqi.graph = (fun g ->
   let nodes = Map.fold_vertex (fun nd acc ->
       (node_to_piqinode nd)::acc) g [] in
