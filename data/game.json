@@ -200,7 +200,7 @@
                   },
                   {
                     "resource": {"Lumber": true},
-                    "stepstoinc": 40,
+                    "stepstoinc": 25,
                     "current": 500,
                     "capacity": 1000,
                     "price": 2.0,
@@ -233,7 +233,7 @@
                 "produces": [
                   {
                     "resource": {"Produce": true},
-                    "stepstoinc": 60,
+                    "stepstoinc": 45,
                     "current": 100,
                     "capacity": 600,
                     "price": 1.2,
@@ -274,7 +274,7 @@
                 "produces": [
                   {
                     "resource": {"Oil": true},
-                    "stepstoinc": 140,
+                    "stepstoinc": 50,
                     "current": 100,
                     "capacity": 200,
                     "price": 4.2,
@@ -282,7 +282,7 @@
                   },
                   {
                     "resource": {"Electronics": true},
-                    "stepstoinc": 10,
+                    "stepstoinc": 30,
                     "current": 200,
                     "capacity": 400,
                     "price": 5.0,
@@ -315,7 +315,7 @@
                 "produces": [
                   {
                     "resource": {"Iron": true},
-                    "stepstoinc": 80,
+                    "stepstoinc": 40,
                     "current": 100,
                     "capacity": 200,
                     "price": 4.2,
@@ -356,7 +356,7 @@
                 "produces": [
                   {
                     "resource": {"Produce": true},
-                    "stepstoinc": 110,
+                    "stepstoinc": 70,
                     "current": 100,
                     "capacity": 2000,
                     "price": 1.8,

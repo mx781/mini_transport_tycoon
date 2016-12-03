@@ -518,20 +518,21 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
     | h::t -> h in
   let checked_route = get_route first_dest end_loc.l_id st player_id in
   let dest_list = match checked_route with
-    | None -> []
-    | Some lst -> lst in
+    | None -> (print_endline "Vehicle cannot reach this location!\n"; [])
+    | Some lst -> (print_endline "Vehicle en route.\n"; lst) in
   let stat = match dest_list with
     | [] -> Waiting
     | h::t -> Driving in
   let v =
     if v_old.v_owner_id = player_id
-    then {
+    then
+    {
       v_old with destination = first_dest::dest_list;
       status = stat;
     }
     else let () = print_endline "You cannot route that vehicle, you do not own it!\n" in v_old
   in
-  print_endline "Vehicle enroute.\n"; SetVehicleDestination(v)
+  SetVehicleDestination(v)
 
 let buy_vehicle_cargo player_id v_old r_type st =
   let vehicle_max = match v_old.v_t with
