@@ -41,6 +41,13 @@
         .type int
     ]
 ]
+
+.variant [
+    .name goodopt
+    .option [ .name None]
+    .option [ .name Some .type good]
+]
+
 .record [
     .name goodsprofile
     .field [
@@ -152,7 +159,7 @@
     ]
     .field [
         .name cargo
-        .type good
+        .type goodopt
     ]
     .field [
         .name age

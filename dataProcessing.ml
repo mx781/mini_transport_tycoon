@@ -33,7 +33,7 @@ let gs_from_piqi piqi_gs =
 (* TODO: see if we can resolve the necessity to have explicit typing *)
 let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs ->
   let open Gamestate_piqi.Gamestate in 
-  print_int (List.length gs.vehicles);
+  (* print_int (List.length gs.vehicles); *)
   {
     vehicles = gs.vehicles;
     graph = gs.graph;
@@ -58,6 +58,6 @@ let save_file game_state file =
     let json_data = gen_gamestate piqi_gs `json in
     output_string out_chan json_data;
     close_out out_chan;
-    print_endline ("Game saved to " ^ file)
+    print_endline (" [✔] Save successful [" ^ file ^ "]")
   with
-  | _ -> failwith ("Failed to save gamestate into " ^ file)
+  | _ -> failwith (" [✖] Failed to save to [" ^ file ^ "]")

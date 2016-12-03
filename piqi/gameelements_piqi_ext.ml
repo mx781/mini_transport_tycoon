@@ -9,6 +9,7 @@ let _vtype_piqi_type = Piqirun_ext.find_piqi_type "gameelements/vtype"
 let _vstatus_piqi_type = Piqirun_ext.find_piqi_type "gameelements/vstatus"
 let _intopt_piqi_type = Piqirun_ext.find_piqi_type "gameelements/intopt"
 let _good_piqi_type = Piqirun_ext.find_piqi_type "gameelements/good"
+let _goodopt_piqi_type = Piqirun_ext.find_piqi_type "gameelements/goodopt"
 let _goodsprofile_piqi_type = Piqirun_ext.find_piqi_type "gameelements/goodsprofile"
 let _gplist_piqi_type = Piqirun_ext.find_piqi_type "gameelements/gplist"
 let _location_piqi_type = Piqirun_ext.find_piqi_type "gameelements/location"
@@ -41,6 +42,11 @@ let parse_good ?opts x (format :Piqirun_ext.input_format) =
   let x_pb = Piqirun_ext.convert _good_piqi_type format `pb x ?opts in
   let buf = Piqirun.init_from_string x_pb in
   Gameelements_piqi.parse_good buf
+
+let parse_goodopt ?opts x (format :Piqirun_ext.input_format) =
+  let x_pb = Piqirun_ext.convert _goodopt_piqi_type format `pb x ?opts in
+  let buf = Piqirun.init_from_string x_pb in
+  Gameelements_piqi.parse_goodopt buf
 
 let parse_goodsprofile ?opts x (format :Piqirun_ext.input_format) =
   let x_pb = Piqirun_ext.convert _goodsprofile_piqi_type format `pb x ?opts in
@@ -98,6 +104,11 @@ let gen_good ?opts x (format :Piqirun_ext.output_format) =
   let x_pb = Piqirun.to_string buf in
   Piqirun_ext.convert _good_piqi_type `pb format x_pb ?opts
 
+let gen_goodopt ?opts x (format :Piqirun_ext.output_format) =
+  let buf = Gameelements_piqi.gen_goodopt x in
+  let x_pb = Piqirun.to_string buf in
+  Piqirun_ext.convert _goodopt_piqi_type `pb format x_pb ?opts
+
 let gen_goodsprofile ?opts x (format :Piqirun_ext.output_format) =
   let buf = Gameelements_piqi.gen_goodsprofile x in
   let x_pb = Piqirun.to_string buf in
@@ -153,6 +164,11 @@ let print_good ?opts x =
   Pervasives.print_endline (gen_good x `piq ?opts)
 let prerr_good ?opts x =
   Pervasives.prerr_endline (gen_good x `piq ?opts)
+
+let print_goodopt ?opts x =
+  Pervasives.print_endline (gen_goodopt x `piq ?opts)
+let prerr_goodopt ?opts x =
+  Pervasives.prerr_endline (gen_goodopt x `piq ?opts)
 
 let print_goodsprofile ?opts x =
   Pervasives.print_endline (gen_goodsprofile x `piq ?opts)

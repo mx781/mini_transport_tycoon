@@ -30,6 +30,8 @@ let truck_img = get_img "images/truck.png" |> make_image
 let newgame = get_img "images/newgame.png" |> make_image
 let loadgame = get_img "images/loadgame.png" |> make_image
 let help = get_img "images/help.png" |> make_image
+let exit = get_img "images/exit.png" |> make_image
+let settings = get_img "images/settings.png" |> make_image
 
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
@@ -468,8 +470,8 @@ let rec pick_cargo loc =
   then cargo else pick_cargo loc
 
 let quit gs =
-  (* print_endline "Game saved in myGame.json\n";
-  DataProcessing.save_file gs "myGame.json"; *)
+  print_endline "Saving game to data/save.json";
+  DataProcessing.save_file gs "data/save.json";
   EndGame
 
 let rec pause () =
