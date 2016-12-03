@@ -9,6 +9,9 @@ type r_type =
     | Electronics
     | Produce
 
+type loc_id = int
+type player_id = int
+
 type good = {
   t : r_type;
   quantity : int;
