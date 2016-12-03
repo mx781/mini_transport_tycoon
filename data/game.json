@@ -27,12 +27,12 @@
         },
         {
             "pid": 4,
-            "ptype": {"AI": 25},
+            "ptype": {"AI": 2},
             "money": 400.0
         },
         {
             "pid": 5,
-            "ptype": {"AI": 200},
+            "ptype": {"AI": 2},
             "money": 400.0
         }
     ],
