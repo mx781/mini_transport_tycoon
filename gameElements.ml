@@ -108,7 +108,6 @@ type game_state = {
   game_age : int;
   paused: bool;
   mutable players : Player.player list;
-  ai_info : ai_stuff;
 }
 
 module ConnectionWeight = struct
