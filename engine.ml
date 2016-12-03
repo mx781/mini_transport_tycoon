@@ -4,8 +4,6 @@
  open InputProcessing
  open DataProcessing
 
-
-
 exception EndGame
 
 let buy_vehicle v st =
@@ -201,12 +199,7 @@ let rec main_loop st =
     (* print_endline (string_of_float sleep_time); *)
     Unix.sleepf sleep_time;
     main_loop st''
-  with e -> print_endline
-  "\n#########################################################################";
-  print_endline
-  "                               Game Over                               ";
-  print_endline
-  "#########################################################################"
+  with e -> ()
 
 
 let round flt =
@@ -215,11 +208,54 @@ let round flt =
 let two_dec flt =
   float_of_int (round (flt *. 100.)) /. 100.
 
-let init_game fname scale =
-  GameGraphics.open_screen scale;
-  let start_t = Unix.time () in
-  let init_gs = DataProcessing.load_file fname in
-  main_loop init_gs;
-  print_endline ("\nGame Duration: " ^
-    (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
-  DataProcessing.save_file init_gs "data/gamesave.json"
+let rec init_game fname opt =
+  try
+    Graphics.resize_window 1000 600;
+    let start_t = Unix.time () in
+    let init_gs = DataProcessing.load_file fname in
+    main_loop init_gs;
+    print_endline
+    "\n#########################################################################";
+    print_endline
+    "                               Game Over                               ";
+    print_endline
+    "#########################################################################";
+    print_endline ("\nGame Duration: " ^
+      (string_of_float (two_dec(Unix.time () -. start_t)/.60.)) ^ " minutes.");
+    DataProcessing.save_file init_gs "data/gamesave.json";
+    Unix.sleepf 1.;
+    title_screen ()
+  with
+  | Failure _ -> print_endline "\nNot a valid game file"; title_screen ()
+  | e -> raise EndGame
+
+and title_screen () =
+  try
+    GameGraphics.draw_start ();
+    let opt = GameGraphics.title_click () in
+    let file_name = if opt = 1 then "data/game.json" else if opt = 2 then (
+    print_endline "\nPlease enter the name of the game file you want to load.\n";
+    print_string  "> "; read_line () ) else failwith "Not an option yet" in
+    init_game file_name opt
+  with
+     | EndGame | Graphics.Graphic_failure _ -> print_endline "\nGoodbye"
+     | _ -> print_endline "\nBye"
+
+
+
+ let instr () =
+     print_string
+      "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    print_endline
+      "***********************************************************************";
+    print_endline "                             Instructions";
+    print_endline
+      "***********************************************************************\n";
+    print_endline "Save/Quit: Saves the current game to a json file and closes the game.\n";
+    print_endline "Pause:     Pauses the game until the screen is clicked again\n";
+    print_endline "Buy Car:   Buys a car starting at a given location\n";
+    print_endline "Buy Truck: Buys a truck starting at a given location\n";
+    print_endline "Buy Road:  Buys a new road between two locations, or if a road exists,";
+    print_endline "           buys exclusive right to that road\n";
+    print_endline
+      "***********************************************************************\n"

@@ -19,7 +19,7 @@ let make_transp img =
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
-let _ = open_graph " 500x500"
+let _ = open_graph ""
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
 let title_screen = get_img "images/title.png" |> make_image
@@ -165,11 +165,8 @@ let player_color pid =
 
 (******************************GRAPHICS****************************************)
 
-let open_screen size =
-  scale := (int_of_string size);
-  resize_window (screen_width* !scale) (screen_height* !scale)
-
 let draw_start () =
+  resize_window 500 500;
   let y = 80 in
   let x = 100 in
   draw_image bg 0 0;
@@ -177,6 +174,19 @@ let draw_start () =
   draw_image newgame x y;
   draw_image loadgame (x+button_width) y;
   draw_image help (x+2*button_width) y
+
+let rec title_click () =
+  let status = wait_next_event [Button_down] in
+  let b_x = 100 in
+  let b_y = 80 in
+  let x = status.mouse_x in
+  let y = status.mouse_y in
+  if not (button_down () && y < b_y+button_height && y > b_y) then title_click ()
+  else (
+    if x < b_x+button_width && x > b_x then 1 else
+    if x < b_x+2*button_width && x > b_x+button_width then 2 else
+    if x < b_x+3*button_width && x > b_x+button_width then 3 else
+    title_click () )
 
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
@@ -349,12 +359,12 @@ let rec rec_draw_circles p_win gs =
     fill_rect 750 380 220 200;
     draw_players gs.players;
     Unix.sleepf 0.004;
-    rec_draw_circles p_win; ()
+    rec_draw_circles p_win gs
 
   let draw_winner p_win gs =
     draw_ograph gs.graph;
     draw_vehicles gs.vehicles;
-    rec_draw_circles p_win gs; ()
+    rec_draw_circles p_win gs
 
 (******************************INPUT******************************************)
 
@@ -393,7 +403,6 @@ let rec get_auto_near gs =
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
   let auto = ref None in
   let close_enough = 30 in
-  let labl = Map.V.label in
   List.iter
     (fun v -> let (x1,y1) = round v.x, round v.y in
               if (abs (x*2/ !scale - x1) < close_enough)
