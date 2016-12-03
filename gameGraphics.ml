@@ -167,6 +167,10 @@ let get_some opt =
   | Some v -> v
   | _ -> failwith "Always check None before using get_some"
 
+let purple = 0xAA00AA
+let green = 0x228B22
+let orange = 0xFFA500
+
 let player_color pid =
   match pid with
   | -1 -> default_color
@@ -174,7 +178,7 @@ let player_color pid =
   | 1 -> yellow
   | 2 -> blue
   | 3 -> white
-  | 4 -> black
+  | 4 -> purple
   | _ -> green
 
 (******************************GRAPHICS****************************************)
@@ -228,7 +232,7 @@ let rec settings () =
   if (sx < x+button_width && sx > x) then (
     if sy < y+button_height && sy > y then Player.Brutal else
     if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
-    if sy < y+2*spacing+button_height && sy > y+2*spacing then Player.Medium else
+    if sy < y+2*spacing+button_height && sy> y+2*spacing then Player.Medium else
     if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
     settings () )
   else settings ()
@@ -371,10 +375,13 @@ let draw_game_state (gs:game_state) : unit =
   draw_buttons ();
   draw_hover gs.graph
 
+let is_cancelled (x,y) =
+  (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
+  (y < start_height+button_height && y > start_height-1*spacing)
+
 (* This function is a secret, complete the game to see it in action *)
 let rec fin p_win gs =
-   let col = (player_color p_win) in
-   let color = if col = black then white else col in
+   let color = (player_color p_win) in
     draw_image truck_img (Random.int screen_width * !scale)
                          (Random.int screen_height * !scale);
     draw_image car_img (Random.int screen_width * !scale)
@@ -389,12 +396,16 @@ let rec fin p_win gs =
     draw_str ("WINNER IS: P" ^ (string_of_int p_win))
        (screen_width/2+120) (screen_height - 30);
     set_color black;
-    fill_rect 740 370 240 220;
+    fill_rect 740 390 240 200;
     set_color color;
-    fill_rect 750 380 220 200;
+    fill_rect 750 400 220 180;
     draw_scores gs.players;
     Unix.sleepf 0.004;
-    fin p_win gs
+    draw_image exit 0 (start_height-11*spacing);
+    let stat = wait_next_event [Poll;Button_down] in
+    let pos = (stat.mouse_x, stat.mouse_y) in
+    if (button_down () && is_cancelled pos)
+    then failwith "exit" else fin p_win gs
 
 (* Engine calls this if it detects someone has won, draws end game screen *)
 let draw_winner p_win gs =
@@ -403,10 +414,6 @@ let draw_winner p_win gs =
   fin p_win gs
 
 (******************************INPUT FROM GRAPHICS*****************************)
-
-let is_cancelled (x,y) =
-  (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
-  (y < start_height+button_height && y > start_height-1*spacing)
 
 let is_confirmed (x,y) =
   y < start_height+button_height-10*spacing && y > start_height-10*spacing
@@ -532,21 +539,27 @@ let buy_road gs player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None
   then (print_endline "Cancelled\n"; Nothing) else (
-  let cost = calculate_buy_road_cost (get_some start_loc) (get_some end_loc) gs.graph in
-  print_endline ("The road will cost $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to buy.");
+  let cost = calculate_buy_road_cost
+             (get_some start_loc) (get_some end_loc) gs.graph in
+  print_endline ("The road will cost $" ^ (string_of_float (two_dec cost))
+                   ^ "\nConfirm to buy.\n");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
-  InputProcessing.buy_road player_id (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
+  InputProcessing.buy_road player_id
+      (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
 let sell_road gs player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
-  if start_loc = None || end_loc = None then (print_endline "Cancelled\n"; Nothing) else (
+  if start_loc = None || end_loc = None
+  then (print_endline "Cancelled\n"; Nothing) else (
   let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
-  print_endline ("You will earn $" ^ (string_of_float (two_dec cost)) ^ "\nConfirm to sell.");
+    print_endline ("You will earn $" ^ (string_of_float (two_dec cost))
+                   ^ "\nConfirm to sell.");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
-  InputProcessing.sell_road player_id (get_some start_loc) (get_some end_loc) gs.graph)
+  InputProcessing.sell_road player_id
+    (get_some start_loc) (get_some end_loc) gs.graph)
 
 let add_cargo gs player_id =
   print_endline "Pick a vehicle.";
@@ -556,7 +569,7 @@ let add_cargo gs player_id =
     (print_endline "Vehicle must be stopped at a location."; Nothing)
   | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
-  let loc = get_loc_near ~click:false ~pos:(round auto.x, round auto.y) gs.graph in
+  let loc=get_loc_near ~click:false ~pos:(round auto.x,round auto.y) gs.graph in
   if loc = None then Nothing else (
   let cargo = pick_cargo (get_some loc) in
   if cargo = None then Nothing else (
@@ -567,12 +580,16 @@ let add_cargo gs player_id =
 
 let move_auto gs player_id =
   print_endline "Pick a vehicle to move.";
-  match get_auto_near gs with None -> (print_endline "Cancelled"; Nothing) | Some auto ->
-  print_endline "Choose destination.";
-  match get_loc_near gs.graph with None -> (print_endline "Cancelled"; Nothing) | Some dest ->
-  let l = match auto.v_loc with
-    | None -> failwith "vehicle has no location"
-    | Some loc -> get_loc loc gs.graph in
+  match get_auto_near gs with
+  | None -> (print_endline "Cancelled"; Nothing)
+  | Some auto ->
+    print_endline "Choose destination.";
+    match get_loc_near gs.graph with
+    |None -> (print_endline "Cancelled"; Nothing)
+    | Some dest ->
+      let l = match auto.v_loc with
+      | None -> failwith "vehicle has no location"
+      | Some loc -> get_loc loc gs.graph in
   InputProcessing.set_vehicle_dest player_id auto l dest gs
 
 let sell_auto (gs:GameElements.game_state) player_id =
