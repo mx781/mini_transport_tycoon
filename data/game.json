@@ -448,6 +448,47 @@
                     "naturalprice": 0.7
                   }
                 ]
+            },
+            {
+                "id": 10,
+                "lx": 610.0,
+                "ly": 90.0,
+                "accepts": [
+                  {
+                    "resource": {"Produce": true},
+                    "stepstoinc": 500,
+                    "current": 20,
+                    "capacity": 40,
+                    "price": 4.0,
+                    "naturalprice": 8.0
+                  },
+                  {
+                    "resource": {"Lumber": true},
+                    "stepstoinc": 500,
+                    "current": 20,
+                    "capacity": 40,
+                    "price": 6.5,
+                    "naturalprice": 6.5
+                  }
+                ],
+                "produces": [
+                  {
+                    "resource": {"Oil": true},
+                    "stepstoinc": 40,
+                    "current": 50,
+                    "capacity": 200,
+                    "price": 1.2,
+                    "naturalprice": 3.2
+                  },
+                  {
+                    "resource": {"Electronics": true},
+                    "stepstoinc": 25,
+                    "current": 50,
+                    "capacity": 80,
+                    "price": 0.7,
+                    "naturalprice": 0.7
+                  }
+                ]
             }
         ],
         "edges": [
