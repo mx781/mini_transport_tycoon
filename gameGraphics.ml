@@ -32,6 +32,10 @@ let loadgame = get_img "images/loadgame.png" |> make_image
 let help = get_img "images/help.png" |> make_image
 let exit = get_img "images/exit.png" |> make_image
 let settings = get_img "images/settings.png" |> make_image
+let easy = get_img "images/easy.png" |> make_image
+let medium = get_img "images/medium.png" |> make_image
+let hard = get_img "images/hard.png" |> make_image
+let brutal = get_img "images/brutal.png" |> make_image
 
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
@@ -180,19 +184,24 @@ let draw_start () =
   draw_image settings (x+offset) (y-button_height);
   draw_image exit (x+button_width+offset) (y-button_height)
 
-let settings () =
-  print_endline "settings";
-  let y = 100 in
-  let x = 100 in
+let rec settings () =
+  let y = 70 in
+  let x = 200 in
+  let spacing = button_height+button_height in
   draw_image bg 0 0;
-  print_endline "drawing";
-  draw_image newgame x y;
-  draw_image loadgame (x+button_width) y;
-  draw_image help (x+2*button_width) y;
+  draw_image brutal x y;
+  draw_image hard x (y+spacing);
+  draw_image medium x (y+2*spacing);
+  draw_image easy x (y+3*spacing);
   let status = wait_next_event [Button_down] in
   let sx, sy = status.mouse_x, status.mouse_y in
-  ()
-
+  if (sx < x+button_width && sx > x) then (
+    if sy < y+button_height && sy > y then Player.Brutal else
+    if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
+    if sy < y+2*spacing+button_height && sy > y+2*spacing then Player.Medium else
+    if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
+    settings () )
+  else settings ()
 
 let rec title_click () =
   draw_start ();

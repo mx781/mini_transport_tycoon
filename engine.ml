@@ -235,7 +235,7 @@ let instr () =
     "***********************************************************************\n"
 
 
-let rec init_game fname : unit =
+let rec init_game fname dif : unit =
   try
     Graphics.resize_window 1000 600;
     let start_t = Unix.time () in
@@ -245,21 +245,21 @@ let rec init_game fname : unit =
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
     Unix.sleepf 0.5;
-    title_screen ()
+    title_screen dif
   with
   | Quit -> raise Quit
 (*   | Failure _ -> print_endline e; print_endline "\nNot a valid game file"; title_screen ()
   | e -> raise EndGame *)
 
-and title_screen () : unit =
+and title_screen (dif:ai_game_difficulty) : unit =
   try
     GameGraphics.draw_start ();
     let opt = GameGraphics.title_click () in
-    if opt = 1 then init_game "data/game.json"
+    if opt = 1 then init_game "data/game.json" dif
     else if opt = 2 then (
       print_endline "\nPlease enter the name of the game file you want to load.\n";
-      print_string  "> "; init_game (read_line ()) )
-    else if opt = 3 then (instr (); (*help screen*) title_screen ())
+      print_string  "> "; init_game (read_line ()) dif )
+    else if opt = 3 then (instr (); (*help screen*) title_screen dif)
     else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
     else raise Quit
@@ -272,7 +272,7 @@ and title_screen () : unit =
         "\nBye" *)
 
  and settings_screen () =
-    GameGraphics.settings ()
+    title_screen (GameGraphics.settings ())
 
 and gameover () =
   print_endline
