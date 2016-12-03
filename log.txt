@@ -1,0 +1,250 @@
+1e53775ec2f08bc2c25fd219974433ef6c6ce48d Fixed vehicle en route text showing up when it shouldn't
+1852e2ab4a6091629169f49d8e6e5d1b06acb8c3 fixed a bug where vehicles didn't move when they should be
+174ea27a8ea5aa2ba177d1f267add419e656195b made it so AI now try to build roads based on length and profit rather than just profit
+45c430cae052e1ddad11ed48e1f1556f2d4019c8 Removed cannot afford cargo text
+fc340b71a7fa6aa42477c7f7884a8228a9e4a94c added ability for AI to sell vehicles to win; prepared some changes to AI
+93da1233abba7852ef43d279d6361b6c50a2313a GAMEOVER
+e03357838439f55f4f866d97c9c4f3a8117745e1 pushing for safety; reinstalling the VM
+bb2dfca52d8b72f57bc837038801c30827fc7e4c Add files via upload
+24e96a17445e8230b244a9892b19365500282eb8 Someone should add the .jsons to the ignore file, but I'm probably not going to do it
+a200816636e7bcca4363981a257741943a62be96 merge
+a78df74a8851abe84cef9b0c6d8447397080447a allowed for selling roads if victory condition met
+c8a6142e17a068a9848c198b4b87c6f9a1538b02 fixed AI cargo carrying
+98cdcae856e64383486dc707a1f886ef51e41ca7 fixed compile time error
+405201737ba86ccaf50589de001176a1c50e6aea Some code cleaning done
+e73230ddce1aed6568168f0979d523342b54e7cb Fixed weird overwriting issue in gameelements
+7672785639f79a46dce65561ea8ecdd4e582ed5d Fixed car buying when no owned roads
+155f8e48ca9000adc6be9446eb9d015c0ad14c96 added more flexible AI road creation
+fe8a6242d42d1f0c9e23efba841319307dc4bd11 no ai cars
+08b9087d47af43b292b4377fe3e47a2111884153 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+8d1aeee2f22db3c4631f895e9efc7d88f5596fee Stop players from buying the same roads on the same frame
+904e74f5c35ea04155f3131d521971c0e9e2278d made change that should make roads chosen more randomly
+e9fe4489bf2092ad8bfcd016c4b4baa94cefbd04 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+ef9c12540595884d593c88a64278950b15fde420 Added vehicle selling functionality
+b3d607b7fb2f6123f518029f03a60746f57b0be2 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+b7daaaeacd6ddb5794364ddcd5d3ae1d5dc090db Made prices change more rapidly
+925c3e2534149ca99bb883f02be00e28c4c5becc finished basic AI without good road building
+bd06b22cf3fe2639d7e4602dba208ed0f1685a7c finished basic AI without good road building
+21f0d412bb38b736c1d627fa0251562c74d6a665 Made production speeds increased considerably for balance
+cc82824653f289d62fb5f7cd2d71ecece14a8aeb no prints
+fc83088b444c5a41fd36525cd225333c6d7dfaaf Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+c0f7e1a48b5ee28d5f1f06acec8b8eda94897f2d Players can now successfully stop somewhere without selling their cargo
+924d918b56b0943a962283cdbc530c32e4065ee3 comment
+03a59778d818e19ec42fc6a34c93334070c36ad7 Stopped locations from getting negative resources ever
+09ef0cfc8327979e1a67325679822a0554593b1b Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+3115b1f2295ad958fecced2bce6dc77ba4625ada bug fix
+510e0bbc3bfd80d7d632cd4c6590728483c5d0c8 Merge fix.
+fc896a24fca1f62bff55bdddcfdbe5fd38b66150 Setup.sh, readme update.
+644f7e9942de1b64414e420290dfec0448dc68c9 added better messages for the user after clicking on things
+84041e911e6c6d55a7928793ab77dc826018a05e AI can now buy DIFFERENT items from a location
+66828c39c9be4cfab516be98acf2e0af8b881795 Clean
+9967656a76a6756a318cbd0fe641a239ed622f4f oops
+7d70f59e5affa41d68b63b7685b2c28759c5c304 merge
+d338eb7ac88b93e12e71f6ea964cd8f37f42a539 print
+1428f6fad8be7d384c6ceea90738bd1bf13575b1 fixed capacity error with AI
+1d0290da55797bd761aa1f199ecf30819d5d83fe Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+311b5346818116b41ac598910fbbc0eb85d89379 costs displayed
+a25f68e32b21b34fe7188ad4e4e4192046b018c4 No Hygiene
+25f95e0481a9711d223b701a0f096c753786d425 Vehicles no longer go offroad when they can no longer be routed
+99628606c5a6339bc611238ae51b4f14047bca9b Made some change to AI; fixed JSON files and Dijkstra's
+7f244284313f6f458c865dff698a44e248a83cea Removed debug output
+678a9123093a99a5ab86ed4679ca1ff85f288363 GAME
+1f30c8dcfb93fc1547d05171049047d6dc74e277 weird commit issue
+a7bcd65aa8bc6c9dccce45c06cf3f4f530c2f471 GAME OVER
+67109d819617513cce1085ff28c832d020c8b465 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+8ef12157ec3852363e83a6d69a63443e0d39041a Add files via upload
+d368466b727faf52b49e699fd20e6c605b20c106 Improved endgame animation
+0376ce0e2762cfacbb84d28266ab8452a4518dbd finished basic AI
+932141973d5acb11ff1e1fc6ec8528f24965a4ef finished working AI
+fd4ab3e62eef28440c5b665749ea745e3e677e3b nerfed AI starting money
+a566df066c334b716c03d2d7e3fd96f04ad815e9 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+8f21bf0e986f676b8cdc1dc5bf1cb47bb2a2d3c4 End game condition added and fancy display when you win
+ef3ed1f46c96b1cf18b2f8402818366130116a90 Confirm
+171c556ece048d5dbabfa9620dc1993de0dcf055 Add files via upload
+613b8ec2cb3857fb7da36509328e18be622dd778 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+7caba076e0cb8d632560ad97cc4f68f9e359d5be Labels
+eb206aead221bbcf81ced148b036f5086b0d1292 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+81ce06e99ac7668fedb7436e119398f2235bac81 Players can no longer be in negative money at all!
+bf2cba92c0041853e5d54bb0fcfa52e9bcdbf4eb Small
+cc0628e83fdea05650822a8c3c1bf588edeac44c Doesnt crash
+b842668e92f35ec3cf10ffb393aa2f9a0b3f9494 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+11f123c218a36e66c64fbbac96ed7b3f7f2c94d6 stop players from going into negative money (still need to fix this for buying road rights
+b67753b85f8e662ef1043e39e736eb234b104576 Cargo Selctor
+1e5a51f44b3d54933995e18e55e9500645c019dd Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+2b6cef74ae42756b43efdd66c2eb9983a867c768 NO
+04fd8007666727a21bb8f66fd825720b766093b8 NO
+68593beb8914adcf956f0693b786d56ff206392e Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+921fe810acf4fbb23eb33247ba679c01829183a2 Now location's inventory goes down correctly when a player buys resources there
+5551fda941b7e05602640c77fca38cb29261054a fixed AI error
+b656e96fe681792231d235254348eff9c30e826f Fixed road buying to make it failproof if you buy an oponent's road
+4e7d1a3a767b3819bda1ab3e800e8b0c5e249450 finished basic AI
+5f4b4777fcb4bf71f4050a340b73590f644c9c8e basic AI complete
+0232a5a689f327fe9f81be04f5d339ab12e4a06f Add files via upload
+4cf3ee1368902e8d539e1a542aaebf0325725960 You can no longer sell roads you do not own
+d4ce2189d253ab80bf89778ef1ac254e7ed2c9f8 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+b74ba99a415add9463a82a09014e5768857b2a18 fixed vehicles going offroad when rerouting them while they are in transit
+341c0a12047acff01a1005488e8b0f34653dc690 Add files via upload
+d91158629f6baecfef2bb065b0b64b2e145a1b00 Add files via upload
+fb7cfa2065f145d8c6a7f70813858a828a24fcd6 Bug fixes with the vehicle routing
+9f7cafbb3b70a8c4b0dfb781f5114cf4df628d4d Add files via upload
+57bd016e21ccf1c405ed491a105f9d647b9f3f23 pause
+3274de59cf5f182c4d30e643341f5a84e23c33f6 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+b635ba25500da3b550ae601ee018d9e52f75d135 roads can be sold
+12ef492b3e647637aba92d543071afdce91b11e9 Some or None
+3888776c9c13ebb13a582b3dae8d2b66f17407dc merge
+baf1cd1ba77ad3efb0a55f6fb414b008d267c1d5 Temp changes
+62aec87b0709c564c99258d1e28be90521ba0203 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+a0213d202e4d98e6c05cd3470cf728c2285a1eaa Add files via upload
+9c7226bd83b6b9888544a602fd0426621098a1e8 Roads now reflect ownership
+ca3254203b8e69decd2a09df44b4a913969a508d Color labels
+8465f0df894d9139bc6013870a6fe2504ce189cf Colors for 6 players
+30f773d6d160169b2d0ed8e3fc688102b5f3dfdc CARS CAN BE ROUTED AND GOODS CAN BE BOUGHT... IF THEY ARE OIL
+766fe22df2d06a38c15226fda373c992c261bbb4 Moved a house I was covering
+5b7d9f9d8a5928a555da4ecf40df25232a439818 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+7ec00b3963992125911942d5b224734f48a21681 Sell Auto
+052ff7192ae3445c41520c492b20014cb91e1d5d Add files via upload
+ccc2241e99ea70653f7ac18a3c7b7d9f8c659d1c Find vehicle
+9921a9a379bad352237201ee9b51132e3bfda900 more input to processing functions
+a8b43341eb89869f8539dc7b324b6a6f1f386a1f Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+8e59d9eb04d3254f1fea03881f5f8fff4bb64546 MORE BUTTONS
+100bc0547b31a6428a21b442de2323506cff5ed6 added two human input -> process functions, but not tested yet, buttons still needed
+91e115b4a87016c4759f6e0d69511955c8c263c4 Buttons
+f62dd496af0b59b00b8779979f99ead0eeef277a Merge
+fd0bfb900ab0ddbb3f150056ea88e0a677e78a3e Mouse click bug
+db54497adc8b23be8fd11ab3fcd1e559365d0598 Roads can now be built!
+583c9efb6299f5d33ca2b0e6b3c70499bc60451f resolved merge conflicts
+527680df481119d34282ba12c159c288d164ad91 Interfaced graphical user input with process creation and process creation with handling in engine
+a678259828111d8edc45c351ab0dfbec86da8821 Save button now saves
+85afdb8126cd0cf02f00239003fb1294d7b27fb3 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+021709e90c0d871b2c8042701e326de8c46ac1dd Save
+7c5bfee5f10037db9ca649f740e6d94662d3cacc Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+d64dd35f3153f0c9f02a84439c0d629f62d3506f DataProcessing phase 2: saving done.
+c11d440537e5cd9e78215ec5005a144cbed6dd10 Added first init function for processes with human input
+5a197d98d81865f23f06d7a80ccd7bac5a77cba0 Instructions
+df7c4068d056fd83b873af6626e02effc8ba6c72 Push my Buttons
+bf519c9661c61f71c116863794bfa7ef71e70b66 More font for 2416$
+3b641cc17ee9b5d85d0962512472a2c83e6027ea Money Font
+5256ad59f01ed56a33865939149e16443283cf4a Add files via upload
+6a2e3f9f92f06d28e28ef5b257c0846027295b2c added function that checks whether it is possible to go from one location to another
+1318cf3c6c975ce06e836240a80d6fc54fb0d477 Add files via upload
+931219e860517df5e06e5d251206f7abaa249ae8 made some changes to AI
+f1e943f4b8b8fc58d9803e7ee8c2c0c3947f1abe Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+8de1a11ff35ccd52279e2c230e432947651d8e35 Starting to add cars
+9ce9f93caf6b225459e13129a2684c9758b0654d fixed minimum cap for goods prices
+493103d67491a98a1d289ff690961248c6698d46 Maybe I didn't push
+efa4d796e4be08811a8fc847ed99f6522a268c58 worked on default json
+759a4dfc417e6b6ccf0b66644c2f3aeb74f8a66d Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+76ecb8b06aabd79e5c631c01e26a2eccf0cafd66 DataProcessing save phase complete.
+57225fd07124d09c6075a18175878674f9f893fc Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+1262cc8e979233e84a9cdcaefa36b21a9df7a05b Quit works, pause semi-works, functions for other two buttons are unimplemented
+854591bd0884ffffc85127cdc486bc049aeedc80 SetVehicleCargo process handling
+3d19590ced599f52973506b92e16926da0a849e2 fixed good pricing
+f8085d8d2c1bdf83e7ec0aba28a8e8aff7bd0930 added process collection skeleton code, added new setvehiclecargo process
+c27132494c85da2f736f13dcb397636f9b02dbed Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+190c082602743b307bd0b913912cf0c4ad3d0c72 Updated main
+2611d5fdba1920a99a5cb9dd1d9287fe6b89bd47 added some AI functionality, added possibility of Dijkstra's
+b4a2d0eda71fd52ea38ba6e1ddfe3ce023ebd05f Add files via upload
+5545e18001382e843ad86911be2c423cef28820d You want scores? I'll give you scores
+f41ce671a9087544d7e1bb99afee7d22a2538813 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+33950fb4b335bdba334a1a46b9aa8302a5194a3c Yay, numbers
+ea946a5cce9e314df9c566a76539a084c9e8317e Resolving merge conflict
+5a3812567787c2fcac4b89e121419c1ea2e0a608 Implemented all non-checking process handling/processing code
+9f888fb10d55122b73e9e3a6d64ef8114ee8c967 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+da1a955a666142e7277db3cf652149e8c5cccf31 stash
+8f2eae1b119e7a86ee70e40890bf70731885cc23 Add files via upload
+8977b0aefaee92d1ca8390e5a13e21655766186c Add files via upload
+599b0b980dc28d3f62add29bd7bc83e08e2d696b Add files via upload
+87d1aa73125e54786b0da3b79620f5d570219d41 Add files via upload
+be897954ce2bf92d187099e918565749999d4f24 Fixed oops
+75b01da3a14963bcc886727e96abe35c097ebca0 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+3fe35886552e2dd7621f739ac69ed700b7016b74 Handmade Font it is
+bad0838729628422fdae9b4f31356340e7d91b27 SetVehicleDestination process handling
+6c6b7df76c7fdad61c526a332e0887ecc53325ab Started handling processes
+ad9d8bd69a599d2488f98cd313db7b80c8698288 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+7f783ad8ea51c53e0e3f2bc1903ae66014e6dbd2 DataProcessing loading done, but not incorporated into the main game yet; currently lives in its own data folder.
+f25655ebe4d5dbf33930c977e3d2d239123f3005 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+4f1cfd30cf04e90065c2906a64816e12b98fada0 Try this
+46bc6d0f4c46b8810e75f254e53fd07f8839b7d8 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+834fda63497dc2d2eeee6cd149db5502f0279f11 Removed debug code, fixed bug with cargo unloading.
+a2d69e67cbfe93abe6325eb65284cd6680ff9d8a Cargo unloading of vehicles
+a07dc7509876fbb14362ac9e944d87c24ace5dc1 Popups, the good kind
+a1cc71aadaf5f873384502b6a66cabd904aadc5f Roads adn Houses
+b4d842137a9d30ae130fa2fb28048e37afbe8f6f Add files via upload
+ead7f3816db28491447a42b622516cf4e642fc00 Add files via upload
+8eecb1d63b66234e078bd7543ba653ba39c4624f Buttons and transparency
+f205ef0ee1e025068953af6e8074ff0f1b119886 Add files via upload
+344b5a7187e9d18120fc6aa4a59cfda628209935 Add files via upload
+e37ad6bc4d74dfaf9dcd039bf5bcebbd4521700b Add files via upload
+383a3dccf5e4710b8e6dbdf11f3b8fbb54ca610f Add files via upload
+f9b78d034652ddf8e7b3f407e98689771a614de6 New makefile
+976f743b44f744f8aee3b064032c5a73eb8499e2 WE'VE GOT PICTURES
+cb2ffaf24b5b0f62fa3609834affe636eb38af73 Add files via upload
+2bc2e82d3dce78fed2bdf63aa22c9e5e03dd898b Add files via upload
+f0a0dcbb83ebd7f91f2c471b1d2eb756b9396464 Add files via upload
+2151ba87864f16b5c369f41e1d74592740413895 Image folder
+d0749accfda6793ae30b9296b1c832652a8d1a9e Buttons
+7c1aab11fd139c06c092c1b199e9a3b69bcf1294 Images baby!
+fe9bd207fc148ebbb2c322a2b22f3faef7257858 cars
+15dbfd1b238726c97ec96391fd61f2e944104329 Truck
+ca6719d4a7585e61f7526573dfa37e4cee7e83b0 small change to hardcoded demo to have a location that both accepts and produces goods
+3e5501adb5f48786ff88b3f20c193489e034e0f6 update locations in each frame, including their good_profiles for accepting and producing goods, also modifies the graph in between frames
+aedbfebc4de6eec74f7bf9691bd48a78e30223aa Buttons
+f0ee12cb2ff6b633c357aeec8903dc7e17ea6406 Concept Buttons and Game Over replaces error on close
+0ce216309c16c49adf33c986f5a70a5d7420b890 multiple destination vehicle movement, until the final destination has been reached (requires a list of destinations, dikstra's still needs implemented/interfaced
+fc98cc9ba29890dc3bb5d5e14a16ec8ff355e7eb resolved merge conflicts
+458473eb278ba29ab7827c177b9cde485c65b35d Vehicles can now break down
+8f17465ecf54adcbfcaa2770b7660b3d7809fb2c Merge
+cc214e3e6516a068657616421add5b72676e317b Scalable display size
+2159fdae421dec62e0d139e15dc49ac7482a67a8 added functions that buy vehicles; sell goods at a location
+906ace0ba59581c87b3a8114c76fe92328c565fb Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+59bedd9c2a8dc8196681c590120939a064ead3d8 Vehicle movement fix
+5553c6d18043ee26538e06b27ffa5c28f8f451f9 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+7ecb7b31e12a34184bff66227719c21f77710121 No meaningful progress, push for merging
+427e095ada9631a675e8902e12eae5fd2dffab0f Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+1588b41080245632bcab5c25f760d0a9246903e5 Add files via upload
+c5a58d47f9a393a49d6b8a6570291ef0109c6c12 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+547f985ec0f06b25145bd252f4e9cc1e9a64c2bf Changed types to float in vehicle, connectin, and location, added basic movement code which still needs fixed
+36e05f09366087b20e6b2f58bbc1e2439f8c5281 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+90a47237e4183a0efec949dfd883ad718b69bb0a Add files via upload
+12e704997675303e916a6668160d04da8d880864 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+ae0f89da1d2fd4e28f53ad38f2d19df441d9595e Fixed old merge conflict in mli file, removed predicted travel time from vehicle
+ff1905820b3ee2e9d398499e2a059917ed93cf74 Pulling
+3f10bd3869de4301517fb409a591518f48356a93 Fixed location code change, tested vehicle drawing (just a circle)
+ef162aa7573e5aca4af0d9e75eadf9155b4288f0 DataProcessing: Phase 1 done, created Piqi schema files, some example conversion functions, and aliases to convert to native types.
+16b6c9785f2ec99d64e9210c570f754dabf23fa5 Tested drawing  a graph in the engine
+733b1c94af8ceaa3d0f707a792dafe45a11e3aae merge conflicts and connection and location drawing fixes
+d6e96d7c4694f88fb1aa75f73025ebc7ef9a5fe7 Drawing game state additions
+e3e0f33d69ad0dc892a6faa1ec7c4805d6aeee42 added gameElements.ml; created functions related to basic gameplay; changed some other .mli files (to fix later)
+293c36737e737b53a2cde9835384ef530262e5c8 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+af239bd1256107044063baa809fa946a2f1f0eda rough main loop of engine, partial skeleton of gameElements and player
+a372044da7731e63c119c5b8e97ffc5eda5fbe0d Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+a1589c947b974f93d1bfe72cf616216a0ea4a759 Added gameGraphics.ml
+6d1be731da82ef76dfe47d09fc3eee9f602a0f5b Added gameGraphics.ml
+08f360528a74acf769516c587c9baddb09f12669 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+e78aeb5f02382fa226cfe735f54d690d3768ef23 Added gitignore.
+a1c5d10578d52cd23825e94bbd6c1aa5f5db65b4 add route
+1abc6cd94ba990956a00e25be6a173532149921f Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+95f3ed806ab203a0348443da1d06029e993dbfa0 make
+b3fdd65f137845d02e4bc2236614e9693c9f770f Changed main mli file to make it more clear
+b115244b5b2d181fe0cba0df8ba0f4b6c257e000 fixed 80 line limit issue
+6f2c0928f7e3bfcac5de9cc66094f244e008cd84 Added processes
+2affe1ce1b062e2b1308dac455d2f9239c59f3dd Changed module structure by adding gameElements
+6d02733d6a6ec81c36319bbb8904d8d54f53eb7a Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+a3a54e25df23d3d733cddc446b440df3a03f918d Pulling
+97ae867ca22a43657e8cbee62a1d666a2bdeac3b Pulling
+f872f91170502291a017cc07e78aba2c972aae56 Renamed InputProcessor module to inputProcessing
+fc1fa7abc0c8eb2b0f829a0197f2d4581a17ba9e Fixed some typos in the interfaces, minor changes
+aabb78db2628dfb5f754571c3e8c3d3678037dc8 Made interfaces for remaining modules needed
+6f980e7d64314db7ff9c12c09454c11cc0b0afdf Fixed merge conflict
+618855c6d51623d532162ae505b8e88a156af435 Added some interfaces
+1f3a2d445f00cb1c4d0bdb748e897d708295001f Planar adds route
+ec033286b15d2ec6997feabce2c4417b4d817655 Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+c0b527feef88edce48c78957fadb06eebd159058 Planar graph example
+91ea7955f09789c4254d05cad7b33bee5c75cbdd Add files via upload
+2d20edc45e6b5b76c0507b16a14bcae5868c5c62 Basic types and skeleton for main_loop changes
+22556f46af66f7c0dbf8b22733277da7600e09d9 Added basic skeleton for updating locations in each time step and implemented a first edition of price fluctuation simulation for resources
+4511f1a34a6898ccc3ba6cff18774b84cafe3f65 Added Engine Module, first draft of types needed (which may move to different modules), main_loop at its most basic level created
+3ed0a1ff14c064ba5a5a617335c49ace7ef82354 Ineractive Road Creation
+12500d2088e0d5734afa868e5691c077f19990d1 Ability to manually add roads
+058de5e3d34b554183539a80e4e37201d41bd42d Initial Commit
+2992e22f50364fa330414a2d9771c5fc3b3f8867 Initial commit

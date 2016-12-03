@@ -19,9 +19,10 @@ let make_transp img =
 let get_img img =
   Images.load img [] |> Graphic_image.array_of_image |> make_transp
 
-let _ = open_graph " 380x380"
+let _ = open_graph " 500x500"
 (* 8Bit live wallpaper by Nysis*)
 let start_screen = get_img "images/start.png" |> make_image
+let title_screen = get_img "images/mini.png" |> make_image
 (* pixel art game cars collection by shutterstock *)
 let car_img = get_img "images/car.png" |> make_image
 let truck_img = get_img "images/truck.png" |> make_image
@@ -165,7 +166,13 @@ let open_screen size =
   resize_window (screen_width* !scale) (screen_height* !scale)
 
 let draw_start () =
-  draw_image start_screen 0 0
+  let y = 80 in
+  let x = 100 in
+  draw_image title_screen 0 0;
+  draw_image save x y;
+  draw_image pause (x+button_width) y;
+  draw_image pause (x+2*button_width) y
+
 
 let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
   set_color color;
