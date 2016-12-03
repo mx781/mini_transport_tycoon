@@ -193,7 +193,6 @@ let rec main_loop st =
         players = st'.players;
         paused = st'.paused;
         game_age = st'.game_age + 1;
-        ai_info = st.ai_info
       }
     in
     let time_elapsed = Unix.time () -. start_t in
