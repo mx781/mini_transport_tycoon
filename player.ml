@@ -15,7 +15,3 @@ type ai_game_difficulty =
   | Hard
   | Brutal
 
-
-
-
-

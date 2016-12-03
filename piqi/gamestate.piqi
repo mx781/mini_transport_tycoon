@@ -34,11 +34,6 @@
     .name playerlist
     .type player
 ]
-.variant [
-    .name funcopt
-    .option [ .name None ]
-]
-
 
 % ********** GAMESTATE ********** %
 .record [
@@ -50,10 +45,6 @@
     .field [
         .name players
         .type playerlist
-    ]
-    .field [
-        .name aiinfo
-        .type funcopt
     ]
     .field [
         .name gameage

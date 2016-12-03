@@ -12,7 +12,6 @@ let _player_piqi_type = Piqirun_ext.find_piqi_type "gamestate/player"
 let _graph_piqi_type = Piqirun_ext.find_piqi_type "gamestate/graph"
 let _vehiclelist_piqi_type = Piqirun_ext.find_piqi_type "gamestate/vehiclelist"
 let _playerlist_piqi_type = Piqirun_ext.find_piqi_type "gamestate/playerlist"
-let _funcopt_piqi_type = Piqirun_ext.find_piqi_type "gamestate/funcopt"
 let _gamestate_piqi_type = Piqirun_ext.find_piqi_type "gamestate/gamestate"
 
 
@@ -40,11 +39,6 @@ let parse_playerlist ?opts x (format :Piqirun_ext.input_format) =
   let x_pb = Piqirun_ext.convert _playerlist_piqi_type format `pb x ?opts in
   let buf = Piqirun.init_from_string x_pb in
   Gamestate_piqi.parse_playerlist buf
-
-let parse_funcopt ?opts x (format :Piqirun_ext.input_format) =
-  let x_pb = Piqirun_ext.convert _funcopt_piqi_type format `pb x ?opts in
-  let buf = Piqirun.init_from_string x_pb in
-  Gamestate_piqi.parse_funcopt buf
 
 let parse_gamestate ?opts x (format :Piqirun_ext.input_format) =
   let x_pb = Piqirun_ext.convert _gamestate_piqi_type format `pb x ?opts in
@@ -77,11 +71,6 @@ let gen_playerlist ?opts x (format :Piqirun_ext.output_format) =
   let x_pb = Piqirun.to_string buf in
   Piqirun_ext.convert _playerlist_piqi_type `pb format x_pb ?opts
 
-let gen_funcopt ?opts x (format :Piqirun_ext.output_format) =
-  let buf = Gamestate_piqi.gen_funcopt x in
-  let x_pb = Piqirun.to_string buf in
-  Piqirun_ext.convert _funcopt_piqi_type `pb format x_pb ?opts
-
 let gen_gamestate ?opts x (format :Piqirun_ext.output_format) =
   let buf = Gamestate_piqi.gen_gamestate x in
   let x_pb = Piqirun.to_string buf in
@@ -112,11 +101,6 @@ let print_playerlist ?opts x =
   Pervasives.print_endline (gen_playerlist x `piq ?opts)
 let prerr_playerlist ?opts x =
   Pervasives.prerr_endline (gen_playerlist x `piq ?opts)
-
-let print_funcopt ?opts x =
-  Pervasives.print_endline (gen_funcopt x `piq ?opts)
-let prerr_funcopt ?opts x =
-  Pervasives.prerr_endline (gen_funcopt x `piq ?opts)
 
 let print_gamestate ?opts x =
   Pervasives.print_endline (gen_gamestate x `piq ?opts)

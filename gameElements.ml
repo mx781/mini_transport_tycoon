@@ -110,7 +110,6 @@ type game_state = {
   game_age : int;
   paused: bool;
   mutable players : Player.player list;
-  ai_info : ai_stuff;
 }
 
 module ConnectionWeight = struct
@@ -125,6 +124,15 @@ end
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
 module PathCheck = Graph.Path.Check(Map)
+
+module Connected = Graph.Traverse.Bfs(Map)
+
+module HashFctn = struct
+  type t = location * int
+  let equal i j =
+    (fst i).l_id = (fst j).l_id && snd i = snd j
+  let hash i = Hashtbl.hash i
+end
 
 let fps = 24.0
 let car_price = 100.0
@@ -158,14 +166,11 @@ let hard_ai_level = 40
 let brutal_ai_level = 500
 
 
-let path_checker = PathCheck.create Map.empty
+(*Used to find size of connected portions given a particular player*)
+let size_connected = ref (fun (x: location) (y: int) -> 0)
+(*Used to find the maximum number of connections for a given individual *)
+let max_connected = ref (fun (x: int) -> 0)
 
-(*May or may not be used*)
-(*If used: returns an ID to set a starting vehicle at.*)
-let ai_starting_loc = ref (fun (id: int) -> (-1))
-
-(*Used to determine the road an AI wants*)
-let ai_road = ref (fun (id : int) -> (-2, -2))
 
 (* let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
@@ -178,7 +183,7 @@ let get_loc id graph =
   let vertex_lst = Map.fold_vertex (fun v lst -> if v.l_id = id then v :: lst else lst) graph [] in
   match vertex_lst with
   |h :: t -> h
-  |[] -> failwith "trying to get a vertex that doesn't exist; TALK TO DAN"
+  |[] -> failwith "trying to get a vertex that doesn't exist"
 
 (*Forms a new connection based on location*)
 let form_connection map player_id loc1 loc2 =
@@ -319,7 +324,6 @@ let rec find_good_price g_p (resource:good) =
   |h :: t ->
     if h.resource = resource.t then h.price else find_good_price t resource
   |[] -> failwith "trying to sell good at wrong loc, TALK TO DAN"
-
 
 (*Buys the vehicle associated with a player and adds it to v_list*)
 let buy_vehicle vehicle player location v_list spd cpt =
