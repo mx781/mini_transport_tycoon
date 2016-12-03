@@ -16,7 +16,7 @@ print_string "Loading DataProcessing components...";;
 #load "piqi/gameelements_piqi_ext.cmo";;
 #load "piqi/player_piqi.cmo";;
 #load "piqi/player_piqi_ext.cmo";;
-#load "gameelements.cmo";;
+#load "gameElements.cmo";;
 #load "piqi/piqirun_custom.cmo";;
 #load "piqi/graph_piqi.cmo";;
 #load "piqi/graph_piqi_ext.cmo";;
