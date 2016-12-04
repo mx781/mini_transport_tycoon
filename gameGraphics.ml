@@ -133,12 +133,13 @@ let rtos r =
   | Electronics -> "Tech"
   | Produce -> "Fruit"
 
-(**)
+(* Converts a string into a list of 1 character strings *)
 let rec chr_lst str =
   match str with
   | "" ->[]
   | ch ->(String.sub ch 0 1)::(chr_lst (String.sub ch 1 ((String.length ch)-1)))
 
+(* Draw a string by printing a one char string list *)
 let rec draw_chars chars x y =
   let width = 16 in
   match chars with
@@ -147,30 +148,37 @@ let rec draw_chars chars x y =
   | h::t -> draw_image (img_of_str h) x y;
             draw_chars t (x+width) y
 
+(* Converta string to a char list and then prints it *)
 let draw_str str x y =
   draw_chars (chr_lst str) x y
 
+(* Custom round for pixels *)
 let round flt =
   int_of_float (flt +. 0.5)
 
+(* For trucating to 2 digits *)
 let two_dec flt =
   float_of_int (round (flt *. 100.)) /. 100.
 
+(* For displaying dollar amounts up to 1 cent *)
 let string_of_float flt =
   let str = string_of_float flt in
   if String.index str '.' = (String.length str - 1) then str ^ "00" else
   if String.index str '.' = (String.length str - 2) then str ^ "0" else
   str
 
+(* Used instead of pattern matching for conciseness *)
 let get_some opt =
   match opt with
   | Some v -> v
   | _ -> failwith "Always check None before using get_some"
 
+(* Pretty colors *)
 let purple = 0xAA00AA
 let green = 0x228B22
 let orange = 0xFFA500
 
+(* Match players to pretty colors, some are predefined in graphics *)
 let player_color pid =
   match pid with
   | -1 -> default_color
@@ -179,7 +187,7 @@ let player_color pid =
   | 2 -> blue
   | 3 -> white
   | 4 -> purple
-  | _ -> green
+  | _ -> black
 
 (******************************GRAPHICS****************************************)
 
@@ -230,10 +238,14 @@ let rec settings () =
   let status = wait_next_event [Button_down] in
   let sx, sy = status.mouse_x, status.mouse_y in
   if (sx < x+button_width && sx > x) then (
-    if sy < y+button_height && sy > y then Player.Brutal else
-    if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
-    if sy < y+2*spacing+button_height && sy> y+2*spacing then Player.Medium else
-    if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
+    if sy < y+button_height && sy > y
+      then (print_endline "Brutal mode selected.\n"; Player.Brutal) else
+    if sy < y+spacing+button_height && sy > y+spacing
+      then (print_endline "Hard mode selected.\n"; Player.Hard) else
+    if sy < y+2*spacing+button_height && sy> y+2*spacing
+      then (print_endline "Medium mode selected.\n"; Player.Medium) else
+    if sy < y+3*spacing+button_height && sy > y+3*spacing
+      then (print_endline "Easy mode selected.\n"; Player.Easy) else
     settings () )
   else settings ()
 
@@ -376,12 +388,13 @@ let draw_game_state (gs:game_state) : unit =
   draw_buttons ();
   draw_hover gs.graph
 
+(* Checks to see if the cancel button was pressed *)
 let is_cancelled (x,y) =
   (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
   (y < start_height+button_height && y > start_height-1*spacing)
 
 (* This function is a secret, complete the game to see it in action *)
-let rec fin p_win gs =
+let rec fin p_win gs wait =
    let color = (player_color p_win) in
     draw_image truck_img (Random.int screen_width * !scale)
                          (Random.int screen_height * !scale);
@@ -401,30 +414,34 @@ let rec fin p_win gs =
     set_color color;
     fill_rect 750 400 220 180;
     draw_scores gs.players;
-    Unix.sleepf 0.004;
+    let wait = if wait > 0.003 then wait/.1.2 else wait in
+    Unix.sleepf wait;
     draw_image exit 0 (start_height-11*spacing);
     let stat = wait_next_event [Poll;Button_down] in
     let pos = (stat.mouse_x, stat.mouse_y) in
     if (button_down () && is_cancelled pos)
-    then failwith "exit" else fin p_win gs
+    then failwith "exit" else fin p_win gs wait
 
 (* Engine calls this if it detects someone has won, draws end game screen *)
 let draw_winner p_win gs =
   draw_ograph gs.graph;
   draw_vehicles gs.vehicles;
-  fin p_win gs
+  fin p_win gs 1.
 
 (******************************INPUT FROM GRAPHICS*****************************)
 
+(* Checks to see if the confirmed button was pressed *)
 let is_confirmed (x,y) =
   y < start_height+button_height-10*spacing && y > start_height-10*spacing
 
+(* Won't let you do anything else until you hit confirm or cancel *)
 let rec wait_confirm () =
   let stat = wait_next_event [Button_down] in
   let pos = (stat.mouse_x, stat.mouse_y) in
   if is_cancelled pos || is_confirmed pos
   then is_confirmed pos else wait_confirm ()
 
+(* Finds a (new) location of the graph near a mouse click, or given position *)
 let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
   let (x,y) = if click then let stat = wait_next_event [Button_down] in
                             (stat.mouse_x, stat.mouse_y)
@@ -440,9 +457,9 @@ let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
   match !loc with
   | Some v when (labl v).l_id <> l_id -> Some v
   | _ -> if is_cancelled (x,y) then None else
-         (* print_endline "Not a valid location"; *)
          get_loc_near ~l_id:l_id grph
 
+(* Get's a human's car near a location *)
 let rec get_auto_near gs =
   let stat = wait_next_event [Button_down] in
   let (x,y) = (stat.mouse_x, stat.mouse_y) in
@@ -457,9 +474,9 @@ let rec get_auto_near gs =
   match !auto with
   | Some v -> Some v
   | None -> if is_cancelled (x,y) then None else
-            (* print_endline "No automobile there"; *)
             get_auto_near gs
 
+(* Selects two different locations using get_loc_near *)
 let get_start_end grph =
   print_endline "Select a start location.";
   let start_loc = get_loc_near grph in
@@ -469,6 +486,7 @@ let get_start_end grph =
     get_loc_near ~l_id:(Map.V.label (get_some start_loc)).l_id grph in
   (start_loc, end_loc))
 
+(* Displays cargo options at a location and then lets you click one *)
 let rec pick_cargo loc =
   let res_start = start_height-6*spacing in
   let res_space = 56 in
@@ -510,17 +528,20 @@ let rec pick_cargo loc =
   if List.exists ((=) (get_some cargo)) resource_list
   then cargo else pick_cargo loc
 
+(* You know, for quitting? Also saves though *)
 let quit gs =
   print_endline "Saving game to data/save.json";
   DataProcessing.save_file gs "data/save.json";
   EndGame
 
+(* Pauses the game until you click *)
 let rec pause () =
-  let _ = wait_next_event [Button_down] in
   print_endline "Game Paused. Click anywhere to continue\n";
+  let _ = wait_next_event [Button_down] in
   Pause
 
-let buy_car (gs:game_state) player_id =
+(* Buys a car at a location *)
+let buy_car gs player_id =
   print_endline ("Select a start location." ^ "\nThe car will cost $"
     ^ (string_of_float car_price));
   match get_loc_near gs.graph with
@@ -528,6 +549,7 @@ let buy_car (gs:game_state) player_id =
   | Some loc ->
   InputProcessing.init_vehicle player_id Car loc.l_id gs.graph
 
+(* Buys a truck at a location, very different than buying a car *)
 let buy_truck (gs:game_state) player_id =
   print_endline ("Select a start location." ^ "\nThe truck will cost $"
     ^ (string_of_float truck_price));
@@ -536,6 +558,7 @@ let buy_truck (gs:game_state) player_id =
   | Some loc ->
   InputProcessing.init_vehicle player_id Truck loc.l_id gs.graph
 
+(* Buys a road between two locations, waits for confirmation *)
 let buy_road gs player_id =
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None
@@ -543,63 +566,70 @@ let buy_road gs player_id =
   let cost = calculate_buy_road_cost
              (get_some start_loc) (get_some end_loc) gs.graph in
   print_endline ("The road will cost $" ^ (string_of_float (two_dec cost))
-                   ^ "\nConfirm to buy.\n");
+                   ^ "\n\nConfirm to buy.\n");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.buy_road player_id
       (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
 
+(* Sells an owned road between two locations, waits for confirmation *)
 let sell_road gs player_id =
   print_endline "Pick two endpoints of the road to sell.";
   let (start_loc, end_loc) = get_start_end gs.graph in
   if start_loc = None || end_loc = None
-  then (print_endline "Cancelled\n"; Nothing) else (
+  then (print_endline "Cancelled\n"; Nothing)
+  else (
   let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
     print_endline ("You will earn $" ^ (string_of_float (two_dec cost))
-                   ^ "\nConfirm to sell.");
+                   ^ "\n\nConfirm to sell.\n");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.sell_road player_id
     (get_some start_loc) (get_some end_loc) gs.graph)
 
+(* Lets you choose a vehicle to add cargo to *)
 let add_cargo gs player_id =
-  print_endline "Pick a vehicle.";
+  print_endline "Choose vehicle to add cargo to.";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some auto when auto.status = Driving ->
-    (print_endline "Vehicle must be stopped at a location."; Nothing)
+    (print_endline "Vehicle must be stopped at a location.\n"; Nothing)
   | Some auto ->
   print_endline "Choose cargo to go in that vehicle.";
   let loc=get_loc_near ~click:false ~pos:(round auto.x,round auto.y) gs.graph in
-  if loc = None then Nothing else (
-  let cargo = pick_cargo (get_some loc) in
-  if cargo = None then Nothing else (
-  (* print_endline "That will cost $\nConfirm to buy.";
-  let confirmed = wait_confirm () in
-  if not confirmed then (print_endline "Cancelled\n"; Nothing) else *)
-  InputProcessing.buy_vehicle_cargo player_id auto (get_some cargo) gs) )
+  if loc = None then Nothing
+  else (
+    let cargo = pick_cargo (get_some loc) in
+    if cargo = None then Nothing else
+    InputProcessing.buy_vehicle_cargo player_id auto (get_some cargo) gs
+  )
 
+(* Moves selected auto to clicked location, if possible *)
 let move_auto gs player_id =
   print_endline "Pick a vehicle to move.";
-  match get_auto_near gs with
-  | None -> (print_endline "Cancelled"; Nothing)
-  | Some auto ->
+  let auto_opt = get_auto_near gs in
+  if auto_opt = None then (print_endline "Cancelled"; Nothing)
+  else (
+    let auto = get_some auto_opt in
     print_endline "Choose destination.";
-    match get_loc_near gs.graph with
-    |None -> (print_endline "Cancelled"; Nothing)
-    | Some dest ->
+    let loc_opt = get_loc_near gs.graph in
+    if loc_opt = None then (print_endline "Cancelled\n"; Nothing)
+    else (
+      let dest = get_some loc_opt in
       let l = match auto.v_loc with
       | None -> failwith "vehicle has no location"
       | Some loc -> get_loc loc gs.graph in
-  InputProcessing.set_vehicle_dest player_id auto l dest gs
+      InputProcessing.set_vehicle_dest player_id auto l dest gs
+    ))
 
-let sell_auto (gs:GameElements.game_state) player_id =
+(* Sells a clicked vehicle *)
+let sell_auto gs player_id =
   print_endline "Pick a vehicle to sell for\n\tCar: $60.00 \n\tTruck:$120.00";
   match get_auto_near gs with
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some auto -> InputProcessing.sell_vehicle player_id auto
 
-
+(* Matches mouse clicks to buttons, very important *)
 let click_buttons gs player_id =
   let status = wait_next_event [Poll;Button_up;Button_down] in
   let x = status.mouse_x in
@@ -625,7 +655,7 @@ let click_buttons gs player_id =
        && y > start_height-7*spacing then sell_auto gs player_id else
     if y < start_height+button_height-8*spacing
        && y > start_height-8*spacing then sell_road gs player_id
-    (*Cancel and Confirm don't do anything by itself*)
+    (*Cancel and Confirm don't do anything by themselves *)
     else Nothing
   )
 

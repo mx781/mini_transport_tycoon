@@ -149,9 +149,9 @@ let get_new_dest graph_access curr_loc =
 
 (*Gets the number of locations connected to elements in a loc_list; ideally used to
  *determine if an AI is buying a road that only connects two locations...*)
-(* let rec get_graph_islands graph loc_list num_connected c_id=
+(*let rec get_graph_islands graph loc_list num_connected c_id=
   let new_num_connected = ref num_connected in
-  (* let () = print_endline (string_of_int (num_connected)) in *)
+  let () = print_endline (string_of_int (num_connected)) in
   match loc_list with
   |h :: t ->
     let connected_s = (!size_connected) h c_id in
@@ -171,7 +171,6 @@ let make_vehicle_move vehicle c_connections graph curr_m c_id =
     match vehicle.v_loc with
     |None -> failwith "Passive vehicle with no location, talk to Dan"
     |Some loc -> loc in
-  (* print_endline (string_of_int cur_loc); *)
   let loc_details = get_loc_details graph cur_loc in
   let goods = loc_details.produces in
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
@@ -189,18 +188,16 @@ let make_vehicle_move vehicle c_connections graph curr_m c_id =
         {vehicle with cargo = Some ({t = the_good; quantity = q})} in
       let new_dest_vehicle =
         {new_cargo_vehicle with destination = destinations; status = Driving} in
-      (* print_endline (string_of_int (List.hd destinations) ^ "halp"); *)
       [BuyVehicleCargo new_cargo_vehicle;SetVehicleDestination new_dest_vehicle]
     else []
   else
-    ((* print_endline "TEST@"; *)
     match get_new_dest new_graph loc_details with
     (*Vehicle is stuck. Buy a road if possible or sell if not.*)
     |None -> [SellVehicle vehicle]
     (*Choosing not to move due to randomness*)
     |Some loc1 ->
       [SetVehicleDestination
-      ({vehicle with destination = [loc1.l_id]; status = Driving})])
+      ({vehicle with destination = [loc1.l_id]; status = Driving})]
 
 (*Gets total capacity from a list*)
 let rec get_vehicle_capacity v_list total=
@@ -491,7 +488,9 @@ let sell_road player_id l1 l2 graph =
     let c = Map.find_edge graph l1 l2 in
     let c' = match c with
     |(_,c,_) -> c in
-    if c'.c_owner_id = player_id then DeleteRoad(c') else
+    if c'.c_owner_id = player_id
+    then ( print_endline "Road sold.\n"; DeleteRoad(c'))
+    else
     let () = print_endline "You cannot sell a road you do not own.\n" in Nothing
   with
   | _ -> Nothing
