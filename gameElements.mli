@@ -83,8 +83,9 @@ module Connection : sig
 end
 
 
-module Map : (Graph.Sig.P with type V.t = Location.t and type V.label = Location.t
-    and type E.t = Location.t * Connection.t * Location.t and type E.label = Connection.t)
+module Map : (Graph.Sig.P with type V.t = Location.t and
+  type V.label = Location.t and type E.t = Location.t * Connection.t *Location.t
+  and type E.label = Connection.t)
 
 type game_state = {
   vehicles : vehicle list;
@@ -109,30 +110,25 @@ module Dijkstra : sig
 end
 
 val fps : float
+(*Information with regards to vehicle and road prices.*)
 val car_price : float
 val truck_price : float
 val sell_back_percentage : float
 val road_unit_cost : float
 val road_length_cost_exponent : float
 val road_rights_unit_cost : float
+(*Amount of money needed to win the game*)
 val win_condition : float
-
+(*Breakdown chance. (Typically set to 0).*)
 val breakdown_chance : float
 val car_speed : float
 val truck_speed : float
 val car_capacity : int
 val truck_capacity : int
+(*Used to determine how prices fluctuate.*)
 val price_update_steps : int
-val buy_vehicle_condition : float
 
-val min_bought : int
-val large_float : float
-val small_float : float
-val max_total_capacity : int
-val safe_amount : float
-val min_profit : float (*minimum profit for AI to build a road*)
-val max_connections : int (*maximum number of connections for AI*)
-val island_total : int (*Required to build a road between one and another*)
+(*AI info*)
 val ai_max_level : int
 val easy_ai_level : int
 val medium_ai_level : int

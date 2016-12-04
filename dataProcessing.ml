@@ -38,6 +38,8 @@ let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs ->
   }
 )
 
+(* [load_file file] loads a valid JSON [file] and converts it to a native game
+ * state. *)
 let load_file file =
   try
     let piqi_gs = load_json file in
@@ -45,6 +47,9 @@ let load_file file =
   with
     | _ -> failwith ("Failed to load " ^ file)
 
+
+(* [save_file file] converts the native [game_state] to a Piqi gamestate, and
+ * saves it in [file]. *)
 let save_file game_state file =
   try
     let piqi_gs = gs_to_piqi game_state in

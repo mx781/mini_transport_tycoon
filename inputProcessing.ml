@@ -15,6 +15,15 @@ type process =
   | Nothing
 
 
+(*AI constants*)
+let min_bought = 10
+let large_float = 200000.0
+let small_float = 0.0
+let max_total_capacity = 201
+let safe_amount = 20.0
+let min_profit = 4.0 (*minimum profit for AI to build a road*)
+let max_connections = 3 (*maximum number of connections for AI*)
+
 (*Gets a player from the player list*)
 let rec get_player p_id (p_list:Player.player list)=
   match p_list with
@@ -25,8 +34,8 @@ let rec get_player p_id (p_list:Player.player list)=
 let rec get_owned_vehicles p_id v_list =
   List.fold_left(fun x y -> if y.v_owner_id = p_id then y :: x else x) [] v_list
 
-(*Getting things out of tuples*)
-let f (x, _, _) = x
+(*Functions that get things out of triples.*)
+let f (x,_,_) = x
 let s (_,y,_) = y
 let t (_,_,z) = z
 
@@ -104,7 +113,8 @@ let rec get_good_loc graph goods_produced curr_m curr_loc =
     if enough_money &&  f profits > f x then profits else x)
   (0., None, None) goods_produced
 
-(*Gets an object out of an option; fails if nothing exists*)
+(*Gets an object out of an option.
+ *Precondition: the value of the option is not None.*)
 let get_o op =
   match op with
   |Some x -> x
@@ -147,7 +157,22 @@ let get_new_dest graph_access curr_loc =
       else y)
     else y) graph_access None
 
-(*Stuff that chooses AI movement based on a list of connections*)
+
+(*Gets the number of locations connected to elements in a loc_list; ideally used
+ *to determine if an AI is buying a road that only connects two locations...*)
+(*let rec get_graph_islands graph loc_list num_connected c_id=
+  let new_num_connected = ref num_connected in
+  let () = print_endline (string_of_int (num_connected)) in
+  match loc_list with
+  |h :: t ->
+    let connected_s = (!size_connected) h c_id in
+    if connected_s = 0 then
+      (Connected.iter_component(fun x -> incr new_num_connected) graph h;
+      get_graph_islands graph t !new_num_connected c_id)
+    else
+      get_graph_islands graph t connected_s c_id
+  |[] -> num_connected *)
+
 let make_vehicle_move vehicle c_connections graph curr_m c_id =
   (*Create a new graph with only these connections.*)
   let empty = Map.empty in
@@ -159,7 +184,6 @@ let make_vehicle_move vehicle c_connections graph curr_m c_id =
   let loc_details = get_loc_details graph cur_loc in
   let goods = loc_details.produces in
   let max_profits = get_good_loc new_graph goods curr_m loc_details in
-  (*PROFITS FROM CURRENT LOCATION*)
   if f max_profits > 0. then
     let the_good = (get_o (t max_profits)).resource in
     let new_loc = get_o (s max_profits) in
@@ -177,9 +201,7 @@ let make_vehicle_move vehicle c_connections graph curr_m c_id =
     else []
   else
     match get_new_dest new_graph loc_details with
-    (*Vehicle is stuck. Buy a road if possible or sell if not.*)
     |None -> [SellVehicle vehicle]
-    (*Choosing not to move due to randomness*)
     |Some loc1 ->
       [SetVehicleDestination
       ({vehicle with destination = [loc1.l_id]; status = Driving})]
@@ -222,7 +244,7 @@ let better_deal is_greater_than info_compare info_other new_price new_good
     else
       info_compare)
   else
-    (if new_price < f (info_compare) then
+    (if comp new_price (f info_compare) then
       (new_price, Some new_loc, Some new_good)
     else info_compare)
 
@@ -235,32 +257,12 @@ let good_loc_info graph good money=
     match get_good_cost x.produces good with
     |None -> fst y
     |Some price ->
-      (* better_deal false (fst y) (snd y) price good x money graph  *)
-      if s (snd y) <> None then
-        let y_loc = get_o (s (snd y)) in
-        let road_cost = calculate_buy_road_cost x y_loc graph in
-        (if price < f (fst y)&& not(edge_exists graph x y_loc)
-          && road_cost +. safe_amount +. truck_price <= money then
-          (price, Some x, Some good)
-        else
-          fst y)
-      else
-        (if price < f (fst y) then (price, Some x, Some good) else fst y) in
+       better_deal false (fst y) (snd y) price good x money graph in
     let expensive =
     match get_good_cost x.accepts good with
     |None -> snd y
     |Some price ->
-      (* better_deal true (snd y) (fst y) price good x money graph  *)
-      if s (fst y) <> None then
-        let y_loc = get_o (s (fst y)) in
-        let road_cost = calculate_buy_road_cost x y_loc graph in
-        (if price > f (snd y)&& not(edge_exists graph x y_loc)
-          && road_cost +. safe_amount +. truck_price <= money then
-          (price, Some x, Some good)
-        else
-          snd y)
-      else
-        (if price > f (snd y) then (price, Some x, Some good) else snd y) in
+      better_deal true (snd y) (fst y) price good x money graph in
       (cheaper,expensive)
     )
   graph ((large_float, None, None),(small_float, None, None))
@@ -271,7 +273,9 @@ let good_loc_info graph good money=
 let get_good_diffs graph goods c_info=
   List.map (fun x -> good_loc_info graph x c_info.money) goods
 
-(*Gets one of the greatest diffs from from the result in get_good_locs*)
+(*Since get_good_locs returns the greatest profit possible for a list of
+ *goods, get_greatest_dif returns the greatest profit available for any
+ *set of goods.*)
 let get_greatest_dif good_dif graph =
   List.fold_left (fun x y -> let new_diff = (f (snd y) -. f (fst y)) in
     let old_diff = (f (snd x) -. f (fst x)) in
@@ -281,20 +285,6 @@ let get_greatest_dif good_dif graph =
       else true in
     if old_diff < new_diff && (not has_been_built) then y else x)
     ((large_float, None, None),(small_float, None, None)) good_dif
-
-(* Returns an end_loc based on income. Also checks if the road has already been
- * built*)
- let rec build_road graph location good price c_info loc2=
-  Map.fold_vertex (fun x y ->
-    let good_price =
-      if get_good_cost x.accepts good = None then (0.) else (
-      get_o (get_good_cost x.accepts good)) in
-    let length = hypot (location.l_x-.x.l_x) (location.l_y-. x.l_y) in
-    (*Check if road can be bought*)
-    if road_unit_cost*.(length**road_length_cost_exponent) +. car_price <=
-      c_info.money then
-      Some x
-    else y) graph None
 
 (*Determines what road to buy. Uses information based on the greatest profit.*)
 let buy_c_road graph c_info=
@@ -307,8 +297,6 @@ let buy_c_road graph c_info=
     None
   else
     let loc1 = get_o (s (fst most_profitable)) in
-    let price = f (fst most_profitable) in
-    let the_good = get_o (t (fst most_profitable)) in
     let loc2 = get_o (s (snd most_profitable)) in
     let road_cost = calculate_buy_road_cost loc1 loc2 graph in
   (*   let num_islands = get_graph_islands graph [loc1;loc2] 0 c_info.p_id in
@@ -336,9 +324,9 @@ let buy_vehicle c_info initial_loc =
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
 (*Returns a place to put a vehicle given the current map that will earn
- * the vehicle profits.
- * Uses a boolean to determine when to stop searching.
- * Always returns the first profitable location.*)
+ * the vehicle profits.*)
+(*Uses a boolean to determine when to stop searching. *)
+(* Always returns the first profitable location.*)
 let get_loc_vehicle c_connections=
   let empty = Map.empty in
   let new_graph = add_edges empty c_connections in
@@ -356,7 +344,8 @@ let get_loc_vehicle c_connections=
 let sell_c_roads connections =
   List.fold_left (fun x y ->
     (road_unit_cost*.((s y).length**road_length_cost_exponent)
-    *.sell_back_percentage) +. x) 0. connections
+    *.sell_back_percentage)+. x)
+  0. connections
 
 (*Determines sell value of all the vehicles owned*)
 let sell_c_vehicles vehicles =
@@ -367,9 +356,8 @@ let sell_c_vehicles vehicles =
       |Truck -> truck_price in
     vehicle_price *.sell_back_percentage +. x) 0. vehicles
 
-(*Gets a location for a vehicle *)
 (*This uses the current game state to determine how the AI should make a move.
-( p_id refers to the id of the AI *)
+( p_id refers to the id of the AI. *)
 let make_c_move (state: game_state) c_id =
   let c_player = get_player c_id state.players in
   let delay = match c_player.p_type with

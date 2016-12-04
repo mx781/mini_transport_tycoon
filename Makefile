@@ -4,7 +4,7 @@ main:
 	ocamlbuild -use-ocamlfind -pkgs graphics,camlimages.png,camlimages.graphics,ocamlgraph,piqirun.ext,unix main.byte && ./main.byte
 
 nice:
-	ocamlbuild -use-ocamlfind -pkgs graphics,camlimages.png,camlimages.graphics,ocamlgraph,piqirun.ext,unix main.byte -no-hygiene && ./main.byte
+	ocamlbuild -no-hygiene -use-ocamlfind -pkgs graphics,camlimages.png,camlimages.graphics,ocamlgraph,piqirun.ext,unix main.byte && ./main.byte
 
 test:
 	ocamlbuild -use-ocamlfind -pkgs oUnit,graphics,camlimages.png,camlimages.graphics,ocamlgraph,piqirun.ext,unix test.byte -no-hygiene && ./test.byte

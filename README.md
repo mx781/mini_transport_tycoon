@@ -3,7 +3,7 @@
 Mini Transport Tycoon
 =====================
 
-Instructions: 3110 VM
+Installation: 3110 VM
 ----------------------
 
 Mini Transport Tycoon (MTT) depends on GTK+ and various image libraries 
@@ -35,7 +35,7 @@ development team will gladly assist you in resolving them. Please send an email
 to mk2228@cornell.edu, jtg98@cornell.edu, dl556@cornell.edu, prw55@cornell.edu, 
 and we will get back to you ASAP.
 
-Instructions: macOS
+Installation: macOS
 ------------------------------
 
 If you want to run MTT natively on macOS, you may additionally need to install
@@ -50,3 +50,27 @@ brew reinstall ocaml --with-x11
 Then, map opam to use the system installation instead of the currently bound
 one: `opam switch sys`. Then run ``eval `opam config env` ``  as instructed. You
 should then be able to compile by running `make`.
+
+Gameplay
+----------------------
+
+Once you have successfully compiled the game, it should launch automatically. If
+running natively on macOS, it might take a few second to power up XQuartz. The
+game can be manually launched by running `./main.byte`. 
+
+Please make sure that both the Terminal and the main game Window is visible on 
+your screen to see instructions and updates as you play.
+
+**Resolution warning**: Depending on the host machine's native resolution and
+pixel ratio, as well as any changes made to the VM's resolution, the gameplay
+screen might appear too small to play. The game has been tested on the following
+resolutions:
+
+- host @ 1366x768, VM @ 1024x768 
+- host @ 3840x2160, VM @ 1920x955
+- host @ 2560x1440, VM @ 2560x1240
+- native on macOS @ 2880x1800
+
+A quickstart for how to play is displayed on the Terminal if you want to jump 
+right in. Detailed instructions and gameplay strategies can be found in 
+*Mini Transport Tycoon Instructions.docx*.
