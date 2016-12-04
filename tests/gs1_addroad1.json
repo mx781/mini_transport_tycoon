@@ -7,27 +7,7 @@
         {
             "pid": 0,
             "ptype": {"Human": true},
-            "money": 400.0
-        },
-        {
-            "pid": 1,
-            "ptype": {"AI": 1},
-            "money": 400.0
-        },
-        {
-            "pid": 2,
-            "ptype": {"AI": 2},
-            "money": 400.0
-        },
-        {
-            "pid": 3,
-            "ptype": {"AI": 5},
-            "money": 400.0
-        },
-        {
-            "pid": 4,
-            "ptype": {"AI": 2},
-            "money": 400.0
+            "money": 146.96407601172032
         }
     ],
     "graph": {
@@ -538,7 +518,15 @@
                 "age": 0,
                 "speed": 3.0,
                 "length": 158.1
-            }
+            },
+            {
+                "owner": 0,
+                "lstart": 6,
+                "lend": 10,
+                "age": 0,
+                "speed": 10.0,
+                "length": 274.4
+            }   
         ]
     }
 }

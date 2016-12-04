@@ -246,7 +246,7 @@ let rec handle_processes proclist st road_bought =
     | Pause::t->
         handle_processes t ({st with paused = not st.paused}) road_bought
     | EndGame::t -> raise EndGame
-    | Nothing:: t -> handle_processes t st road_bought
+    | Nothing::t -> handle_processes t st road_bought
 
 (* pre: st is a valid game state, that is, there are no duplicate
  *      location or player ids in the player list or graph.
