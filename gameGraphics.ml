@@ -581,7 +581,7 @@ let sell_road gs player_id =
   else (
   let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
     print_endline ("You will earn $" ^ (string_of_float (two_dec cost))
-                   ^ "\n\nConfirm to sell.");
+                   ^ "\n\nConfirm to sell.\n");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.sell_road player_id
