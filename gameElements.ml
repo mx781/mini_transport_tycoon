@@ -72,6 +72,8 @@ type connection = {
   c_speed: float; (*speed of vehicle on road*)
 }
 
+(*Location module which will be used to create a Graph module for using
+ * Ocamlgraph (so that we have Dijkstra's algorithm and easy map management.)*)
 module Location = struct
   type t = location
   type label = location
@@ -83,6 +85,8 @@ module Location = struct
     else (~-1)
 end
 
+(*Connection module which will be used to create a Graph module for using
+ * Ocamlgraph (so that we have Dijkstra's algorithm and easy map management.)*)
 module Connection = struct
   type t = connection
   let compare e1 e2 =
@@ -101,6 +105,8 @@ module Connection = struct
   }
 end
 
+(* module using ocamlgraph so that we have a graph type and
+ * built in graph functions*)
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
 
 
@@ -112,6 +118,8 @@ type game_state = {
   mutable players : Player.player list;
 }
 
+(*Connection weights module is used for Dijkstra's algorithm since connections
+ * need weights associated with them.*)
 module ConnectionWeight = struct
   type edge = Map.E.t
   type t = float
@@ -121,28 +129,33 @@ module ConnectionWeight = struct
   let zero = 0.
 end
 
+(*module for Dijkstra's algorithm with our custom ConnectionWeight module*)
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
+(* module (for ocamlgraph) to check if a path is in the graph and where the path
+ * goes*)
 module PathCheck = Graph.Path.Check(Map)
 
 module Connected = Graph.Traverse.Bfs(Map)
 
-module HashFctn = struct
-  type t = location * int
-  let equal i j =
-    (fst i).l_id = (fst j).l_id && snd i = snd j
-  let hash i = Hashtbl.hash i
-end
 
+(* The below constants are all used for a variety of rules that change the
+ * gameplay. They are almost all exactly what their name states, and are
+ * clarified when there is ambiguity*)
 let fps = 24.0
 let car_price = 100.0
 let truck_price = 200.0
 let sell_back_percentage = 0.6
 let road_unit_cost = 0.3
+(* Used for determining how much faster
+   the road cost increases with distance of the road.*)
 let road_length_cost_exponent = 1.2
 let road_rights_unit_cost = 0.65
 let win_condition = 2500.0
 
+(* Breakdowns were determined to not be fun or adding of any strategic value,
+ * so while cars will breakdown if this constant is raised we leave it at 0.0
+ * to keep vehicles from ever breaking down.*)
 let breakdown_chance = 0.0
 let car_speed = 4.0
 let truck_speed = 2.0
@@ -151,6 +164,7 @@ let truck_capacity = 100
 let price_update_steps = 10
 let buy_vehicle_condition = 2.
 
+(*ai constants*)
 let min_bought = 10
 let large_float = 200000.0
 let small_float = 0.0
@@ -165,32 +179,23 @@ let medium_ai_level = 5
 let hard_ai_level = 40
 let brutal_ai_level = 400
 
-
-(* (*Used to find size of connected portions given a particular player*)
-let size_connected = ref (fun (x: location) (y: int) -> 0)
-(*Used to find the maximum number of connections for a given individual *)
-let max_connected = ref (fun (x: int) -> 0)
- *)
-
-(* let form_connection map player_id loc1 loc2 =
-  let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
-    c_age = 0; c_speed = 5.0; length = 5.0} in (*Placeholder*)
-  let start_loc = loc1 in
-  let end_loc = loc2 in *)
-
 (*Gets a location from an id *)
 let get_loc id graph =
-  let vertex_lst = Map.fold_vertex (fun v lst -> if v.l_id = id then v :: lst else lst) graph [] in
+  let vertex_lst = Map.fold_vertex
+    (fun v lst -> if v.l_id = id then v :: lst else lst) graph [] in
   match vertex_lst with
   |h :: t -> h
   |[] -> failwith "trying to get a vertex that doesn't exist"
 
 (*Forms a new connection based on location*)
 let form_connection map player_id loc1 loc2 =
-  let new_connect = {c_owner_id = player_id; l_start = loc1.l_id; l_end = loc2.l_id;
-    c_age = 0; c_speed = 1.0; length = 5.0} in (*Placeholder*)
+  let new_connect =
+    {c_owner_id = player_id; l_start = loc1.l_id; l_end = loc2.l_id;
+     c_age = 0; c_speed = 1.0; length = 5.0} in
   Map.add_edge_e map (loc1, new_connect, loc2)
 
+(* Routes a vehicle, that is, sets a vehicle's destination, based on the
+ * location to route it to, the vehicle, and the list of vehicles.*)
 let route_vehicle l v v_list =
   let new_v = {v with destination = [l.l_id]} in
   List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
@@ -343,33 +348,3 @@ let set_p_dif gd p =
 let set_game_difficulty gd st =
   let new_players = List.map (set_p_dif gd) st.players in
   {st with players = new_players}
-
-(*Sells cargo at given location given a vehicle. Returns a tuple containing
- *the new vehicle and the new money value*)
-(* let sell_cargo vehicle player money graph =
-  let new_vehicle = {vehicle with cargo = None; status = Waiting} in
-  let the_good =
-    match vehicle.cargo with
-    |Some good -> good
-    |None -> failwith "cannot sell cargo if it does not exist, TALK TO DAN" in
-  let the_price =
-    (match vehicle.v_loc with
-    |None -> failwith "trying to sell cargo when not at final loc, TALK TO DAN"
-    |Some loc -> find_good_price (get_loc loc graph).accepts the_good) in
-  (new_vehicle, (money +. the_price))
- *)
-
-(*UPDATES: Changed vehicle types to contain capacity + speed, since
-  those should be connected with the vehicle
-  -Gave vehicle location option*)
-
-
-
-(* type game_state = {
-  vehicles : vehicle list;
-  graph: Map.t;
-  game_age : int;
-  paused: bool;
-  mutable players : Player.player list;
-}
- *)
