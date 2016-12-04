@@ -287,9 +287,10 @@ let draw_vehicle (v:vehicle) : unit =
               | Produce -> fruit_s in
     draw_image img (x-10) (y+20) )
 
-(* Draws all vehicle in list *)
+(* Draws all vehicle in list, player 0 on top *)
 let rec draw_vehicles (vs:vehicle list) : unit =
-  List.iter draw_vehicle vs
+  List.iter draw_vehicle (List.filter (fun v -> v.v_owner_id <> 0) vs);
+  List.iter draw_vehicle (List.filter (fun v -> v.v_owner_id = 0) vs)
 
 (* Draws a player's color and their score *)
 let draw_score (p:Player.player) : unit =
