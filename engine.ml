@@ -306,7 +306,7 @@ let rec main_loop st =
     let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0
                      then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     Unix.sleepf sleep_time;
-    main_loop st'';
+    main_loop st''
   with
      | EndGame | Graphics.Graphic_failure _ ->
         print_endline "Game Over, autosaving to data/autosave.json";
@@ -368,7 +368,7 @@ let rec init_game fname dif : unit =
     main_loop init_gs';
     gameover ();
     print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
+      (string_of_float (two_dec(Unix.time () -. start_t)/.fps))^" minutes.\n");
     Unix.sleepf 0.5;
     title_screen dif
   with
