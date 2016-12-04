@@ -335,20 +335,20 @@ let two_dec flt =
 (*[inst ()] prints out some quick help instructions for the player.*)
 let instr () =
    print_string
-    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    "\n\n\n";
   print_endline
     "***********************************************************************";
   print_endline "                             Instructions";
   print_endline
     "***********************************************************************\n";
   print_endline ("Save/Quit:  Saves the current game to a json file and" ^
-    " closes the game.\n");
+                            " closes the game.\n");
   print_endline ("Pause:      Pauses the game until the screen is" ^
-    " clicked again\n");
+                            " clicked again\n");
   print_endline "Buy Car:    Buys a car starting at a given location\n";
   print_endline "Buy Truck:  Buys a truck starting at a given location\n";
   print_endline ("Buy Road:   Buys a new road between two locations, " ^
-    "or if a road exists,");
+                             "or if a road exists,");
   print_endline "            buys exclusive right to that road\n";
   print_endline "Sell Road:  Sells an existing road between two locations if";
   print_endline "            it exists and you own it\n";
@@ -358,6 +358,15 @@ let instr () =
   print_endline "Cancel:     Cancel a selection (of any above action) \n";
   print_endline
     "***********************************************************************\n"
+
+(*[game over ()] just displays game over text in the terminal.*)
+let gameover () =
+  print_endline
+  "#######################################################################";
+  print_endline
+  "                                Game Over";
+  print_endline
+  "#######################################################################\n"
 
 (* pre: fname is a file name (which need not be valid but must reflect an actual
  *      game json file is the file is to be loaded)
@@ -373,9 +382,9 @@ let rec init_game fname dif : unit =
     print_endline "Start transporting!\n";
     let start_t = Unix.time () in
     main_loop init_gs';
-    gameover ();
     print_endline ("\nGame Duration: " ^
       (string_of_float (two_dec(Unix.time () -. start_t)/.60.))^" minutes.\n");
+    gameover ();
     Unix.sleepf 0.5;
     title_screen dif
   with
@@ -412,12 +421,3 @@ and title_screen (dif:ai_game_difficulty) : unit =
  *)
 and settings_screen () =
     title_screen (GameGraphics.settings ())
-
-(*[game over ()] just displays game over text in the terminal.*)
-and gameover () =
-  print_endline
-  "\n#######################################################################";
-  print_endline
-  "                                Game Over                                ";
-  print_endline
-  "#######################################################################"
