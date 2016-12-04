@@ -303,12 +303,8 @@ let rec main_loop st =
       }
     in
     let time_elapsed = Unix.time () -. start_t in
-    (* print_endline (string_of_float time_elapsed); *)
-    let sleep_time =
-      if ((1.0 /. fps) -. time_elapsed) > 0.0
-      then ((1.0 /. fps) -. time_elapsed)
-      else 0.0 in
-    (* print_endline (string_of_float sleep_time); *)
+    let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0
+                     then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     Unix.sleepf sleep_time;
     main_loop st'';
   with
@@ -375,8 +371,13 @@ let rec init_game fname dif : unit =
     title_screen dif
   with
   | Quit -> raise Quit
+  | Failure e -> print_endline e; print_endline "\nNot a valid game file";
+                 title_screen dif
+  | e -> raise EndGame
 
-(*title_screen*)
+(* pre: dif is an AI difficulty (Easy, Medium, Hard, or Brutal)
+ * post: [title_screen dif] displays the title screen and just returns a unit.
+ *)
 and title_screen (dif:ai_game_difficulty) : unit =
   try
     GameGraphics.draw_start ();
@@ -386,15 +387,18 @@ and title_screen (dif:ai_game_difficulty) : unit =
       print_endline ("\nPlease enter the name of the game "
         ^ "file you want to load.\n");
       print_string  "> "; init_game (read_line ()) dif )
-    else if opt = 3 then (instr (); (*help screen*) title_screen dif)
+    else if opt = 3 then (instr (); title_screen dif)
     else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
     else raise Quit
   with _ -> ()
 
- and settings_screen () =
+(* [settings_screen ()] just displays the settings screen and returns a unit.
+ *)
+and settings_screen () =
     title_screen (GameGraphics.settings ())
 
+(*[game over ()] just displays game over text in the terminal.*)
 and gameover () =
   print_endline
   "\n#######################################################################";
