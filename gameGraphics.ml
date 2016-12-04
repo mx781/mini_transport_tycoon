@@ -528,15 +528,17 @@ let rec pick_cargo loc =
   if List.exists ((=) (get_some cargo)) resource_list
   then cargo else pick_cargo loc
 
-(* You know, for quitting? Also saves though *)
+(* You know, for quitting and stuff. Also saves though *)
 let quit gs =
   print_endline "Saving game to data/save.json";
   DataProcessing.save_file gs "data/save.json";
   EndGame
 
+(* Returns true iff pause button is clicked *)
 let is_pause (x,y) =
   y < start_height+button_height-spacing && y > start_height-spacing
 
+(* Waits until something other than pause is clicked *)
 let rec wait_pause () =
   let stat = wait_next_event [Button_down] in
   let pos = (stat.mouse_x, stat.mouse_y) in

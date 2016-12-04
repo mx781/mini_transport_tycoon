@@ -441,9 +441,6 @@ let init_vehicle player_id v_type start_loc_id graph=
     destination= [];
     v_loc = Some start_loc_id;
   } in
-  let () = match v.v_t with
-         | Car -> print_endline "Car purchased. \n";
-         | Truck -> print_endline "Truck purchased.\n"; in
   BuyVehicle(v)
 
 (* [buy road player_id l1 l2 graph] creates an AddRoad or PurchaseRoad
