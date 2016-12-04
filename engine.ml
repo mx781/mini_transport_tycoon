@@ -266,7 +266,7 @@ and title_screen (dif:ai_game_difficulty) : unit =
     else if opt = 2 then (
       print_endline "\nPlease enter the name of the game file you want to load.\n";
       print_string  "> "; init_game (read_line ()) dif )
-    else if opt = 3 then (instr (); (*help screen*) title_screen dif)
+    else if opt = 3 then (instr (); title_screen dif)
     else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
     else raise Quit
