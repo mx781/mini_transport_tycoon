@@ -410,7 +410,7 @@ let rec fin p_win gs wait =
     draw_str ("WINNER IS: P" ^ (string_of_int p_win))
        (screen_width/2+120) (screen_height - 30);
     set_color black;
-    fill_rect 740 390 240 200;
+    fill_rect 745 395 230 190;
     set_color color;
     fill_rect 750 400 220 180;
     draw_scores gs.players;

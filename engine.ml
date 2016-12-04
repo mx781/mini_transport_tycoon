@@ -368,14 +368,14 @@ let instr () =
 let rec init_game fname dif : unit =
   try
     Graphics.resize_window 1000 600;
-    let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
     let init_gs' = set_game_difficulty dif init_gs in
     print_endline "Start transporting!\n";
+    let start_t = Unix.time () in
     main_loop init_gs';
     gameover ();
     print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.fps))^" minutes.\n");
+      (string_of_float (two_dec(Unix.time () -. start_t)/.60.))^" minutes.\n");
     Unix.sleepf 0.5;
     title_screen dif
   with
