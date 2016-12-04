@@ -445,8 +445,7 @@ let buy_road player_id l1 l2 graph =
   try
     let connection =
       match Map.find_edge graph l1 l2 with
-        | (_,c,_) -> c
-        | _ -> failwith "invalid connection" in
+        | (_,c,_) -> c in
     if connection.c_owner_id <> -1
     then if connection.c_owner_id = player_id
     then (print_endline "You already have a road here.\n"; Nothing)

@@ -279,7 +279,7 @@ let update_driving_v players graph v st =
                  v''
       | h::h2::t ->
         try
-          let e = ignore
+          let _ =
             (Map.find_edge graph (get_loc h graph) (get_loc h2 graph)) in
           { v with x = dest_x; y = dest_y;
             age = v.age + 1;

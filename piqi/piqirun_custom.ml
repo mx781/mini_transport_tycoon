@@ -1,9 +1,14 @@
 (* Piqi object types *)
 open GameElements
+open Player
 open Gameelements_piqi.Vehicle
 open Gameelements_piqi.Good
+open Gameelements_piqi.Location
+open Gameelements_piqi.Goodsprofile
+open Gameelements_piqi.Connection
 open Player_piqi.Player
 open Graph_piqi.Graph
+open Graph_piqi.Metadata
 
 (*TODO: use global helpers, remove dupes *)
 let f (x, _, _) = x
