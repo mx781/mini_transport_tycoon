@@ -33,8 +33,9 @@ let sell_vehicle v st =
     {st with vehicles = new_vehicles; players = new_players}
 
 let set_v_dest v st =
-  let route_dest = fun vhcl -> if {vhcl with destination = v.destination; status = v.status} = v
-                               then v else vhcl in
+  let route_dest = fun vhcl ->
+               if {vhcl with destination = v.destination; status = v.status} = v
+               then v else vhcl in
   let new_vehicles = List.map route_dest st.vehicles in
   {st with vehicles = new_vehicles;}
 
@@ -57,7 +58,7 @@ let buy_connection c st =
         (
           if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
-           else let () = print_endline ("You cannot afford that road. It costs $"
+           else let _ = print_endline ("You cannot afford that road. It costs $"
              ^ (string_of_float (GameGraphics.two_dec cost))) in p)
       else p) st.players in
   if st.players = new_players
@@ -102,7 +103,7 @@ let change_connection_owner c st =
       if p.p_id = c.c_owner_id
       then if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
-           else let () = print_endline ("You cannot afford that road. It costs $"
+           else let _ = print_endline ("You cannot afford that road. It costs $"
              ^ (string_of_float (GameGraphics.two_dec cost))) in p
       else p) st.players in
   if st.players = new_players
@@ -125,7 +126,7 @@ let set_v_cargo v st =
   let crgo = match v.cargo with
     | Some c -> c
     | None -> failwith "cannot buy 0 cargo" in
-  let t_gp = List.find (fun gp -> gp.resource = crgo.t) buy_location'.produces in
+  let t_gp = List.find (fun gp->gp.resource = crgo.t) buy_location'.produces in
   let cost = t_gp.price *. (float_of_int crgo.quantity) in
   if t_gp.current - crgo.quantity < 0 then st else
   let new_gp = {t_gp with current = t_gp.current - crgo.quantity} in
@@ -145,7 +146,8 @@ let set_v_cargo v st =
       else p) st.players in
   if st.players = new_players
   then st
-  else {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
+  else {st with vehicles = new_vehicles;
+        players = new_players; graph = new_graph}
 
 
 let rec handle_processes proclist st road_bought =
@@ -153,14 +155,16 @@ let rec handle_processes proclist st road_bought =
     | [] -> st
     | BuyVehicle(v)::t -> handle_processes t (buy_vehicle v st) road_bought
     | SellVehicle(v)::t -> handle_processes t (sell_vehicle v st) road_bought
-    | SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st) road_bought
+    | SetVehicleDestination(v)::t ->
+        handle_processes t (set_v_dest v st) road_bought
     | BuyVehicleCargo(v)::t -> handle_processes t (set_v_cargo v st) road_bought
     | AddRoad(c)::t ->
-        handle_processes t (if road_bought then st else buy_connection c st) true
+       handle_processes t (if road_bought then st else buy_connection c st) true
     | DeleteRoad(c)::t -> handle_processes t (sell_connection c st) road_bought
     | PurchaseRoad(c)::t ->
-        handle_processes t (if road_bought then st else change_connection_owner c st) true
-    | Pause::t-> handle_processes t ({st with paused = not st.paused}) road_bought
+        handle_processes t (if road_bought
+                            then st else change_connection_owner c st) true
+    | Pause::t->handle_processes t ({st with paused =not st.paused}) road_bought
     | EndGame::t -> raise EndGame
     | Nothing:: t -> handle_processes t st road_bought
 
@@ -168,8 +172,10 @@ let rec generate_processes st players procs =
   match players with
     | [] -> procs
     | h::t -> if h.p_type = Human
-              then generate_processes st t (GameGraphics.click_buttons st h.p_id:: procs)
-              else generate_processes st t ((make_c_move st h.p_id) @ procs)
+              then generate_processes st t
+                   (GameGraphics.click_buttons st h.p_id:: procs)
+              else generate_processes st t
+                   ((make_c_move st h.p_id) @ procs)
 
 let player_wins st =
   try
@@ -197,9 +203,8 @@ let rec main_loop st =
       }
     in
     let time_elapsed = Unix.time () -. start_t in
-    (* print_endline (string_of_float time_elapsed); *)
-    let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0 then ((1.0 /. fps) -. time_elapsed) else 0.0 in
-    (* print_endline (string_of_float sleep_time); *)
+    let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0
+                     then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     Unix.sleepf sleep_time;
     main_loop st'';
   with
@@ -249,9 +254,9 @@ let rec init_game fname dif : unit =
     title_screen dif
   with
   | Quit -> raise Quit
-(*   | Failure _ -> print_endline e; print_endline "\nNot a valid game file"; title_screen ()
-  | e -> raise EndGame *)
-
+  | Failure e -> print_endline e; print_endline "\nNot a valid game file";
+                 title_screen dif
+  | e -> raise EndGame
 
 and title_screen (dif:ai_game_difficulty) : unit =
   try
@@ -266,14 +271,8 @@ and title_screen (dif:ai_game_difficulty) : unit =
     else if opt = 5 then raise Quit
     else raise Quit
   with _ -> ()
-     (* | EndGame | Graphics.Graphic_failure _ ->
-        "\nGoodbye"
-     | Quit -> gameover(); "\nBye"
-     | e -> raise e
-        print_endline ("Unexpected error, attempting save to data/failsave.json");
-        "\nBye" *)
 
- and settings_screen () =
+and settings_screen () =
     title_screen (GameGraphics.settings ())
 
 and gameover () =
