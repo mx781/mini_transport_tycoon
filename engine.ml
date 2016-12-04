@@ -147,7 +147,6 @@ let set_v_cargo v st =
   then st
   else {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
 
-
 let rec handle_processes proclist st road_bought =
   match proclist with
     | [] -> st
@@ -162,7 +161,7 @@ let rec handle_processes proclist st road_bought =
         handle_processes t (if road_bought then st else change_connection_owner c st) true
     | Pause::t-> handle_processes t ({st with paused = not st.paused}) road_bought
     | EndGame::t -> raise EndGame
-    | Nothing:: t -> handle_processes t st road_bought
+    | Nothing::t -> handle_processes t st road_bought
 
 let rec generate_processes st players procs =
   match players with
