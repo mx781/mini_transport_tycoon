@@ -166,8 +166,8 @@ let buy_vehicle_condition = 2.
 
 let ai_max_level = 500
 let easy_ai_level = 1
-let medium_ai_level = 5
-let hard_ai_level = 40
+let medium_ai_level = 4
+let hard_ai_level = 20
 let brutal_ai_level = 400
 
 (*Gets a location from an id *)

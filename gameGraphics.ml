@@ -403,16 +403,16 @@ let rec fin p_win gs wait =
    draw_image house (Random.int screen_width * !scale)
                        (Random.int screen_height * !scale);
     set_color black;
-    fill_rect (screen_width/2-10) (screen_height-60) 480 170;
+    fill_rect (screen_width/2-5) (screen_height-55) 470 160;
     set_color color;
     fill_rect (screen_width/2) (screen_height-50) 460 150;
     draw_image gameover (screen_width/2) (screen_height);
     draw_str ("WINNER IS: P" ^ (string_of_int p_win))
        (screen_width/2+120) (screen_height - 30);
     set_color black;
-    fill_rect 740 390 240 200;
+    fill_rect 745 405 230 180;
     set_color color;
-    fill_rect 750 400 220 180;
+    fill_rect 750 410 220 170;
     draw_scores gs.players;
     let wait = if wait > 0.003 then wait/.1.2 else wait in
     Unix.sleepf wait;
