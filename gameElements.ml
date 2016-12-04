@@ -349,17 +349,22 @@ let new_gp g_a gp =
     else 0.0) 0.0;
   }
 
+(* [update_location age l] takes in an individual age (game_age) and location l
+ * and updates the location accordingly (i.e. their good profiles)*)
 let update_location age l =
   { l with
   accepts= List.map (new_gp age) l.accepts;
   produces= List.map (new_gp age) l.produces;
   }
 
+(* [add_vertices m locs] adds locs to map (graph) m*)
 let rec add_vertices m locs =
   match locs with
     | [] -> m
     | h::t -> (add_vertices (Map.add_vertex m h) t)
 
+(* [update_location graph g_age] returns a new graph after updating each
+ * locations in the graph for one frame in the game.*)
 let update_locations graph g_age =
   Map.map_vertex (update_location g_age) graph
 
@@ -377,6 +382,8 @@ let buy_vehicle vehicle player location v_list spd cpt =
     speed = spd; age = 0; capacity = cpt; v_loc = None} in
   new_vehicle :: v_list
 
+(* [set_p_dif gd p] sets the difficulty level of a player p (if it is AI) given
+ * a game difficulty gd.*)
 let set_p_dif gd p =
   match (p.p_type,gd) with
     | (Human,_) -> p
@@ -385,6 +392,8 @@ let set_p_dif gd p =
     | (AI(_),Hard) -> {p with p_type = AI(hard_ai_level)}
     | (AI(_),Brutal) -> {p with p_type = AI(brutal_ai_level)}
 
+(* [set_game_difficulty gd st] sets the game difficulty based on a game
+ * difficulty gd and a game state st*)
 let set_game_difficulty gd st =
   let new_players = List.map (set_p_dif gd) st.players in
   {st with players = new_players}
