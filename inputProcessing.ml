@@ -119,7 +119,7 @@ let get_route (loc1:int) (loc2:int) state (p_id:int)=
   let loc_info2 = get_loc_details state.graph loc2 in
   let new_path =
     (try Dijkstra.shortest_path new_graph loc_info1 loc_info2 with
-    |Not_found ->([], (-1.))) in
+    |_ ->([], (-1.))) in
   if new_path = ([],(-1.)) then
     None
   else
@@ -136,8 +136,8 @@ let get_quantity vehicle r_type location curr_money=
   let maxq'= min maxq (int_of_float (curr_money /. accepts.price)) in
     maxq'
 
-(*Gets a new location close to the vehicle. First checks if other locations are accessible.
- *The second is the result of the movement.*)
+(*Gets a new location close to the vehicle. First checks if other locations are
+ * accessible. The second is the result of the movement.*)
 let get_new_dest graph_access curr_loc =
   Map.fold_edges_e (fun x y -> let () = Random.self_init() in
     let r = Random.int (2) in
@@ -146,21 +146,6 @@ let get_new_dest graph_access curr_loc =
       else if (t x).l_id = curr_loc.l_id then Some (f x)
       else y)
     else y) graph_access None
-
-(*Gets the number of locations connected to elements in a loc_list; ideally used to
- *determine if an AI is buying a road that only connects two locations...*)
-(*let rec get_graph_islands graph loc_list num_connected c_id=
-  let new_num_connected = ref num_connected in
-  let () = print_endline (string_of_int (num_connected)) in
-  match loc_list with
-  |h :: t ->
-    let connected_s = (!size_connected) h c_id in
-    if connected_s = 0 then
-      (Connected.iter_component(fun x -> incr new_num_connected) graph h;
-      get_graph_islands graph t !new_num_connected c_id)
-    else
-      get_graph_islands graph t connected_s c_id
-  |[] -> num_connected *)
 
 (*Stuff that chooses AI movement based on a list of connections*)
 let make_vehicle_move vehicle c_connections graph curr_m c_id =
@@ -280,8 +265,8 @@ let good_loc_info graph good money=
     )
   graph ((large_float, None, None),(small_float, None, None))
 
-(*Returns the price, location option, and good option containing the cheapest and
- *most expensive goods.
+(*Returns the price, location option, and good option containing the cheapest
+ *and most expensive goods.
  *Used for profit calculations.*)
 let get_good_diffs graph goods c_info=
   List.map (fun x -> good_loc_info graph x c_info.money) goods
@@ -297,11 +282,12 @@ let get_greatest_dif good_dif graph =
     if old_diff < new_diff && (not has_been_built) then y else x)
     ((large_float, None, None),(small_float, None, None)) good_dif
 
-(*Returns an end_loc based on income. Also checks if the road has already been built*)
+(* Returns an end_loc based on income. Also checks if the road has already been
+ * built*)
  let rec build_road graph location good price c_info loc2=
   Map.fold_vertex (fun x y ->
     let good_price =
-      if get_good_cost x.accepts good = None then (0.) else ((* print_endline "asdfasdf"; *)
+      if get_good_cost x.accepts good = None then (0.) else (
       get_o (get_good_cost x.accepts good)) in
     let length = hypot (location.l_x-.x.l_x) (location.l_y-. x.l_y) in
     (*Check if road can be bought*)
@@ -350,9 +336,9 @@ let buy_vehicle c_info initial_loc =
     y= initial_loc.l_y; destination = []; v_loc = Some initial_loc.l_id}
 
 (*Returns a place to put a vehicle given the current map that will earn
- * the vehicle profits.*)
-(*Uses a boolean to determine when to stop searching. *)
-(* Always returns the first profitable location. (Would be tedious to do more.)*)
+ * the vehicle profits.
+ * Uses a boolean to determine when to stop searching.
+ * Always returns the first profitable location.*)
 let get_loc_vehicle c_connections=
   let empty = Map.empty in
   let new_graph = add_edges empty c_connections in
@@ -369,8 +355,8 @@ let get_loc_vehicle c_connections=
 (*Determines value of all owned roads if sold*)
 let sell_c_roads connections =
   List.fold_left (fun x y ->
-    (road_unit_cost*.((s y).length**road_length_cost_exponent) *.sell_back_percentage)
-    +. x) 0. connections
+    (road_unit_cost*.((s y).length**road_length_cost_exponent)
+    *.sell_back_percentage) +. x) 0. connections
 
 (*Determines sell value of all the vehicles owned*)
 let sell_c_vehicles vehicles =
@@ -436,6 +422,9 @@ let make_c_move (state: game_state) c_id =
     else
       vehicle_processes)
 
+(* init vehicle creates a vehicle creation process based on the player_id,
+ * the type of vehicle v_type, the startig position location's id start_loc_id,
+ * and a graph of locations and edges graph *)
 let init_vehicle player_id v_type start_loc_id graph=
   let loc = get_loc start_loc_id graph in
   let v =
@@ -457,32 +446,45 @@ let init_vehicle player_id v_type start_loc_id graph=
          | Truck -> print_endline "Truck purchased.\n"; in
   BuyVehicle(v)
 
-let buy_road player_id l1_id l2_id graph =
-  let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0 +.
-    ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
+(* [buy road player_id l1 l2 graph] creates an AddRoad or PurchaseRoad
+ * process from a player_id of the purchaser, the location ids of the start
+ * and end points, and the graph of connections and locations. It returns a
+ * Nothing process if the road cannot be purchased.
+ *)
+let buy_road player_id l1 l2 graph =
+  let c_length = ((l1.l_x -. l2.l_x)**2.0
+    +. (l1.l_y -. l2.l_y)**2.0)**0.5 in
   try
     let connection =
-      match Map.find_edge graph (get_loc l1_id graph) (get_loc l2_id graph) with
+      match Map.find_edge graph l1 l2 with
         | (_,c,_) -> c
         | _ -> failwith "invalid connection" in
     if connection.c_owner_id <> -1
     then if connection.c_owner_id = player_id
-    then let () = print_endline "You already have a road here.\n" in Nothing
-    else let () = print_endline "You cannot buy an opponent's road.\n" in Nothing
-    else let () = print_endline "Road purchased.\n" in PurchaseRoad({connection with c_owner_id = player_id; length = c_length;})
+    then (print_endline "You already have a road here.\n"; Nothing)
+    else (print_endline "You cannot buy an opponent's road.\n"; Nothing)
+    else (print_endline "Road purchased.\n";
+      PurchaseRoad(
+        {connection with c_owner_id = player_id; length = c_length;}
+      ))
   with
     Not_found ->
     let c =
     {
       c_owner_id = player_id;
-      l_start= l1_id;
-      l_end =  l2_id;
+      l_start= l1.l_id;
+      l_end =  l2.l_id;
       length= c_length;
       c_age= 0;
       c_speed = 5.0; (*not used yet, completely arbitrary*)
     } in
     print_endline "Road purchased.\n"; AddRoad(c)
 
+(* [sell_road player_id l1 l2 graph] creates a SellRoad
+ * process from a player_id of the seller, the location ids of the start
+ * and end points, and the graph of connections and locations. It returns a
+ * Nothing process if the road cannot be sold.
+ *)
 let sell_road player_id l1 l2 graph =
   try
     let c = Map.find_edge graph l1 l2 in
@@ -495,6 +497,10 @@ let sell_road player_id l1 l2 graph =
   with
   | _ -> Nothing
 
+(* [sell_vehicle player_id v] creates a SellVehicle
+ * process from a player_id of the seller, and the vehicle v to sell. It returns
+ * a Nothing process if the road cannot be sold.
+ *)
 let sell_vehicle player_id v =
   if v.v_owner_id = player_id
   then (let () = match v.v_t with
@@ -505,13 +511,20 @@ let sell_vehicle player_id v =
   let () = print_endline "You cannot sell that vehicle, you do not own it!\n" in
   Nothing
 
+(* [set_vehicle_dest player_id v_old start_loc end_loc st] creates a
+ * SetVehicleDestination process from a player_id of the seller, the old vehicle
+ * that we are setting the destination of v_old, the starting location start_loc
+ * and the ending location end_loc. It returns a Nothing process if the vehicle
+ * cannot be routed.
+ *)
 let set_vehicle_dest player_id v_old start_loc end_loc st =
   let first_dest = match v_old.destination with
     | [] -> start_loc.l_id
     | h::t -> h in
   let checked_route = get_route first_dest end_loc.l_id st player_id in
   let dest_list = match checked_route with
-    | None -> (print_endline "Vehicle cannot reach this location!\n"; [])
+    | None -> (print_endline "Vehicle cannot reach this location!\n";
+      v_old.destination)
     | Some lst -> (print_endline "Vehicle en route.\n"; lst) in
   let stat = match dest_list with
     | [] -> Waiting
@@ -523,23 +536,32 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
       v_old with destination = first_dest::dest_list;
       status = stat;
     }
-    else let () = print_endline "You cannot route that vehicle, you do not own it!\n" in v_old
+    else let () =
+      print_endline "You cannot route that vehicle, you do not own it!\n" in
+      v_old
   in
   SetVehicleDestination(v)
 
+(* [buy_vehicle_cargo player_id v_old r_type st] creates a BuyVehicle process
+ * based on the player_id of the purchaser, the old vehicle who will have the
+ * cargo added to it v_old, the resource type to buy r_type, and the game state
+ * st. It returns a Nothing process if the cargo cannot be purchased.*)
 let buy_vehicle_cargo player_id v_old r_type st =
   let vehicle_max = match v_old.v_t with
     | Car -> car_capacity
     | Truck -> truck_capacity in
   match v_old.v_loc with
-    | None -> print_endline "Please route your vehicle to a market before attempting t purchase goods\n"; Nothing
+    | None -> print_endline ("Please route your vehicle to a market before" ^
+      " attempting to purchase goods\n"); Nothing
     | Some location ->
-      let accepts = List.find (fun gp -> gp.resource = r_type) (get_loc location st.graph).produces in
+      let accepts = List.find (fun gp -> gp.resource = r_type)
+        (get_loc location st.graph).produces in
       let player = List.find (fun p -> p.p_id = player_id) st.players in
       let maxq = min accepts.current vehicle_max in
       let maxq' = min maxq ( int_of_float (player.money /. accepts.price)) in
       let v =
         if v_old.v_owner_id = player_id
         then {v_old with cargo = Some {t= r_type; quantity = maxq';}}
-        else let () = print_endline "You cannot purchase cargo for that vehicle, you do not own it!\n" in v_old
+        else let () = print_endline ("You cannot purchase cargo for" ^
+          " that vehicle, you do not own it!\n") in v_old
       in (print_endline "Cargo purchased.\n"; BuyVehicleCargo(v))

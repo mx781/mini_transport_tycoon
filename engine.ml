@@ -24,7 +24,7 @@ let buy_vehicle v st =
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
-           else let () = print_endline "You cannot afford that vehicle.\n" in p
+           else let () = print_endline "You cannot afford that vehicle." in p
       else p) st.players in
   if new_players = st.players then st else
   {st with vehicles = v::st.vehicles; players = new_players}
@@ -117,15 +117,15 @@ let sell_connection c st =
                    then vx::acc
                    else acc
     ) st.graph [] in
-  let new_graph =
-  match vertices with
+  let new_graph = match vertices with
     | l1::l2::[] -> Map.remove_edge_e st.graph (Map.find_edge st.graph l1 l2)
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let gain = (road_unit_cost*.(c.length**road_length_cost_exponent))
-             *.sell_back_percentage in
-  let new_players = List.map (fun p -> if p.p_id = c.c_owner_id
-                                       then {p with money = (p.money +. gain)}
-                                       else p) st.players in
+    *.sell_back_percentage in
+  let new_players = List.map
+    (fun p -> if p.p_id = c.c_owner_id
+              then {p with money = (p.money +. gain)}
+              else p) st.players in
   {st with graph = new_graph; players = new_players}
 
 (* pre: c is a valid connection whose two location ids correspond to two
@@ -306,7 +306,7 @@ let rec main_loop st =
     let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0
                      then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     Unix.sleepf sleep_time;
-    main_loop st'';
+    main_loop st''
   with
      | EndGameException | Graphics.Graphic_failure _ ->
         print_endline "Game Over, autosaving to data/autosave.json";
@@ -340,9 +340,8 @@ let instr () =
   print_endline "Buy Car:    Buys a car starting at a given location\n";
   print_endline "Buy Truck:  Buys a truck starting at a given location\n";
   print_endline ("Buy Road:   Buys a new road between two locations, " ^
-                              "or if a road exists,");
+    "or if a road exists,");
   print_endline "            buys exclusive right to that road\n";
-  print_endline "Move Auto:  Moves a vehichle to a new destination.\n";
   print_endline "Sell Road:  Sells an existing road between two locations if";
   print_endline "            it exists and you own it\n";
   print_endline "Sell Auto:  Sells an existing vehicle that you own\n";
@@ -364,15 +363,18 @@ let rec init_game fname dif : unit =
     let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
     let init_gs' = set_game_difficulty dif init_gs in
+    print_endline "Start transporting!\n";
     main_loop init_gs';
     gameover ();
     print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
+      (string_of_float (two_dec(Unix.time () -. start_t)/.fps))^" minutes.\n");
     Unix.sleepf 0.5;
     title_screen dif
   with
   | Quit -> raise Quit
-  | Failure e -> print_endline e; print_endline "\nNot a valid game file";
+  | Failure e -> print_endline e;
+                 print_endline ("\nNot a valid game file.  "^
+                               "Load a different file or start a new game.\n");
                  title_screen dif
   | e -> raise EndGameException
 
@@ -385,14 +387,18 @@ and title_screen (dif:ai_game_difficulty) : unit =
     let opt = GameGraphics.title_click () in
     if opt = 1 then init_game "data/game.json" dif
     else if opt = 2 then (
-      print_endline ("\nPlease enter the name of the game "
-        ^ "file you want to load.\n");
+      print_endline
+        "\nPlease enter the name of the game file you want to load.";
+      print_endline "(Saved games are stored in data/save.json)\n";
       print_string  "> "; init_game (read_line ()) dif )
     else if opt = 3 then (instr (); title_screen dif)
     else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
     else raise Quit
-  with _ -> ()
+  with
+  | Failure _ -> title_screen dif
+  | _ -> ()
+
 
 (* [settings_screen ()] just displays the settings screen and returns a unit.
  *)

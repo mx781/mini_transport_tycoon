@@ -50,7 +50,7 @@ type vehicle = {
   speed : float;
   capacity : int;
   v_t : v_type;
-  cargo: good option; (*For single resource type this will only have one element *)
+  cargo: good option;
   age: int; (*In game steps, useful for breakdowns etc.*)
   status: v_status;
   x: float;
@@ -223,13 +223,21 @@ let sell_cargo v g players graph st =
     true
   with _ -> false
 
+(*[distance l1 l2] is the distance between two locations l1 and l2*)
 let distance l1 l2 =
   ((l1.l_x -. l2.l_x)**2.0 +. (l1.l_y -. l2.l_y)**2.0)**0.5
 
+(* [calculate_sell_road_cost start_l end_l] returns the money that a player will
+ * earn from selling a given road with start location start_l and end location
+ * end_l*)
 let calculate_sell_road_cost start_l end_l =
   let length = distance start_l end_l in
   (road_unit_cost*.(length**road_length_cost_exponent)) *.sell_back_percentage
 
+(* [calculate_buy_road_cost start_l end_l] returns the money that a player will
+ * pay to buy a road with start location start_l and end location end_l in
+ * graph graph, whether this would involve building it from scratch or buying it
+ * if it is public.*)
 let calculate_buy_road_cost start_l end_l graph =
   let length = distance start_l end_l in
   try ignore (Map.find_edge graph start_l end_l);
@@ -237,38 +245,51 @@ let calculate_buy_road_cost start_l end_l graph =
   with Not_found ->
     (road_unit_cost*.(length**road_length_cost_exponent))
 
-
+(* pre: players is a list of players in the game and contains a player with id
+ *        corresponding to the v_owner_id of v,
+ *      graph is a valid graph with at least two locations and one edge,
+ *      v is a vehicle record with status = Driving
+*        and is contained in the vehicle list of st,
+ *      st is a valid game state, that is, there are no duplicate
+ *        location or player ids in the player list or graph.
+ * post: [update_driving_v players graph v st] updates a single driving vehicle
+ *       for one frame of the game, based on its current location, cargo, etc.
+ *)
 let update_driving_v players graph v st =
   let dest = Map.fold_vertex
-    (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst) graph [] |> List.hd in
+    (fun x lst -> if x.l_id = (List.hd v.destination) then x :: lst else lst)
+    graph [] |> List.hd in
   let dest_x = dest.l_x in
   let dest_y = dest.l_y in
   let delta_x = (dest_x -. v.x) in
   let delta_y = (dest_y -. v.y) in
   let new_x = v.x +. (v.speed *. (cos (atan2 delta_y delta_x))) in
   let new_y = v.y +. (v.speed *. (sin (atan2 delta_y delta_x))) in
-  if (((v.x -. dest_x)*.(v.x -. dest_x)) +. ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
-    then
-      (match v.destination with
-        | h::[] ->
-                   let v' =
-                   { v with x = dest_x; y = dest_y;
-                     cargo = None;
-                     age = v.age + 1;
-                     destination = [];
-                     status = Waiting;
-                     v_loc = Some h
-                   } in
-                   let v'' = match v.cargo with
-                      | None -> v'
-                      | Some g ->
-                        {v' with cargo = if sell_cargo v' g players graph st
-                                         then None
-                                         else Some g} in
-                     v''
-        | h::h2::t ->
+  if (((v.x -. dest_x)*.(v.x -. dest_x)) +.
+     ((v.y -. dest_y)*.(v.y -. dest_y))) < v.speed *. v.speed
+  then
+    (match v.destination with
+      | [] -> failwith "destinations should not be "
+      | h::[] ->
+                 let v' =
+                 { v with x = dest_x; y = dest_y;
+                   cargo = None;
+                   age = v.age + 1;
+                   destination = [];
+                   status = Waiting;
+                   v_loc = Some h
+                 } in
+                 let v'' = match v.cargo with
+                    | None -> v'
+                    | Some g ->
+                      {v' with cargo = if sell_cargo v' g players graph st
+                                       then None
+                                       else Some g} in
+                 v''
+      | h::h2::t ->
         try
-          let e = Map.find_edge graph (get_loc h graph) (get_loc h2 graph) in
+          let e = ignore
+            (Map.find_edge graph (get_loc h graph) (get_loc h2 graph)) in
           { v with x = dest_x; y = dest_y;
             age = v.age + 1;
             destination = h2::t;
@@ -277,29 +298,48 @@ let update_driving_v players graph v st =
         with Not_found ->
           {v with age = v.age + 1; destination = []; status = Waiting}
         | _ -> failwith "unexpected vehicle destination pattern")
-    else if Random.float 1.0 < breakdown_chance then
+  else if Random.float 1.0 < breakdown_chance then
     {v with age = v.age + 1; status = Broken}
-    else
+  else
     {v with age = v.age + 1; x = new_x; y = new_y}
 
-
+(* [update_waiting v] takes in a vehicle that has status waiting (or broken)
+ * and returns an updated vehicle updated for one frame of gameplay.*)
 let update_waiting v =
   {v with age = v.age + 1}
 
-(*Currently only works for driving vehicles*)
+(* pre: players is a list of players in the game and contains a player with id
+ *        corresponding to the v_owner_id of v,
+ *      graph is a valid graph with at least two locations and one edge,
+ *      v is a vehicle record and is contained in the vehicle list of st
+ *      st is a valid game state, that is, there are no duplicate
+ *        location or player ids in the player list or graph.
+ * post: [update_vehicle graph players st v] updates a single vehicle
+ *       for one frame of the game, based on its current status, location,
+ *       cargo, etc.
+ *)
 let update_vehicle graph players st v =
   match v.status with
     | Driving -> update_driving_v players graph v st
     | Waiting -> update_waiting v
     | Broken -> update_waiting v
 
-
+(* pre: players is a list of players in the game and contains a player with id
+ *        corresponding to the v_owner_id of v,
+ *      graph is a valid graph with at least two locations and one edge,
+ *      v_lst is a list of vehicle records, exactly the vehicle list in st,
+ *      st is a valid game state, that is, there are no duplicate
+ *        location or player ids in the player list or graph.
+ * post: [update_vehicles v_lst graph players st] updates all vehicles in v_lst
+ *       for one frame of the game, based on its current status, location,
+ *       cargo, etc.
+ *)
 let update_vehicles v_lst graph players st =
  List.map (update_vehicle graph players st) v_lst
 
-let update_connections c_lst =
-  c_lst
-
+(* [new_gp g_a gp] updates a goods profile gp based on the game age g_a and
+ * using random fluctutations in the prices of goods
+ *)
 let new_gp g_a gp =
   { gp with
   current = min
@@ -309,17 +349,22 @@ let new_gp g_a gp =
     else 0.0) 0.0;
   }
 
+(* [update_location age l] takes in an individual age (game_age) and location l
+ * and updates the location accordingly (i.e. their good profiles)*)
 let update_location age l =
   { l with
   accepts= List.map (new_gp age) l.accepts;
   produces= List.map (new_gp age) l.produces;
   }
 
+(* [add_vertices m locs] adds locs to map (graph) m*)
 let rec add_vertices m locs =
   match locs with
     | [] -> m
     | h::t -> (add_vertices (Map.add_vertex m h) t)
 
+(* [update_location graph g_age] returns a new graph after updating each
+ * locations in the graph for one frame in the game.*)
 let update_locations graph g_age =
   Map.map_vertex (update_location g_age) graph
 
@@ -337,6 +382,8 @@ let buy_vehicle vehicle player location v_list spd cpt =
     speed = spd; age = 0; capacity = cpt; v_loc = None} in
   new_vehicle :: v_list
 
+(* [set_p_dif gd p] sets the difficulty level of a player p (if it is AI) given
+ * a game difficulty gd.*)
 let set_p_dif gd p =
   match (p.p_type,gd) with
     | (Human,_) -> p
@@ -345,6 +392,8 @@ let set_p_dif gd p =
     | (AI(_),Hard) -> {p with p_type = AI(hard_ai_level)}
     | (AI(_),Brutal) -> {p with p_type = AI(brutal_ai_level)}
 
+(* [set_game_difficulty gd st] sets the game difficulty based on a game
+ * difficulty gd and a game state st*)
 let set_game_difficulty gd st =
   let new_players = List.map (set_p_dif gd) st.players in
   {st with players = new_players}
