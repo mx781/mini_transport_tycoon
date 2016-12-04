@@ -10,6 +10,7 @@ type r_type =
     | Produce
 
 type loc_id = int
+
 type player_id = int
 
 type good = {
@@ -73,6 +74,7 @@ type connection = {
 
 module Location = struct
   type t = location
+  type label = location
   let equal l1 l2 = l1.l_id = l2.l_id
   let hash = Hashtbl.hash
   let compare e1 e2 =
@@ -100,11 +102,6 @@ module Connection = struct
 end
 
 module Map = Graph.Persistent.Graph.ConcreteLabeled(Location)(Connection)
-
-type ai_stuff =  ((int * location option ->
-                  (float * location option * goods_profile option)
-                  option) option) ref
-
 
 
 type game_state = {
@@ -169,11 +166,11 @@ let hard_ai_level = 40
 let brutal_ai_level = 400
 
 
-(*Used to find size of connected portions given a particular player*)
+(* (*Used to find size of connected portions given a particular player*)
 let size_connected = ref (fun (x: location) (y: int) -> 0)
 (*Used to find the maximum number of connections for a given individual *)
 let max_connected = ref (fun (x: int) -> 0)
-
+ *)
 
 (* let form_connection map player_id loc1 loc2 =
   let new_connect = {c_owner_id = player_id; l_start = 0; l_end = 1;
