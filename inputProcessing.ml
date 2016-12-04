@@ -119,7 +119,7 @@ let get_route (loc1:int) (loc2:int) state (p_id:int)=
   let loc_info2 = get_loc_details state.graph loc2 in
   let new_path =
     (try Dijkstra.shortest_path new_graph loc_info1 loc_info2 with
-    |Not_found ->([], (-1.))) in
+    |_ ->([], (-1.))) in
   if new_path = ([],(-1.)) then
     None
   else
@@ -514,7 +514,7 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
     | h::t -> h in
   let checked_route = get_route first_dest end_loc.l_id st player_id in
   let dest_list = match checked_route with
-    | None -> (print_endline "Vehicle cannot reach this location!\n"; [])
+    | None -> (print_endline "Vehicle cannot reach this location!\n"; v_old.destination)
     | Some lst -> (print_endline "Vehicle en route.\n"; lst) in
   let stat = match dest_list with
     | [] -> Waiting

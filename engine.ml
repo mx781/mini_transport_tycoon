@@ -24,7 +24,7 @@ let buy_vehicle v st =
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
            then {p with money = (p.money -. cost)}
-           else let () = print_endline "You cannot afford that vehicle.\n" in p
+           else let () = print_endline "You cannot afford that vehicle." in p
       else p) st.players in
   if new_players = st.players then st else
   {st with vehicles = v::st.vehicles; players = new_players}
@@ -117,15 +117,15 @@ let sell_connection c st =
                    then vx::acc
                    else acc
     ) st.graph [] in
-  let new_graph =
-  match vertices with
+  let new_graph = match vertices with
     | l1::l2::[] -> Map.remove_edge_e st.graph (Map.find_edge st.graph l1 l2)
     | _ -> failwith "Multiple locations with same ids or invalid ids" in
   let gain = (road_unit_cost*.(c.length**road_length_cost_exponent))
-             *.sell_back_percentage in
-  let new_players = List.map (fun p -> if p.p_id = c.c_owner_id
-                                       then {p with money = (p.money +. gain)}
-                                       else p) st.players in
+    *.sell_back_percentage in
+  let new_players = List.map
+    (fun p -> if p.p_id = c.c_owner_id
+              then {p with money = (p.money +. gain)}
+              else p) st.players in
   {st with graph = new_graph; players = new_players}
 
 (* pre: c is a valid connection whose two location ids correspond to two
@@ -340,9 +340,8 @@ let instr () =
   print_endline "Buy Car:    Buys a car starting at a given location\n";
   print_endline "Buy Truck:  Buys a truck starting at a given location\n";
   print_endline ("Buy Road:   Buys a new road between two locations, " ^
-                              "or if a road exists,");
+    "or if a road exists,");
   print_endline "            buys exclusive right to that road\n";
-  print_endline "Move Auto:  Moves a vehichle to a new destination.\n";
   print_endline "Sell Road:  Sells an existing road between two locations if";
   print_endline "            it exists and you own it\n";
   print_endline "Sell Auto:  Sells an existing vehicle that you own\n";
