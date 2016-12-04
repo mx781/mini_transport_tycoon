@@ -164,15 +164,6 @@ let truck_capacity = 100
 let price_update_steps = 10
 let buy_vehicle_condition = 2.
 
-(*ai constants*)
-let min_bought = 10
-let large_float = 200000.0
-let small_float = 0.0
-let max_total_capacity = 201
-let safe_amount = 20.0
-let min_profit = 4.0 (*minimum profit for AI to build a road*)
-let max_connections = 3 (*maximum number of connections for AI*)
-let island_total = 4 (*Required to build a road between one and another*)
 let ai_max_level = 500
 let easy_ai_level = 1
 let medium_ai_level = 5
