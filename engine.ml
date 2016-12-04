@@ -246,7 +246,7 @@ let rec handle_processes proclist st road_bought =
     | Pause::t->
         handle_processes t ({st with paused = not st.paused}) road_bought
     | EndGame::t -> raise EndGame
-    | Nothing:: t -> handle_processes t st road_bought
+    | Nothing::t -> handle_processes t st road_bought
 
 (* pre: st is a valid game state, that is, there are no duplicate
  *      location or player ids in the player list or graph.
@@ -306,7 +306,7 @@ let rec main_loop st =
     let sleep_time = if ((1.0 /. fps) -. time_elapsed) > 0.0
                      then ((1.0 /. fps) -. time_elapsed) else 0.0 in
     Unix.sleepf sleep_time;
-    main_loop st'';
+    main_loop st''
   with
      | EndGame | Graphics.Graphic_failure _ ->
         print_endline "Game Over, autosaving to data/autosave.json";
@@ -363,15 +363,18 @@ let rec init_game fname dif : unit =
     let start_t = Unix.time () in
     let init_gs = DataProcessing.load_file fname in
     let init_gs' = set_game_difficulty dif init_gs in
+    print_endline "Start transporting!\n";
     main_loop init_gs';
     gameover ();
     print_endline ("\nGame Duration: " ^
-      (string_of_float (two_dec(Unix.time () -. start_t)/.fps)) ^ " minutes.");
+      (string_of_float (two_dec(Unix.time () -. start_t)/.fps))^" minutes.\n");
     Unix.sleepf 0.5;
     title_screen dif
   with
   | Quit -> raise Quit
-  | Failure e -> print_endline e; print_endline "\nNot a valid game file";
+  | Failure e -> print_endline e;
+                 print_endline ("\nNot a valid game file.  "^
+                               "Load a different file or start a new game.\n");
                  title_screen dif
   | e -> raise EndGame
 
@@ -384,14 +387,18 @@ and title_screen (dif:ai_game_difficulty) : unit =
     let opt = GameGraphics.title_click () in
     if opt = 1 then init_game "data/game.json" dif
     else if opt = 2 then (
-      print_endline ("\nPlease enter the name of the game "
-        ^ "file you want to load.\n");
+      print_endline
+        "\nPlease enter the name of the game file you want to load.";
+      print_endline "(Saved games are stored in data/save.json)\n";
       print_string  "> "; init_game (read_line ()) dif )
     else if opt = 3 then (instr (); title_screen dif)
     else if opt = 4 then (settings_screen ())
     else if opt = 5 then raise Quit
     else raise Quit
-  with _ -> ()
+  with
+  | Failure _ -> title_screen dif
+  | _ -> ()
+
 
 (* [settings_screen ()] just displays the settings screen and returns a unit.
  *)

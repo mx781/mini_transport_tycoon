@@ -33,6 +33,30 @@ let truck1 = {
   v_loc = Some 1;
 }
 
+let gs1 = DataProcessing.load_file "tests/gs1.json"
+let gs1_addroad1 = DataProcessing.load_file "tests/gs1_addroad1.json"
+let road1 = 
+{
+  c_owner_id = 0;
+  l_start = 6;
+  l_end = 10;
+  length = 274.4;
+  c_age = 0;
+  c_speed = 10.;
+}
+let road2 = 
+{
+  c_owner_id = 0;
+  l_start = 4;
+  l_end = 10;
+  length = 999999.;
+  c_age = 0;
+  c_speed = 10.;
+}
+
+let gs1_test1 = handle_processes [AddRoad(road1)] gs1 false
+let gs1_test2 = handle_processes [AddRoad(road2)] gs1 false
+
 let gamestate_tests = [
   "handle_processes: empty"  >:: (fun _ -> assert_equal
     (handle_processes [] generic_gs false)
@@ -56,8 +80,54 @@ let gamestate_tests = [
         (generic_pl.money -. (car_price +. truck_price))}]
     }
   );
+
+  "handle_processes: buy car, then sell"  >:: (fun _ -> assert_equal
+    (handle_processes [BuyVehicle(car1);SellVehicle(car1)] generic_gs false)
+    {generic_gs with
+      players = [{generic_pl with money =
+        (generic_pl.money -. ((1. -. sell_back_percentage) *. car_price))}]
+    }
+  );
+  "handle_processes: sell vehicle you don't own"  >:: (fun _ -> assert_equal
+    (handle_processes [SellVehicle(truck1)] generic_gs false)
+    {generic_gs with
+      players = [{generic_pl with money =
+        (generic_pl.money +. (sell_back_percentage *. truck_price))}]
+    }
+  );
+
+  "handle_processes: add road"  >:: (fun _ -> assert_equal
+    (Map.find_edge gs1_test1.graph
+        (get_loc 6 gs1_test1.graph) (get_loc 10 gs1_test1.graph))
+    (Map.find_edge gs1_addroad1.graph
+        (get_loc 6 gs1_addroad1.graph) (get_loc 10 gs1_addroad1.graph))
+  );
+  "handle_processes: add road unaffordable"  >:: (fun _ -> assert_raises
+    Not_found
+    (fun _ -> (Map.find_edge gs1_test2.graph
+        (get_loc 4 gs1_test2.graph) (get_loc 10 gs1_test2.graph)))
+  );
+
+  "handle_processes: sell road"  >:: (fun _ -> assert_equal
+    (Map.find_edge gs1_test1.graph
+        (get_loc 6 gs1_test1.graph) (get_loc 10 gs1_test1.graph))
+    (Map.find_edge gs1_addroad1.graph
+        (get_loc 6 gs1_addroad1.graph) (get_loc 10 gs1_addroad1.graph))
+  );
+
+  (*SetVehicleDestination(v)::t -> handle_processes t (set_v_dest v st) road_bought
+    | BuyVehicleCargo(v)::t -> handle_processes t (set_v_cargo v st) road_bought
+    | AddRoad(c)::t ->
+        handle_processes t (if road_bought then st else buy_connection c st) true
+    | DeleteRoad(c)::t -> handle_processes t (sell_connection c st) road_bought
+    | PurchaseRoad(c)::t ->
+        handle_processes t (if road_bought then st else change_connection_owner c st) true
+    | Pause::t-> handle_processes t ({st with paused = not st.paused}) road_bought
+    | EndGame::t -> raise EndGame
+    | Nothing::t -> handle_processes t st road_bought
+  *)
+
 ]
 
 let tests = "MTT Test Suite" >::: gamestate_tests
-
 let _ = run_test_tt_main tests
