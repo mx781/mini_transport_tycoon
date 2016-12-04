@@ -23,7 +23,7 @@ val init_vehicle : player_id -> v_type -> loc_id -> Map.t -> process
 
 (*Returns a process corresponding to buying a road for the player
  *corresponding to the two locations in the given map.*)
-val buy_road: player_id -> loc_id -> loc_id -> Map.t -> process
+val buy_road: player_id -> location -> location -> Map.t -> process
 
 (*Same as buying a road, but returns a process for selling one.
  *Uses locations rather than location ids.*)

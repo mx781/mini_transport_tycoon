@@ -422,6 +422,9 @@ let make_c_move (state: game_state) c_id =
     else
       vehicle_processes)
 
+(* init vehicle creates a vehicle creation process based on the player_id,
+ * the type of vehicle v_type, the startig position location's id start_loc_id,
+ * and a graph of locations and edges graph *)
 let init_vehicle player_id v_type start_loc_id graph=
   let loc = get_loc start_loc_id graph in
   let v =
@@ -443,12 +446,17 @@ let init_vehicle player_id v_type start_loc_id graph=
          | Truck -> print_endline "Truck purchased.\n"; in
   BuyVehicle(v)
 
-let buy_road player_id l1_id l2_id graph =
-  let c_length = (((get_loc l1_id graph).l_x -. (get_loc l2_id graph).l_x)**2.0
-    +. ((get_loc l1_id graph).l_y -. (get_loc l2_id graph).l_y)**2.0)**0.5 in
+(* [buy road player_id l1 l2 graph] creates an AddRoad or PurchaseRoad
+ * process from a player_id of the purchaser, the location ids of the start
+ * and end points, and the graph of connections and locations. It returns a
+ * Nothing process if the road cannot be purchased.
+ *)
+let buy_road player_id l1 l2 graph =
+  let c_length = ((l1.l_x -. l2.l_x)**2.0
+    +. (l1.l_y -. l2.l_y)**2.0)**0.5 in
   try
     let connection =
-      match Map.find_edge graph (get_loc l1_id graph) (get_loc l2_id graph) with
+      match Map.find_edge graph l1 l2 with
         | (_,c,_) -> c
         | _ -> failwith "invalid connection" in
     if connection.c_owner_id <> -1
@@ -464,14 +472,19 @@ let buy_road player_id l1_id l2_id graph =
     let c =
     {
       c_owner_id = player_id;
-      l_start= l1_id;
-      l_end =  l2_id;
+      l_start= l1.l_id;
+      l_end =  l2.l_id;
       length= c_length;
       c_age= 0;
       c_speed = 5.0; (*not used yet, completely arbitrary*)
     } in
     print_endline "Road purchased.\n"; AddRoad(c)
 
+(* [sell_road player_id l1 l2 graph] creates a SellRoad
+ * process from a player_id of the seller, the location ids of the start
+ * and end points, and the graph of connections and locations. It returns a
+ * Nothing process if the road cannot be sold.
+ *)
 let sell_road player_id l1 l2 graph =
   try
     let c = Map.find_edge graph l1 l2 in
@@ -484,6 +497,10 @@ let sell_road player_id l1 l2 graph =
   with
   | _ -> Nothing
 
+(* [sell_vehicle player_id v] creates a SellVehicle
+ * process from a player_id of the seller, and the vehicle v to sell. It returns
+ * a Nothing process if the road cannot be sold.
+ *)
 let sell_vehicle player_id v =
   if v.v_owner_id = player_id
   then (let () = match v.v_t with
@@ -494,6 +511,12 @@ let sell_vehicle player_id v =
   let () = print_endline "You cannot sell that vehicle, you do not own it!\n" in
   Nothing
 
+(* [set_vehicle_dest player_id v_old start_loc end_loc st] creates a
+ * SetVehicleDestination process from a player_id of the seller, the old vehicle
+ * that we are setting the destination of v_old, the starting location start_loc
+ * and the ending location end_loc. It returns a Nothing process if the vehicle
+ * cannot be routed.
+ *)
 let set_vehicle_dest player_id v_old start_loc end_loc st =
   let first_dest = match v_old.destination with
     | [] -> start_loc.l_id
@@ -519,6 +542,10 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
   in
   SetVehicleDestination(v)
 
+(* [buy_vehicle_cargo player_id v_old r_type st] creates a BuyVehicle process
+ * based on the player_id of the purchaser, the old vehicle who will have the
+ * cargo added to it v_old, the resource type to buy r_type, and the game state
+ * st. It returns a Nothing process if the cargo cannot be purchased.*)
 let buy_vehicle_cargo player_id v_old r_type st =
   let vehicle_max = match v_old.v_t with
     | Car -> car_capacity

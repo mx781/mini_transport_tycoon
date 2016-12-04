@@ -570,7 +570,7 @@ let buy_road gs player_id =
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.buy_road player_id
-      (get_some start_loc).l_id (get_some end_loc).l_id gs.graph)
+      (get_some start_loc) (get_some end_loc) gs.graph)
 
 (* Sells an owned road between two locations, waits for confirmation *)
 let sell_road gs player_id =
