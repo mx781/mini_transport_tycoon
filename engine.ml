@@ -21,10 +21,16 @@ let buy_vehicle v st =
     | Truck -> truck_price in
   let new_players = List.map
     (fun p ->
+      let is_human = match p.p_type with | Human -> true | _ -> false in
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
-           then (if v.v_t = Car then print_endline "Car purchased.\n"
-                                else print_endline "Truck purchased.\n";
+           then (if v.v_t = Car
+                 then if is_human
+                      then print_endline "Car purchased.\n"
+                      else ()
+                 else if is_human
+                      then print_endline "Truck purchased.\n"
+                      else ();
          {p with money = (p.money -. cost)})
            else let () = print_endline "You cannot afford that vehicle." in p
       else p) st.players in
