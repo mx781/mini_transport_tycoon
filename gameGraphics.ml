@@ -262,10 +262,10 @@ let draw_ograph grph : unit =
   let label = Map.V.label in
   Map.iter_edges_e
     (fun (v1, e, v2) ->
-      let pos1 = ( (round (label v1).l_x)/ 2 * !scale,
-                   (round (label v1).l_y)/ 2 * !scale ) in
-      let pos2 = ( (round (label v2).l_x)/ 2 * !scale,
-                   (round (label v2).l_y)/ 2 * !scale ) in
+      let pos1 = ( (round (label v1).l_x),
+                   (round (label v1).l_y) ) in
+      let pos2 = ( (round (label v2).l_x),
+                   (round (label v2).l_y) ) in
       draw_line pos1 pos2;
       let pid = e.c_owner_id in
       if pid < 0 then ()
@@ -276,15 +276,15 @@ let draw_ograph grph : unit =
     (fun v -> let (x,y) = ((Map.V.label v).l_x,
                           (Map.V.label v).l_y) in
      draw_image house
-       ((round x - 30)/ 2 * !scale) ((round y - 30)/ 2 * !scale)) grph
+       ((round x - 30)) ((round y - 30))) grph
 
 (* Draws a vehicle at its location, now with cargo icons and color labels! *)
 let draw_vehicle (v:vehicle) : unit =
   let pic = (match v.v_t with
             | Car -> car_img
             | Truck -> truck_img) in
-  let x = round ((v.x -. 30.0) /. 2. *. (float_of_int !scale)) in
-  let y = (round ((v.y -. 15.0) /. 2. *. (float_of_int !scale))) in
+  let x = round ((v.x -. 30.0)) in
+  let y = (round ((v.y -. 15.0) )) in
   Graphics.draw_image pic x y;
   set_color black;
   fill_circle x y 10;
@@ -320,8 +320,8 @@ let draw_scores (ps:Player.player list) : unit =
   List.iter draw_score ps
 
 (* Constants for button drawing and clicking *)
-let spacing = 25 * !scale
-let start_height = 275 * !scale
+let spacing = 50
+let start_height = 550
 
 (* Draws all of the in game buttons *)
 let draw_buttons () =
@@ -375,8 +375,8 @@ let draw_hover grph =
   let labl = Map.V.label in
   Map.iter_vertex
     (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
-              if (abs (x*2/ !scale - round x1) < close_enough)
-              && (abs (y*2/ !scale - round y1) < close_enough)
+              if (abs (x - round x1) < close_enough)
+              && (abs (y - round y1) < close_enough)
                              then draw_info_box x y v else ()) grph
 
 (* Draws the whole game to be played, Engine will call this each loop *)
@@ -534,10 +534,19 @@ let quit gs =
   DataProcessing.save_file gs "data/save.json";
   EndGame
 
+let is_pause (x,y) =
+  y < start_height+button_height-spacing && y > start_height-spacing
+
+let rec wait_pause () =
+  let stat = wait_next_event [Button_down] in
+  let pos = (stat.mouse_x, stat.mouse_y) in
+  if is_pause pos then wait_pause () else ()
+
 (* Pauses the game until you click *)
 let rec pause () =
-  print_endline "Game Paused. Click anywhere to continue\n";
-  let _ = wait_next_event [Button_down] in
+  print_endline "Game Paused. Click anywhere to continue";
+  wait_pause ();
+  print_endline "Game Unpaused.\n";
   Pause
 
 (* Buys a car at a location *)
