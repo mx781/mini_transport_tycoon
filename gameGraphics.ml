@@ -238,10 +238,14 @@ let rec settings () =
   let status = wait_next_event [Button_down] in
   let sx, sy = status.mouse_x, status.mouse_y in
   if (sx < x+button_width && sx > x) then (
-    if sy < y+button_height && sy > y then Player.Brutal else
-    if sy < y+spacing+button_height && sy > y+spacing then Player.Hard else
-    if sy < y+2*spacing+button_height && sy> y+2*spacing then Player.Medium else
-    if sy < y+3*spacing+button_height && sy > y+3*spacing then Player.Easy else
+    if sy < y+button_height && sy > y
+      then (print_endline "Brutal mode selected.\n"; Player.Brutal) else
+    if sy < y+spacing+button_height && sy > y+spacing
+      then (print_endline "Hard mode selected.\n"; Player.Hard) else
+    if sy < y+2*spacing+button_height && sy> y+2*spacing
+      then (print_endline "Medium mode selected.\n"; Player.Medium) else
+    if sy < y+3*spacing+button_height && sy > y+3*spacing
+      then (print_endline "Easy mode selected.\n"; Player.Easy) else
     settings () )
   else settings ()
 
@@ -562,7 +566,7 @@ let buy_road gs player_id =
   let cost = calculate_buy_road_cost
              (get_some start_loc) (get_some end_loc) gs.graph in
   print_endline ("The road will cost $" ^ (string_of_float (two_dec cost))
-                   ^ "\nConfirm to buy.\n");
+                   ^ "\n\nConfirm to buy.\n");
   let confirmed = wait_confirm () in
   if (not confirmed) then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.buy_road player_id
@@ -577,7 +581,7 @@ let sell_road gs player_id =
   else (
   let cost = calculate_sell_road_cost (get_some start_loc) (get_some end_loc) in
     print_endline ("You will earn $" ^ (string_of_float (two_dec cost))
-                   ^ "\nConfirm to sell.");
+                   ^ "\n\nConfirm to sell.");
   let confirmed = wait_confirm () in
   if not confirmed then (print_endline "Cancelled\n"; Nothing) else
   InputProcessing.sell_road player_id
