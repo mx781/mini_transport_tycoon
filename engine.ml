@@ -4,7 +4,7 @@
  open InputProcessing
  open DataProcessing
 
-exception EndGame
+exception EndGameException
 exception Quit
 
 (* pre: v is a valid vehicle record (fields can be of any value)
@@ -245,7 +245,7 @@ let rec handle_processes proclist st road_bought =
           (if road_bought then st else change_connection_owner c st) true
     | Pause::t->
         handle_processes t ({st with paused = not st.paused}) road_bought
-    | EndGame::t -> raise EndGame
+    | EndGame::t -> raise EndGameException
     | Nothing::t -> handle_processes t st road_bought
 
 (* pre: st is a valid game state, that is, there are no duplicate
@@ -308,7 +308,7 @@ let rec main_loop st =
     Unix.sleepf sleep_time;
     main_loop st''
   with
-     | EndGame | Graphics.Graphic_failure _ ->
+     | EndGameException | Graphics.Graphic_failure _ ->
         print_endline "Game Over, autosaving to data/autosave.json";
         DataProcessing.save_file st "data/autosave.json"
      | Quit -> ()
@@ -376,7 +376,7 @@ let rec init_game fname dif : unit =
                  print_endline ("\nNot a valid game file.  "^
                                "Load a different file or start a new game.\n");
                  title_screen dif
-  | e -> raise EndGame
+  | e -> raise EndGameException
 
 (* pre: dif is an AI difficulty (Easy, Medium, Hard, or Brutal)
  * post: [title_screen dif] displays the title screen and just returns a unit.
