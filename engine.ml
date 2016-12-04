@@ -23,7 +23,9 @@ let buy_vehicle v st =
     (fun p ->
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
-           then {p with money = (p.money -. cost)}
+           then (if v.v_t = Car then print_endline "Car purchased.\n"
+                                else print_endline "Truck purchased.\n";
+         {p with money = (p.money -. cost)})
            else let () = print_endline "You cannot afford that vehicle." in p
       else p) st.players in
   if new_players = st.players then st else
@@ -373,7 +375,7 @@ let rec init_game fname dif : unit =
   with
   | Quit -> raise Quit
   | Failure e -> print_endline e;
-                 print_endline ("\nNot a valid game file.  "^
+                 print_endline ("\nThat was not a valid game file.  "^
                                "Load a different file or start a new game.\n");
                  title_screen dif
   | e -> raise EndGameException
