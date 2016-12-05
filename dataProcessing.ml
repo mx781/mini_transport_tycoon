@@ -15,7 +15,7 @@ let load_json file =
   close_in ch;
   parse_gamestate str `json
 
-(* [gs_from_piqi piqi_gs] parses Piqi gamestate [piqi_gs] into native gs type.*)
+(* helper to parse Piqi gamestate [piqi_gs] into native gamestate type.*)
 let gs_from_piqi piqi_gs =
   let open Gamestate_piqi.Gamestate in
   {
@@ -26,7 +26,7 @@ let gs_from_piqi piqi_gs =
     game_age = piqi_gs.gameage;
   }
 
-(* [gs_to_piqi piqi_gs] parses native gamestate [gs] into Piqi gamestate type.*)
+(* helper to parse native gamestate [gs] into Piqi gamestate type.*)
 let gs_to_piqi: game_state -> Gamestate_piqi.Gamestate.t = (fun gs ->
   let open Gamestate_piqi.Gamestate in 
   {
