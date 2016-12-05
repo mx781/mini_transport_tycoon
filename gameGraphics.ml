@@ -402,12 +402,12 @@ let rec fin p_win gs wait =
    draw_image house (Random.int screen_width)
                        (Random.int screen_height);
     set_color black;
-    fill_rect (screen_width/2-5) (screen_height-55) 470 160;
+    fill_rect (screen_width/4-5) (screen_height/2-55) 470 160;
     set_color color;
-    fill_rect (screen_width/2) (screen_height-50) 460 150;
-    draw_image gameover (screen_width/2) (screen_height);
+    fill_rect (screen_width/4) (screen_height/2-50) 460 150;
+    draw_image gameover (screen_width/4) (screen_height/2);
     draw_str ("WINNER IS: P" ^ (string_of_int p_win))
-       (screen_width/2+120) (screen_height - 30);
+       (screen_width/4+120) (screen_height/2 - 30);
     set_color black;
     fill_rect 745 405 230 180;
     set_color color;
