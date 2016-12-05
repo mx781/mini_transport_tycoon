@@ -4,11 +4,10 @@ open Player
 open InputProcessing
 
 let default_color = 0xCD853F
-let scale =  ref 2 (* No longer supported *)
 let button_width = 93
 let button_height = 50
-let screen_width = 500
-let screen_height = 300
+let screen_width = 1000
+let screen_height = 600
 
 (******************************IMAGES*****************************************)
 
@@ -251,9 +250,9 @@ let rec settings () =
 
 
 (* Draws a line from one point to another *)
-let draw_line ?(color=default_color) ?(width=8) (x1,y1) (x2,y2) =
+let draw_line ?(color=default_color) ?(width=16) (x1,y1) (x2,y2) =
   set_color color;
-  set_line_width (!scale * width);
+  set_line_width width;
   moveto x1 y1;
   lineto x2 y2
 
@@ -269,7 +268,7 @@ let draw_ograph grph : unit =
       draw_line pos1 pos2;
       let pid = e.c_owner_id in
       if pid < 0 then ()
-      else draw_line ~color:(player_color pid) ~width:4 pos1 pos2
+      else draw_line ~color:(player_color pid) ~width:8 pos1 pos2
      )  grph;
 
   Map.iter_vertex
@@ -396,12 +395,12 @@ let is_cancelled (x,y) =
 (* This function is a secret, complete the game to see it in action *)
 let rec fin p_win gs wait =
    let color = (player_color p_win) in
-    draw_image truck_img (Random.int screen_width * !scale)
-                         (Random.int screen_height * !scale);
-    draw_image car_img (Random.int screen_width * !scale)
-                       (Random.int screen_height * !scale);
-   draw_image house (Random.int screen_width * !scale)
-                       (Random.int screen_height * !scale);
+    draw_image truck_img (Random.int screen_width)
+                         (Random.int screen_height);
+    draw_image car_img (Random.int screen_width)
+                       (Random.int screen_height);
+   draw_image house (Random.int screen_width)
+                       (Random.int screen_height);
     set_color black;
     fill_rect (screen_width/2-5) (screen_height-55) 470 160;
     set_color color;
@@ -451,8 +450,8 @@ let rec get_loc_near ?(l_id = (-1)) ?(click = true) ?(pos = (0,0)) grph =
   let labl = Map.V.label in
   Map.iter_vertex
     (fun v -> let (x1,y1) = (labl v).l_x, (labl v).l_y in
-              if (abs (x*2/ !scale - round x1) < close_enough)
-              && (abs (y*2/ !scale - round y1) < close_enough)
+              if (abs (x - round x1) < close_enough)
+              && (abs (y - round y1) < close_enough)
                                   then loc := Some v else () ) grph;
   match !loc with
   | Some v when (labl v).l_id <> l_id -> Some v
@@ -467,8 +466,8 @@ let rec get_auto_near gs =
   let close_enough = 30 in
   List.iter
     (fun v -> let (x1,y1) = round v.x, round v.y in
-              if (abs (x*2/ !scale - x1) < close_enough)
-              && (abs (y*2/ !scale - y1) < close_enough)
+              if (abs (x - x1) < close_enough)
+              && (abs (y - y1) < close_enough)
               && v.v_owner_id = 0
                                   then auto := Some v else () ) gs.vehicles;
   match !auto with
