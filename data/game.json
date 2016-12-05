@@ -7,27 +7,27 @@
         {
             "pid": 0,
             "ptype": {"Human": true},
-            "money": 400.0
+            "money": 250.0
         },
         {
             "pid": 1,
             "ptype": {"AI": 1},
-            "money": 400.0
+            "money": 250.0
         },
         {
             "pid": 2,
             "ptype": {"AI": 2},
-            "money": 400.0
+            "money": 250.0
         },
         {
             "pid": 3,
             "ptype": {"AI": 5},
-            "money": 400.0
+            "money": 250.0
         },
         {
             "pid": 4,
             "ptype": {"AI": 2},
-            "money": 400.0
+            "money": 250.0
         }
     ],
     "graph": {
@@ -451,14 +451,14 @@
             {
                 "id": 10,
                 "lx": 610.0,
-                "ly": 90.0,
+                "ly": 40.0,
                 "accepts": [
                   {
                     "resource": {"Produce": true},
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 4.0,
+                    "price": 5.0,
                     "naturalprice": 8.0
                   },
                   {
@@ -466,7 +466,7 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 6.5,
+                    "price": 9.5,
                     "naturalprice": 6.5
                   }
                 ],
