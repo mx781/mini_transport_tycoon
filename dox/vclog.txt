@@ -1,3 +1,162 @@
+commit f7639db8abb8d6d36ff2ce43f7b3d9041be405e0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 23:03:04 2016 -0500
+
+    Last minute code changes
+
+ engine.mli          | 26 ++++++++++++++++++++++----
+ gameElements.ml     |  3 +--
+ gameElements.mli    | 35 +++++++++++++++++++++++++++--------
+ gameGraphics.mli    | 25 +++++++++++++++++++++++++
+ inputProcessing.mli | 45 ++++++++++++++++++++++++++++++++-------------
+ 5 files changed, 107 insertions(+), 27 deletions(-)
+
+commit b3c19af48cc2a28f240841e111659c8b18a26b92
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 22:23:33 2016 -0500
+
+    made some final edits
+
+ inputProcessing.ml | 4 ----
+ 1 file changed, 4 deletions(-)
+
+commit fe076747869db8e2acf077f34b08cecd18671dc9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 22:13:54 2016 -0500
+
+    fixed code
+
+ inputProcessing.ml | 150 ++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 90 insertions(+), 60 deletions(-)
+
+commit 2e757a4554331425a4b1a58288238c9065eb0f45
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 22:08:48 2016 -0500
+
+    Updated game instructions pdf file
+
+ game_instructions.pdf | Bin 79249 -> 144939 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 64cd23dda489d485c24ff8d237cab1cca04b16bf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 21:54:34 2016 -0500
+
+    more graphics comments
+
+ gameGraphics.ml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+commit 57d6df526702bcbe79edfa324eb296d0ff85e264
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 21:19:25 2016 -0500
+
+    moved lake house
+
+ data/game.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit ce95c7dc68b43b0e9e7b38af2fc98cfa90f38699
+Merge: 086c3c2 5fe75d5
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 20:53:10 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from retmoe.
+
+commit 086c3c2b237d977bd041bdbb797d337bba0729ce
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 20:52:57 2016 -0500
+
+    Fixed cargo purchased error when you can't afford it
+
+ engine.ml          | 16 +++++++++++++---
+ inputProcessing.ml |  2 +-
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+commit 5fe75d5bbda928d7e084af2093e3494ed3cc643d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 20:49:14 2016 -0500
+
+    added some preconditions; fixed code readability
+
+ gameElements.ml    | 24 +++--------------------
+ inputProcessing.ml | 56 +++++++++++++++++++++++++-----------------------------
+ 2 files changed, 29 insertions(+), 51 deletions(-)
+
+commit f672ba36383b27883e519254e11c3e365b17fa2e
+Merge: ddf99ca 3cebf1e
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 20:43:43 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit ddf99caf6186c22c1112c23618fb3be35ac48151
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 20:43:40 2016 -0500
+
+    Spec tweaks, game.json adjusted.
+
+ data/game.json    | 10 +++++-----
+ dataProcessing.ml |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+commit 3cebf1e30efc49b6b0f0d637f7e22cf2c7a72dd8
+Merge: c8addda 76540a2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 20:37:41 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit c8adddacd3b5518bfa2e2086b3c88d16efa4c664
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 20:37:25 2016 -0500
+
+    better random game over display
+
+ gameGraphics.ml | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+commit 76540a270786ee568e111c231c704ab2bbef22bf
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 20:35:04 2016 -0500
+
+    played with game json values
+
+ data/game.json | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+commit 2ff8658f93ca2c2366eb1f86746a5a511a3cd19d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 20:26:11 2016 -0500
+
+    Scaling fix
+
+ gameGraphics.ml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+commit adca1649333d8e603093844ccd6f3404edfe4d60
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 19:15:28 2016 -0500
+
+    Added Design Doc as of 7:15pm to dox.
+
+ dox/DesignDocumentUpdated.pdf | Bin 0 -> 425424 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9cbb6bba3d92d9a4f31c005905fe1bc36ad43640
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 19:14:09 2016 -0500
+
+    Updated .ocamlinit comments, tweaked README, added version control log to dox required for submission.
+
+ .ocamlinit    |    4 +-
+ README.md     |    4 +-
+ dox/vclog.txt | 4173 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ log.txt       |  250 ----
+ 4 files changed, 4176 insertions(+), 255 deletions(-)
+
 commit 9b5eb0001a16055e2ca5b8a2f41546fa1f2d9c10
 Merge: 42136a1 49b57e7
 Author: Max Knutins <max@qqmx.eu>
