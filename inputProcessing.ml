@@ -535,4 +535,4 @@ let buy_vehicle_cargo player_id v_old r_type st =
         then {v_old with cargo = Some {t= r_type; quantity = maxq';}}
         else let () = print_endline ("You cannot purchase cargo for" ^
           " that vehicle, you do not own it!\n") in v_old
-      in (print_endline "Cargo purchased.\n"; BuyVehicleCargo(v))
+      in BuyVehicleCargo(v)

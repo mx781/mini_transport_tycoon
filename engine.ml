@@ -215,13 +215,23 @@ let set_v_cargo v st =
     (fun p ->
       if p.p_id = v.v_owner_id
       then if p.money -. cost >= 0.0
-           then {p with money = (p.money -. cost)}
+           then
+            {p with money = (p.money -. cost)}
            else p
       else p) st.players in
+  let is_plyr = (fun plyr -> plyr.p_id = v.v_owner_id) in
   if st.players = new_players
-  then st
+  then
+    (if (List.find is_plyr st.players).p_type = Human
+     then print_endline "You cannot afford any of this cargo!\n"
+     else (); st
+    )
   else
-    {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
+    (if (List.find is_plyr st.players).p_type = Human
+     then print_endline "Cargo purchased!\n"
+     else ();
+     {st with vehicles = new_vehicles; players = new_players; graph = new_graph}
+    )
 
 (* pre: proclist is any list of valid processes (that is, they must be of the
  *      format such that they are actionable based on the current game state st.
