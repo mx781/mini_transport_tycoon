@@ -395,12 +395,12 @@ let is_cancelled (x,y) =
 (* This function is a secret, complete the game to see it in action *)
 let rec fin p_win gs wait =
    let color = (player_color p_win) in
-    draw_image truck_img (Random.int screen_width)
-                         (Random.int screen_height);
-    draw_image car_img (Random.int screen_width)
-                       (Random.int screen_height);
-   draw_image house (Random.int screen_width)
-                       (Random.int screen_height);
+    draw_image truck_img ((Random.int (screen_width+50))-50)
+                         ((Random.int (screen_height+50))-50);
+    draw_image car_img ((Random.int (screen_width+50))-50)
+                       ((Random.int (screen_height+50))-50);
+   draw_image house ((Random.int (screen_width+50))-50)
+                       ((Random.int (screen_height+50))-50);
     set_color black;
     fill_rect (screen_width/4-5) (screen_height/2-55) 470 160;
     set_color color;
