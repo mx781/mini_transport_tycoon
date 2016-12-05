@@ -451,14 +451,14 @@
             {
                 "id": 10,
                 "lx": 610.0,
-                "ly": 90.0,
+                "ly": 40.0,
                 "accepts": [
                   {
                     "resource": {"Produce": true},
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 4.0,
+                    "price": 5.0,
                     "naturalprice": 8.0
                   },
                   {
@@ -466,7 +466,7 @@
                     "stepstoinc": 500,
                     "current": 20,
                     "capacity": 40,
-                    "price": 6.5,
+                    "price": 9.5,
                     "naturalprice": 6.5
                   }
                 ],
