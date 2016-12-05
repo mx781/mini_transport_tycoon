@@ -488,6 +488,12 @@ let set_vehicle_dest player_id v_old start_loc end_loc st =
   let first_dest = match v_old.destination with
     | [] -> start_loc.l_id
     | h::t -> h in
+  let is_first_end = end_loc.l_id = first_dest in
+  if is_first_end
+  then if (List.length v_old.destination = 1)
+       then Nothing
+       else SetVehicleDestination({v_old with destination = [first_dest]})
+  else
   let checked_route = get_route first_dest end_loc.l_id st player_id in
   let dest_list = match checked_route with
     | None -> (print_endline "Vehicle cannot reach this location!\n";

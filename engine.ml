@@ -305,8 +305,8 @@ let rec main_loop st =
   try
     let start_t = Unix.time () in
     let p_win = player_wins st in
-    if p_win <> (-1) then GameGraphics.draw_winner p_win st else
     GameGraphics.draw_game_state st;
+    if p_win <> (-1) then GameGraphics.draw_winner p_win st else ();
     let processes = generate_processes st st.players [] in
     let st' = handle_processes processes st false in
     let new_vehicles = update_vehicles st'.vehicles st'.graph st'.players st' in

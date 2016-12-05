@@ -160,7 +160,7 @@ let buy_vehicle_condition = 2.
 let ai_max_level = 500
 let easy_ai_level = 1
 let medium_ai_level = 4
-let hard_ai_level = 20
+let hard_ai_level = 16
 let brutal_ai_level = 400
 
 (* Using a location ID and a graph, get_loc returns the location details.
