@@ -40,7 +40,7 @@ let easy = get_img "images/easy.png" |> make_image
 let medium = get_img "images/medium.png" |> make_image
 let hard = get_img "images/hard.png" |> make_image
 let brutal = get_img "images/brutal.png" |> make_image
-
+(* In game buttons *)
 let save = get_img "images/savebutt.png" |> make_image
 let pause = get_img "images/pausebutt.png" |> make_image
 let buycar = get_img "images/carbutt.png" |> make_image
@@ -392,7 +392,7 @@ let is_cancelled (x,y) =
   (y < start_height+button_height-11*spacing && y > start_height-11*spacing) ||
   (y < start_height+button_height && y > start_height-1*spacing)
 
-(* This function is a secret, complete the game to see it in action *)
+(* Complete the game to see this in action, displays winner ans game over *)
 let rec fin p_win gs wait =
    let color = (player_color p_win) in
     draw_image truck_img ((Random.int (screen_width+50))-50)
@@ -527,7 +527,7 @@ let rec pick_cargo loc =
   if List.exists ((=) (get_some cargo)) resource_list
   then cargo else pick_cargo loc
 
-(* You know, for quitting and stuff. Also saves though *)
+(* For quitting, also saves *)
 let quit gs =
   print_endline "Saving game to data/save.json";
   DataProcessing.save_file gs "data/save.json";
@@ -543,7 +543,7 @@ let rec wait_pause () =
   let pos = (stat.mouse_x, stat.mouse_y) in
   if is_pause pos then wait_pause () else ()
 
-(* Pauses the game until you click *)
+(* Pauses the game until you click something other than pause *)
 let rec pause () =
   print_endline "Game Paused. Click anywhere to continue";
   wait_pause ();
@@ -639,7 +639,7 @@ let sell_auto gs player_id =
   | None -> (print_endline "Cancelled\n"; Nothing)
   | Some auto -> InputProcessing.sell_vehicle player_id auto
 
-(* Matches mouse clicks to buttons, very important *)
+(* Matches mouse clicks to buttons, engine uses it for getting inputs *)
 let click_buttons gs player_id =
   let status = wait_next_event [Poll;Button_up;Button_down] in
   let x = status.mouse_x in
