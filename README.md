@@ -34,7 +34,7 @@ to mk2228@cornell.edu, jtg98@cornell.edu, dl556@cornell.edu, prw55@cornell.edu,
 and we will get back to you ASAP.
 
 Installation: macOS
-------------------------------
+-------------------
 
 If you want to run MTT natively on macOS, you may additionally need to install
 X11/XQuartz for Graphics support. If you installed ocaml with homebrew, it can
@@ -50,7 +50,7 @@ one: `opam switch sys`. Then run ``eval `opam config env` ``  as instructed. You
 should then be able to compile by running `make`.
 
 Gameplay
-----------------------
+--------
 
 Once you have successfully compiled the game, it should launch automatically. If
 running natively on macOS, it might take a few seconds to power up XQuartz. The

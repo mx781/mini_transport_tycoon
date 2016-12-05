@@ -1,0 +1,4173 @@
+commit 9b5eb0001a16055e2ca5b8a2f41546fa1f2d9c10
+Merge: 42136a1 49b57e7
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 19:08:44 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 42136a15bedb41e1057682f7c6a0cde346de9b5e
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 19:08:41 2016 -0500
+
+    Readme, instructions and file structure updates.
+
+ Mini Transport Tycoon Instructions.docx | Bin 17987 -> 0 bytes
+ README.md                               |   6 ++----
+ dox/game_instructions.docx              | Bin 0 -> 20895 bytes
+ game_instructions.pdf                   | Bin 0 -> 79249 bytes
+ inputProcessing.ml                      |  17 ++---------------
+ piqi/piqirun_custom.ml                  |   1 -
+ 6 files changed, 4 insertions(+), 20 deletions(-)
+
+commit 49b57e7de67309e4e733bbe787c2db698e1675ff
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 18:53:54 2016 -0500
+
+    Very important ascii drawing changes
+
+ engine.ml | 28 ++++++++++++++--------------
+ main.ml   | 12 ++++++++----
+ 2 files changed, 22 insertions(+), 18 deletions(-)
+
+commit 5378beef49c2e76b13249ab5f00cbdc4e17407c5
+Merge: 7547988 79bf661
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 18:28:57 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 75479889106926eff898b87d19fac40f82739fbe
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 18:28:43 2016 -0500
+
+    No scale
+
+ gameGraphics.ml | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
+
+commit 79bf661889984c0cb68d3c660626d4acae7dd939
+Merge: 599bb17 fcc8f47
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 18:21:35 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 599bb174d8a7e83d37a5230c04f97e6b8a482b33
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 18:21:30 2016 -0500
+
+    Tweaked setup.sh. Removed redundant interfaces folder.
+
+ interfaces/dataProcessing.mli  | 10 --------
+ interfaces/engine.mli          | 29 ----------------------
+ interfaces/gameElements.mli    | 55 ------------------------------------------
+ interfaces/gameGraphics.mli    |  6 -----
+ interfaces/inputProcessing.mli | 25 -------------------
+ interfaces/main.mli            |  3 ---
+ interfaces/player.mli          | 25 -------------------
+ setup.sh                       |  4 +--
+ 8 files changed, 2 insertions(+), 155 deletions(-)
+
+commit fcc8f479e04a7b5e5a1e9d498027f375e6105bcf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 18:14:33 2016 -0500
+
+    Minor Graphics changes
+
+ gameGraphics.ml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+commit 1c3ceed3a14c8363751d434ba837c0471213ae89
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 18:08:06 2016 -0500
+
+    Oops
+
+ Makefile        | 3 ---
+ engine.ml       | 4 ++--
+ gameGraphics.ml | 2 +-
+ 3 files changed, 3 insertions(+), 6 deletions(-)
+
+commit e721998c51fe6477aa50f926ff27f853e1e70460
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 18:05:33 2016 -0500
+
+    made ai slightly easier
+
+ gameElements.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 9c251f07fd752e7a93152dee37d94e8ffbc376cd
+Merge: ca78a6b 36a31f3
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:53:36 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit ca78a6bdb964fa6f8e430d92e1b92e87d2644746
+Merge: 15aaa58 699f627
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:53:29 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 15aaa58cbfcfc43aea1cb328e71ea3ea6c50d857
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:53:24 2016 -0500
+
+    Fixed some Piqi warnings. Updated Makefile.
+
+ Makefile               | 4 ++--
+ gameElements.ml        | 2 +-
+ inputProcessing.ml     | 3 +--
+ piqi/piqirun_custom.ml | 5 +++++
+ 4 files changed, 9 insertions(+), 5 deletions(-)
+
+commit 36a31f316977f5f3eda56171593138972da62232
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 17:52:22 2016 -0500
+
+    fixed ai printing out when it purchased a vehicle
+
+ engine.ml | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+commit 699f627814b9870a392b9de2b62f9cc2e1265600
+Merge: 65adb14 199eb58
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 17:46:53 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 65adb1459e5403fb667a41dbc319cc8bc58a92ba
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 17:46:28 2016 -0500
+
+    Fixed incorrect message
+
+ engine.ml          | 6 ++++--
+ gameGraphics.ml    | 4 +++-
+ inputProcessing.ml | 3 ---
+ 3 files changed, 7 insertions(+), 6 deletions(-)
+
+commit 199eb582fdc4060682ac563e651b837f588dd79d
+Merge: 1ca7639 2dcbfae
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:42:54 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 1ca76393570c9a176fe715c141d135993f9b172b
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:42:52 2016 -0500
+
+    Code cleanup, readme update.
+
+ Makefile                 |  2 +-
+ README.md                | 30 ++++++++++++++++++--
+ dataProcessing.ml        |  5 ++++
+ piqi/Makefile            |  4 +--
+ piqi/Makefile_manual     | 44 -----------------------------
+ piqi/gamestate_full.json | 72 ------------------------------------------------
+ 6 files changed, 34 insertions(+), 123 deletions(-)
+
+commit 2dcbfae4d33456582f73756569dedee7b123c988
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 17:39:09 2016 -0500
+
+    some code cleaning
+
+ dataProcessing.mli | 11 +++++++
+ gameElements.ml    |  9 ------
+ gameElements.mli   | 22 ++++++-------
+ inputProcessing.ml | 94 ++++++++++++++++++++++++------------------------------
+ player.mli         | 16 ++++++++++
+ 5 files changed, 77 insertions(+), 75 deletions(-)
+
+commit 1e5ea9034c8b55ecdcdf22b5b4f6e2fc8d607314
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 17:34:55 2016 -0500
+
+    Fixed pause
+
+ gameGraphics.ml | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
+
+commit 1b5cd519b334c1da8f282a473608fd3cca48bfb5
+Merge: 4a55964 0550783
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 17:17:29 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 4a559644a44ae8400e3efbc466ee99423ef2d050
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 17:17:17 2016 -0500
+
+    fixed player starting cash
+
+ data/game.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 0550783f8c2c83bf188ac6ab74c6d5b94d36e4a7
+Merge: bfa2c84 be27eea
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:16:41 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit bfa2c848cf0421c99610c8f3e6ef476941ba962a
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 17:16:39 2016 -0500
+
+    Finalized testing of handle_processes.
+
+ engine.ml                |   8 +-
+ test.ml                  | 154 +++++++++++---
+ tests/gs2.json           | 537 +++++++++++++++++++++++++++++++++++++++++++++++
+ tests/gs2_buycargo1.json | 537 +++++++++++++++++++++++++++++++++++++++++++++++
+ tests/gs2test.json       |   1 +
+ 5 files changed, 1209 insertions(+), 28 deletions(-)
+
+commit be27eea31c1d3a6fa8547f2cd86854db545a227d
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 17:04:44 2016 -0500
+
+    added better and more documentation for inputProcessing
+
+ gameGraphics.ml     |  2 +-
+ inputProcessing.ml  | 39 +++++++++++++++++++++++++++++++++------
+ inputProcessing.mli |  2 +-
+ 3 files changed, 35 insertions(+), 8 deletions(-)
+
+commit bc978ef9b771f9301d7d8609a8c08f1edadc84db
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 16:37:06 2016 -0500
+
+    fixed 80 character issues in inputProcessing
+
+ inputProcessing.ml | 67 +++++++++++++++++++++++++-----------------------------
+ 1 file changed, 31 insertions(+), 36 deletions(-)
+
+commit 5aaef7b98def9bf3966ca0e66839e3ce0675600a
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 16:22:40 2016 -0500
+
+    Documentation improvements to gameElements.ml
+
+ gameElements.ml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit fce6846f38fb7f4cca5aa3276f6a6d062e2e27ca
+Merge: 78ee630 6f6a626
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 16:13:27 2016 -0500
+
+    merge conflict
+
+commit 78ee630c43a6910a8b31791c10713ad9f5e9a86a
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 16:12:53 2016 -0500
+
+    bug fix with vehicle routing
+
+ data/autosave.json |   2 +-
+ data/game.json     |   2 +-
+ engine.ml          |  17 +++++----
+ gameElements.ml    | 104 ++++++++++++++++++++++++++++++++++++-----------------
+ inputProcessing.ml |   4 +--
+ 5 files changed, 84 insertions(+), 45 deletions(-)
+
+commit 6f6a626306c25ed383e49fa4b548f6c3bee3a576
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 15:50:44 2016 -0500
+
+    Cleaning
+
+ data/autosave.json | 2 +-
+ engine.ml          | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 8f3e93da5e7b23d4cb14356e4d4b6db5d76daacb
+Merge: ce5fc2a 5b78242
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 15:07:13 2016 -0500
+
+    Merge
+
+commit ce5fc2a639fefdcd7b8ab17848c2b7b86a2bd95d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 15:06:17 2016 -0500
+
+    Caught some failures
+
+ data/autosave.json |  2 +-
+ engine.ml          | 15 +++++++++++----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 5b78242e22f9c8a710a84990b4c301f03cc6bfba
+Merge: 5cbf80e 1354124
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 15:03:17 2016 -0500
+
+    Merge conflict fixed.
+
+commit 5cbf80e49377057ceb4b1f70c81c0412645f6ac0
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sun Dec 4 15:02:05 2016 -0500
+
+    Testing updates.
+
+ .gitignore              |   1 +
+ data/autosave.json      |   1 -
+ data/game.json          |   3 +-
+ engine.ml               |   3 +-
+ test.ml                 |  72 ++++++-
+ tests/gs1.json          | 524 +++++++++++++++++++++++++++++++++++++++++++++++
+ tests/gs1_addroad1.json | 532 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 1130 insertions(+), 6 deletions(-)
+
+commit 1354124c6d91f0dd2ec90addc7618acce1c0f5c0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 14:53:12 2016 -0500
+
+    fixed merge conflicts
+
+ data/autosave.json | 4 +++-
+ inputProcessing.ml | 9 +++------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
+
+commit 658a592773104594ba27354df6e4a06e4626b976
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 14:46:01 2016 -0500
+
+    Improved feedback to player when selling a road
+
+ gameGraphics.ml    | 2 +-
+ inputProcessing.ml | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+commit c9895db0e8d3567aae308576bdd176cb52a30cfb
+Merge: 2281372 4dcf1c8
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 14:41:54 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 2281372ab109427d0a90c8b09232bee049e95f3f
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 14:41:49 2016 -0500
+
+    Added some documentation improvements to gameElements.ml
+
+ gameElements.ml | 79 ++++++++++++++++++++-------------------------------------
+ 1 file changed, 27 insertions(+), 52 deletions(-)
+
+commit 4dcf1c86f119e2d0950e939ee70f91d03db05c73
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 14:40:47 2016 -0500
+
+    Text improve
+
+ data/autosave.json |  2 +-
+ engine.ml          | 17 +++++++++--------
+ gameGraphics.ml    | 16 ++++++++++------
+ 3 files changed, 20 insertions(+), 15 deletions(-)
+
+commit d123f0093021eebfadea0dfbb17de4a1cb93e834
+Merge: 4f611a9 8a6bfdc
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 14:21:58 2016 -0500
+
+    Merge conflict resolution and improved documentation
+
+commit 4f611a9b212db0a91b31239ad49c3970efe073ed
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 14:16:09 2016 -0500
+
+    Improved code documentation and changed win constant, removed aiinfo from game.json
+
+ data/game.json  |   1 -
+ engine.ml       | 171 ++++++++++++++++++++++++++++++++++++++++++++++----------
+ gameElements.ml |   2 +-
+ 3 files changed, 143 insertions(+), 31 deletions(-)
+
+commit 8a6bfdc83e08e850552d1de06bbae276db955e2c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 14:09:54 2016 -0500
+
+    Cleaning
+
+ engine.ml |   2 +-
+ graph1.ml | 158 --------------------------------
+ ograph.ml | 299 ------------------------------------------------------------
+ planar.ml | 309 --------------------------------------------------------------
+ 4 files changed, 1 insertion(+), 767 deletions(-)
+
+commit 81c79969b618885ae1e75ecf002880944c25c468
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Dec 4 14:06:59 2016 -0500
+
+    Move pics
+
+ data/autosave.json |   2 +-
+ engine.ml          |  49 +++++++++++++++---------------
+ gameGraphics.ml    |  86 ++++++++++++++++++++++++++++++++++-------------------
+ gameover.png       | Bin 1656 -> 0 bytes
+ images/mansion.png | Bin 7904 -> 0 bytes
+ setup.sh           |   2 +-
+ title.png          | Bin 58204 -> 0 bytes
+ 7 files changed, 82 insertions(+), 57 deletions(-)
+
+commit 502311886bba69ea326d7c581f839bf975f66a0b
+Merge: 0958dc8 676f061
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sun Dec 4 12:39:24 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 676f06194e3404989b98577d9083d048254f2a08
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 23:30:10 2016 -0500
+
+    oops
+
+ images/gameover.png | Bin 59478 -> 1438 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4800ac670648fe025c90e8fb1aae814d660bc0e2
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 23:28:13 2016 -0500
+
+    Add files via upload
+
+ gameover.png | Bin 0 -> 1656 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2dff08123e18166493bba5e48c2cdfcaa265120c
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 23:25:26 2016 -0500
+
+    Add files via upload
+
+ images/gameover.png | Bin 2999 -> 59478 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f27fa60c8505fd26f9f15f809b626dfa4eec9093
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 22:39:23 2016 -0500
+
+    Human car on top
+
+ data/autosave.json | 2 +-
+ gameGraphics.ml    | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 6936c22b72388c385f80173c14e0d988cc05ab2d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 18:59:40 2016 -0500
+
+    actually fixed the merge conflicts
+
+ engine.mli       | 5 +++--
+ gameElements.mli | 5 ++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 0958dc8c60ae74c0abc1fcf5bcd214127277f339
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 18:50:35 2016 -0500
+
+    Improved quick help
+
+ engine.ml | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+commit 1631b892940d25d69f8d103d7afcd844cae4b6ba
+Merge: 71a88ca d3cb7d8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 18:45:35 2016 -0500
+
+    Fixed merge conflict
+
+commit 71a88cacf4ecf5c0c2a0727dbe798a48fa0f861f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 18:43:55 2016 -0500
+
+    AI efficiency fix
+
+ engine.mli          |  15 +++++
+ gameElements.ml     |  11 ++--
+ gameElements.mli    | 157 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ inputProcessing.ml  |  13 ++---
+ inputProcessing.mli |   4 +-
+ 5 files changed, 184 insertions(+), 16 deletions(-)
+
+commit d3cb7d8fb10485b682168aa110887f188279f5bc
+Author: Patrick Ryan Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 18:39:24 2016 -0500
+
+    Add files via upload
+    
+    Added instructions
+
+ Mini Transport Tycoon Instructions.docx | Bin 0 -> 17987 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 75ac0aa6306dc3525b37f5f615ffc396053a04c6
+Merge: cd12d66 4df9d3d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 18:34:41 2016 -0500
+
+    json
+
+commit cd12d66a5c1bc22b515559433f4894c4e4e81c8b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 18:33:58 2016 -0500
+
+    Colors?
+
+ data/autosave.json |  2 +-
+ gameGraphics.ml    | 65 ++++++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 42 insertions(+), 25 deletions(-)
+
+commit 4df9d3db419685a29d49fc94c82155438f749154
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 18:26:51 2016 -0500
+
+    Changed map slightly
+
+ data/game.json | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+commit 3984f355cc4e19c0db051e5ca04bed067322a60e
+Merge: 41add30 47e73d4
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 18:14:19 2016 -0500
+
+    merge conflict resolution
+
+commit 41add30d28372d3fb32ccf965eb511f6a673c5f1
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 18:13:16 2016 -0500
+
+    bug fix
+
+ data/autosave.json | 6 +-----
+ gameElements.ml    | 2 +-
+ gameGraphics.ml    | 2 +-
+ 3 files changed, 3 insertions(+), 7 deletions(-)
+
+commit 47e73d45c7554ca5363de868ef493e854a9557e6
+Merge: b26dd98 db9d7c9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 17:36:53 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit db9d7c978d0e7bbf68204c28d38d36b819834ab4
+Merge: 03c1e7b 692db53
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 17:39:37 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 03c1e7ba039a91b98399f8d7f943ddd0110b24f4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 17:39:21 2016 -0500
+
+    Testing suite updates.
+
+ .ocamlinit | 17 +++++++++++++++--
+ test.ml    | 20 ++++++++++----------
+ 2 files changed, 25 insertions(+), 12 deletions(-)
+
+commit b26dd980f67b7c191cbac40175dd8eb7cf74db45
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 17:36:38 2016 -0500
+
+    Clean
+
+ data/autosave.json |   6 +--
+ gameGraphics.ml    | 124 +++++++++++++++++++++++++++--------------------------
+ 2 files changed, 64 insertions(+), 66 deletions(-)
+
+commit 692db539b0e8857b4838c60f97b5332cd3ef72b3
+Merge: 2e04f05 ab83278
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 17:21:10 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 2e04f0553b48b234e274b22dacbac7de9f89d75e
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 17:20:55 2016 -0500
+
+    Ai difficulty can now be set
+
+ engine.ml       | 4 +++-
+ gameElements.ml | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+commit 12a536096e20d3f911740e0c28801a10261ba297
+Merge: af2c964 e308868
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 17:07:19 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit af2c964ff58522e0b04b8afdffd8d47398725945
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 17:07:15 2016 -0500
+
+    Makefile for test, testing suite updates, .ocamlinit, README tweaks.
+
+ .ocamlinit         |  2 +-
+ Makefile           |  2 +-
+ README.md          | 10 ++++++++++
+ data/autosave.json |  2 +-
+ test.ml            | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 5 files changed, 64 insertions(+), 5 deletions(-)
+
+commit ab8327898c0f80f4af06dcb6b06322d000f0a0bd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:56:31 2016 -0500
+
+    Medium
+
+ main.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit e3088686cc5f436f10ba0af77fd1f5773ddbbe1e
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 16:53:35 2016 -0500
+
+    Add files via upload
+
+ images/brutal.png | Bin 0 -> 2746 bytes
+ images/easy.png   | Bin 0 -> 2860 bytes
+ images/hard.png   | Bin 0 -> 2646 bytes
+ images/medium.png | Bin 0 -> 2853 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2ef1fc5e7cd9048c9d9bb3b92d28e299e1fbbd8d
+Merge: eb29793 12a5360
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:52:25 2016 -0500
+
+    merge
+
+commit eb297936fc9468834532f8a73027b67843f66a39
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:51:49 2016 -0500
+
+    Difficulties
+
+ data/autosave.json |  2 +-
+ engine.ml          | 14 +++++++-------
+ gameGraphics.ml    | 29 +++++++++++++++++++----------
+ main.ml            |  2 +-
+ 4 files changed, 28 insertions(+), 19 deletions(-)
+
+commit 2495fcdbec405f867dfa5d00dcd7dbe0350ee207
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 16:40:00 2016 -0500
+
+    Add files via upload
+
+ images/settings.png | Bin 3136 -> 2924 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ad60b46c9e5ec531c2049312d05b808e6b95ac1c
+Merge: bcf945e e308868
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:36:22 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit bcf945ec050bbc53e16015dd284d035e9af13af8
+Merge: 7142266 2495fcd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:22:49 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 71422665cebbcef45c7b1efecf2e467b6a01c964
+Merge: ffeb24e 962f7f5
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:10:43 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit ffeb24e3a78f38d240a2197e5c170122452eeb84
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:10:36 2016 -0500
+
+    pull
+
+ data/autosave.json |  2 +-
+ engine.ml          | 29 +++++++++++++++--------------
+ gameGraphics.ml    | 14 ++++++++++++++
+ 3 files changed, 30 insertions(+), 15 deletions(-)
+
+commit 962f7f55f325ebf85c7f8a47da95d5d1232c8edf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 16:08:06 2016 -0500
+
+    fixed code readability
+
+ gameElements.ml     |  3 +++
+ gameGraphics.ml     | 10 +++++-----
+ inputProcessing.ml  |  2 +-
+ inputProcessing.mli | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 51 insertions(+), 6 deletions(-)
+
+commit fae1f1f9f5a2d088933450d89b11d6f0b518ba0f
+Merge: bde0e4e 8ff4246
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 16:05:49 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit bde0e4e564489787a905908642311358e2510d58
+Merge: 2829499 89fc3c4
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 16:05:26 2016 -0500
+
+    merge conflict
+
+commit 8ff42461ba8f07ee0c764e27e6d07c638ca2cc15
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 16:04:07 2016 -0500
+
+    Add files via upload
+
+ images/house.png | Bin 2544 -> 2508 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2829499490665fa64da2f8bb58499c817d0461b6
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Sat Dec 3 16:03:02 2016 -0500
+
+    Added functions for AI difficulty setting
+
+ engine.ml       |  2 +-
+ gameElements.ml | 20 ++++++++++++++++++++
+ player.ml       | 13 +++++++++----
+ 3 files changed, 30 insertions(+), 5 deletions(-)
+
+commit 2ad513790a8e873aa0286edf8a4495614e519b6c
+Merge: 10021a6 8ff4246
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:47:14 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 10021a69f3993b962241267cfeb9e9771c0f4334
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:46:58 2016 -0500
+
+    pull
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 89fc3c482031b2685d6bb64f1d7c2308bc1fa786
+Merge: fae6eec e4e208a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:39:16 2016 -0500
+
+    merge
+
+commit fae6eec98fa7a55be97367711cf99522da2bbd22
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:38:07 2016 -0500
+
+    EXIT
+
+ data/autosave.json |  2 +-
+ engine.ml          | 61 ++++++++++++++++++++++++++++++++----------------------
+ 2 files changed, 37 insertions(+), 26 deletions(-)
+
+commit e4e208a4b0bc30f8233e6b95f75340c24740496a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:34:42 2016 -0500
+
+    removed unneeded field from game
+
+ data/autosave.json |   5 --
+ engine.ml          |   1 -
+ gameElements.ml    |  23 ++++---
+ inputProcessing.ml | 187 +++++++++++++++++++++++++----------------------------
+ 4 files changed, 103 insertions(+), 113 deletions(-)
+
+commit a0aeaa36206507ba7c9d23e755647fa07ae0613d
+Merge: 7d745d9 65893e8
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 15:32:04 2016 -0500
+
+    Merge fix.
+
+commit 7d745d9701e824353e55ff564de311d9600405f3
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 15:31:25 2016 -0500
+
+    Removed ai_info from DataProcessing.
+
+ Makefile                                     |   3 +
+ data/autosave.json                           |   2 +-
+ dataProcessing.ml                            |  10 +-
+ gameElements.ml                              |   1 -
+ piqi/.ocamlinit_backup                       |  21 --
+ piqi/_build/_digests                         |  37 ---
+ piqi/_build/_log                             |  52 ----
+ piqi/_build/dataProcessing.cmi               | Bin 1624 -> 0 bytes
+ piqi/_build/dataProcessing.cmo               | Bin 6826 -> 0 bytes
+ piqi/_build/dataProcessing.ml                |  60 ----
+ piqi/_build/dataProcessing.ml.depends        |   1 -
+ piqi/_build/gameElements.cmi                 | Bin 12742 -> 0 bytes
+ piqi/_build/gameElements.cmo                 | Bin 46160 -> 0 bytes
+ piqi/_build/gameElements.ml                  | 354 ------------------------
+ piqi/_build/gameElements.ml.depends          |   1 -
+ piqi/_build/gameelements_piqi.cmi            | Bin 9156 -> 0 bytes
+ piqi/_build/gameelements_piqi.cmo            | Bin 65678 -> 0 bytes
+ piqi/_build/gameelements_piqi.ml             | 396 ---------------------------
+ piqi/_build/gameelements_piqi.ml.depends     |   1 -
+ piqi/_build/gameelements_piqi_ext.cmi        | Bin 8484 -> 0 bytes
+ piqi/_build/gameelements_piqi_ext.cmo        | Bin 40854 -> 0 bytes
+ piqi/_build/gameelements_piqi_ext.ml         | 187 -------------
+ piqi/_build/gameelements_piqi_ext.ml.depends |   1 -
+ piqi/_build/gamestate_piqi.cmi               | Bin 5759 -> 0 bytes
+ piqi/_build/gamestate_piqi.cmo               | Bin 27881 -> 0 bytes
+ piqi/_build/gamestate_piqi.ml                | 140 ----------
+ piqi/_build/gamestate_piqi.ml.depends        |   1 -
+ piqi/_build/gamestate_piqi_ext.cmi           | Bin 6262 -> 0 bytes
+ piqi/_build/gamestate_piqi_ext.cmo           | Bin 28402 -> 0 bytes
+ piqi/_build/gamestate_piqi_ext.ml            | 126 ---------
+ piqi/_build/gamestate_piqi_ext.ml.depends    |   1 -
+ piqi/_build/graph_piqi.cmi                   | Bin 5521 -> 0 bytes
+ piqi/_build/graph_piqi.cmo                   | Bin 35452 -> 0 bytes
+ piqi/_build/graph_piqi.ml                    | 216 ---------------
+ piqi/_build/graph_piqi.ml.depends            |   1 -
+ piqi/_build/graph_piqi_ext.cmi               | Bin 4921 -> 0 bytes
+ piqi/_build/graph_piqi_ext.cmo               | Bin 23039 -> 0 bytes
+ piqi/_build/graph_piqi_ext.ml                | 108 --------
+ piqi/_build/graph_piqi_ext.ml.depends        |   1 -
+ piqi/_build/ocamlc.where                     |   1 -
+ piqi/_build/piqirun_custom.cmi               | Bin 3555 -> 0 bytes
+ piqi/_build/piqirun_custom.cmo               | Bin 24426 -> 0 bytes
+ piqi/_build/piqirun_custom.ml                | 246 -----------------
+ piqi/_build/piqirun_custom.ml.depends        |   1 -
+ piqi/_build/player.cmi                       | Bin 467 -> 0 bytes
+ piqi/_build/player.cmo                       | Bin 2039 -> 0 bytes
+ piqi/_build/player.ml                        |  16 --
+ piqi/_build/player.ml.depends                |   1 -
+ piqi/_build/player_piqi.cmi                  | Bin 3348 -> 0 bytes
+ piqi/_build/player_piqi.cmo                  | Bin 15763 -> 0 bytes
+ piqi/_build/player_piqi.ml                   |  95 -------
+ piqi/_build/player_piqi.ml.depends           |   1 -
+ piqi/_build/player_piqi_ext.cmi              | Bin 1994 -> 0 bytes
+ piqi/_build/player_piqi_ext.cmo              | Bin 8998 -> 0 bytes
+ piqi/_build/player_piqi_ext.ml               |  43 ---
+ piqi/_build/player_piqi_ext.ml.depends       |   1 -
+ piqi/gamestate.piqi                          |   9 -
+ piqi/gamestate_piqi.ml                       |  38 +--
+ piqi/gamestate_piqi_ext.ml                   |  16 --
+ player.ml                                    |   5 +-
+ test.ml                                      |  14 +
+ 61 files changed, 29 insertions(+), 2179 deletions(-)
+
+commit 65893e8f7804b6374f5bac65e291dd5f08d78bf3
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:17:27 2016 -0500
+
+    BUTTONS
+
+ data/autosave.json |  2 +-
+ gameGraphics.ml    | 18 +++++++++++++-----
+ 2 files changed, 14 insertions(+), 6 deletions(-)
+
+commit f0d7cd51a702a54a13765c78c458ef3535f1214e
+Merge: 21c884d 41e0347
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:01:46 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 21c884de5aaa4e94a9c7cf99a3d02f3c6ba9003b
+Merge: 9ae8e37 d5ae8cd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 15:01:37 2016 -0500
+
+    merge
+
+commit 41e03475842334f2f8f2723415c0fd0046063bf4
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 15:01:02 2016 -0500
+
+    Add files via upload
+
+ images/settings.png | Bin 0 -> 3136 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9ae8e37b87ba7bb53c23d372ab12edbabf70e6cb
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 14:52:41 2016 -0500
+
+    pulling
+
+ engine.ml       | 2 +-
+ gameGraphics.ml | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+commit d5ae8cd892758030038d8b3b0159eb286d19d043
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 14:24:21 2016 -0500
+
+    Add files via upload
+
+ images/exit.png | Bin 0 -> 2618 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit e61e2c38c15136057bf3d99a866b500de5579af2
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 13:57:41 2016 -0500
+
+    Piqi fixes, game saving/loading works. Setup and readme complete, awaiting verification.
+
+ README.md                     |  35 +++++--
+ data/autosave.json            |   1 +
+ data/game.json                |   5 -
+ data/loadtest.json            | 134 ------------------------
+ dataProcessing.ml             |   6 +-
+ engine.ml                     |  64 ++++++------
+ gameGraphics.ml               |   4 +-
+ piqi/gameelements.piqi        |   9 +-
+ piqi/gameelements_piqi.ml     |  32 +++++-
+ piqi/gameelements_piqi_ext.ml |  16 +++
+ piqi/piqirun_custom.ml        | 234 ++++++++++++++++++++++--------------------
+ setup.sh                      |   3 +-
+ 12 files changed, 235 insertions(+), 308 deletions(-)
+
+commit 0b08788c6b5cef00af4859e7695621f9863c780e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 03:10:59 2016 -0500
+
+    Moved some saving around
+
+ engine.ml | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+commit 04d24e777941582ca02aaf7ef9b7c5bf86975514
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 02:56:11 2016 -0500
+
+    Fixed oops
+
+ engine.ml | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
+
+commit 4690689ca0ddb73bd19dfe14aaa6965c29efb302
+Merge: 43a3718 13841ec
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 02:52:19 2016 -0500
+
+    Merged
+
+commit 43a371846b1d25283f134baa95cf43e14d20e6f9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 02:50:02 2016 -0500
+
+    Title Screen, still needs help. Get it? 'Help', the button, but also because there are probably bugs.
+
+ engine.ml       | 68 +++++++++++++++++++++++++++++++++++++++++++--------------
+ gameGraphics.ml | 25 ++++++++++++++-------
+ main.ml         | 54 +++++++++------------------------------------
+ 3 files changed, 79 insertions(+), 68 deletions(-)
+
+commit 13841ec255d240c01de243f44dbbe5b1fbb767a4
+Merge: 4071afe 260ffb4
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 01:34:13 2016 -0500
+
+    Merge conflict fix.
+
+commit 4071afefad66d73bbcc50bb50e06b8df1c98f655
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Dec 3 01:33:34 2016 -0500
+
+    Fixed issues with saving in DataProcessing, and changed structure of main loop in efforts to fix saving bugs in certain game states.
+
+ .gitignore             |  2 ++
+ data/game.json         |  4 ++--
+ data/gamesave.json     |  1 -
+ dataProcessing.ml      | 13 ++++++++-----
+ engine.ml              | 41 +++++++++++++++++++++++++----------------
+ gameGraphics.ml        |  4 ++--
+ main.ml                |  2 +-
+ piqi/piqirun_custom.ml | 44 +++++++++++++++++++++++++++++++++++++-------
+ 8 files changed, 77 insertions(+), 34 deletions(-)
+
+commit 260ffb445d743ca2b9fdaff3565cc2f3d85cd5c0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:33:36 2016 -0500
+
+    Title screen
+
+ data/game.json     | 6 +++---
+ data/gamesave.json | 2 +-
+ gameGraphics.ml    | 5 +++--
+ inputProcessing.ml | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
+
+commit 644b275dbc7e79af07152392af5fa2b7cd1ec5b8
+Merge: 085076f 4152036
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:31:34 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 41520368128ca33c5e05e78a9e7422a56f44d094
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:31:29 2016 -0500
+
+    Add files via upload
+
+ images/title.png | Bin 62595 -> 58204 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 085076f64068df5dd39069c0f7a48f7109907eae
+Merge: af1be32 28415d1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:29:45 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 28415d1dba81787d58a89760416584625783fa04
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:29:38 2016 -0500
+
+    Add files via upload
+
+ title.png | Bin 0 -> 58204 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit af1be3284971adf18ae9e8627ae1506ec1502723
+Merge: b3d5c1a bd9e6e1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:28:01 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit bd9e6e187530614c320a25b8370b83fe9f7e5b27
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:27:53 2016 -0500
+
+    Add files via upload
+
+ images/title.png | Bin 377086 -> 62595 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit b3d5c1a77788e3e01d4fb589ad6e3df74582d086
+Merge: 32f4437 437a7dc
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:26:56 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 437a7dc0a3fb3a953db1ad5610a8eafe96e7f5d6
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:26:49 2016 -0500
+
+    Add files via upload
+
+ images/title.png | Bin 370574 -> 377086 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 32f44370b369440a958da4623c82244e79380526
+Merge: d471082 e4bfba8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:23:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit e4bfba8c98697aa7e316b10f37abaf7e7fb6082a
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:23:07 2016 -0500
+
+    Add files via upload
+
+commit d471082cc272f085dbd147b3a1bee190da6dd539
+Merge: 3d821cf 89992dc
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Dec 3 00:17:00 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 89992dc213b320e8ee7012d003072c97eb4b0747
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Dec 3 00:15:15 2016 -0500
+
+    Add files via upload
+
+ images/title.png | Bin 0 -> 370574 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3d821cf8ceea3ac2aa6f5fc92d54fc40be307828
+Merge: a9dc6ae 810fd08
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 23:56:43 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 810fd08fe519a680f9a4edb831a188adc6823488
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 23:53:06 2016 -0500
+
+    Add files via upload
+
+ images/house.png | Bin 4899 -> 2544 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit a9dc6ae6878b5fb5b5098133f3be29a9a022096f
+Merge: 3021693 aff1cb0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 23:28:28 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit aff1cb000e3a53855223c5136a0de060b7cb7075
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 23:27:42 2016 -0500
+
+    Add files via upload
+
+ images/mansion.png | Bin 8096 -> 7904 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3021693487685ec83c5c6d6ca45b95166a3c588e
+Merge: 384ec95 8209702
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 23:25:15 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 384ec956f4f93b61b917eefdedb0c89f832cf429
+Merge: 1b09c7f 31c2faf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 23:25:06 2016 -0500
+
+    idk
+
+commit 8209702ce79fdfc0cb92184464cdf1cc18809af5
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 23:21:22 2016 -0500
+
+    Add files via upload
+
+ images/mansion.png | Bin 14656 -> 8096 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 1b09c7f9457b8a80dfe208f44c60b914ff3b8f8c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 23:06:07 2016 -0500
+
+    new house?
+
+ data/gamesave.json                |   2 +-
+ gameGraphics.ml                   |  12 ++++++++----
+ mansion.png => images/mansion.png | Bin
+ 3 files changed, 9 insertions(+), 5 deletions(-)
+
+commit 31c2faff7a7b9cf468d04a0ef14806c4b6cdebd3
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 23:05:50 2016 -0500
+
+    Add files via upload
+
+ images/mansion.png | Bin 0 -> 14656 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 044f53e152e787e98036cfc431f78bc4f2d402e3
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 23:03:33 2016 -0500
+
+    Add files via upload
+
+ mansion.png | Bin 0 -> 8018 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 88db2434a4b3ad3e7f64befa23a8771b334a5250
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 22:54:54 2016 -0500
+
+    Add files via upload
+
+ images/help.png     | Bin 0 -> 2584 bytes
+ images/loadgame.png | Bin 0 -> 3052 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 8f52045896033cf6039e69c66c135601cb03c166
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 22:49:44 2016 -0500
+
+    Add files via upload
+
+ images/newgame.png | Bin 5299 -> 3165 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 8101083568bd030bb40b270471384bf87cf4ee08
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 22:47:24 2016 -0500
+
+    Add files via upload
+
+ images/newgame.png | Bin 0 -> 5299 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 0c523d34a90ff992bb3a81f8685eb17b3d49d11a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 22:42:00 2016 -0500
+
+    Working on start screen
+
+ gameElements.ml |   9 +-
+ gameGraphics.ml |  11 ++-
+ log.txt         | 250 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 263 insertions(+), 7 deletions(-)
+
+commit e087e95ca40d622465c34e6289d6187e6a2d4b58
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Fri Dec 2 22:34:42 2016 -0500
+
+    Add files via upload
+
+ images/mini.png | Bin 0 -> 375734 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f3ca4fc2ef2db705e78749231a76bece2e4f3d59
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Fri Dec 2 21:57:34 2016 -0500
+
+    Added delays for AIs
+
+ data/game.json     | 8 ++++----
+ data/gamesave.json | 2 +-
+ gameElements.ml    | 3 +++
+ inputProcessing.ml | 4 ++++
+ 4 files changed, 12 insertions(+), 5 deletions(-)
+
+commit 1e53775ec2f08bc2c25fd219974433ef6c6ce48d
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Fri Dec 2 21:33:07 2016 -0500
+
+    Fixed vehicle en route text showing up when it shouldn't
+
+ data/game.json     | 12 ++++++------
+ inputProcessing.ml |  9 +++++----
+ 2 files changed, 11 insertions(+), 10 deletions(-)
+
+commit 1852e2ab4a6091629169f49d8e6e5d1b06acb8c3
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 16:32:26 2016 -0500
+
+    fixed a bug where vehicles didn't move when they should be
+
+ gameElements.ml    | 13 +++++++++++--
+ inputProcessing.ml | 34 +++++++++++++++++-----------------
+ 2 files changed, 28 insertions(+), 19 deletions(-)
+
+commit 174ea27a8ea5aa2ba177d1f267add419e656195b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Dec 2 15:32:36 2016 -0500
+
+    made it so AI now try to build roads based on length and profit rather than just profit
+
+ gameElements.ml    |   4 +++
+ inputProcessing.ml | 100 ++++++++++++++++++++---------------------------------
+ 2 files changed, 41 insertions(+), 63 deletions(-)
+
+commit 45c430cae052e1ddad11ed48e1f1556f2d4019c8
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Fri Dec 2 15:25:06 2016 -0500
+
+    Removed cannot afford cargo text
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit fc340b71a7fa6aa42477c7f7884a8228a9e4a94c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 23:05:25 2016 -0500
+
+    added ability for AI to sell vehicles to win; prepared some changes to AI
+
+ README.md          |  6 +++---
+ inputProcessing.ml | 35 ++++++++++++++++++++++++++---------
+ 2 files changed, 29 insertions(+), 12 deletions(-)
+
+commit 93da1233abba7852ef43d279d6361b6c50a2313a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 21:16:09 2016 -0500
+
+    GAMEOVER
+
+ data/game.json     |  2 +-
+ data/gamesave.json |  2 +-
+ engine.ml          | 14 +++++++--
+ gameElements.ml    |  2 +-
+ gameGraphics.ml    | 86 ++++++++++++++++++++++++++++++++++--------------------
+ 5 files changed, 70 insertions(+), 36 deletions(-)
+
+commit e03357838439f55f4f866d97c9c4f3a8117745e1
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Thu Dec 1 20:44:58 2016 -0500
+
+    pushing for safety; reinstalling the VM
+
+ inputProcessing.ml | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
+
+commit bb2dfca52d8b72f57bc837038801c30827fc7e4c
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Dec 1 19:55:02 2016 -0500
+
+    Add files via upload
+
+ font/E.png | Bin 0 -> 514 bytes
+ font/I.png | Bin 0 -> 527 bytes
+ font/N.png | Bin 0 -> 547 bytes
+ font/R.png | Bin 0 -> 575 bytes
+ font/S.png | Bin 0 -> 579 bytes
+ font/W.png | Bin 0 -> 557 bytes
+ 6 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 24e96a17445e8230b244a9892b19365500282eb8
+Merge: a200816 a78df74
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 02:30:23 2016 -0500
+
+    Someone should add the .jsons to the ignore file, but I'm probably not going to do it
+
+commit a200816636e7bcca4363981a257741943a62be96
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Dec 1 02:27:57 2016 -0500
+
+    merge
+
+ data/game.json     |  2 +-
+ data/gamesave.json |  2 +-
+ gameGraphics.ml    | 15 +++++++++------
+ 3 files changed, 11 insertions(+), 8 deletions(-)
+
+commit a78df74a8851abe84cef9b0c6d8447397080447a
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Wed Nov 30 23:05:51 2016 -0500
+
+    allowed for selling roads if victory condition met
+
+ data/game.json     |  2 +-
+ data/gamesave.json |  2 +-
+ inputProcessing.ml | 12 +++++++++++-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
+commit c8a6142e17a068a9848c198b4b87c6f9a1538b02
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Wed Nov 30 22:38:42 2016 -0500
+
+    fixed AI cargo carrying
+
+ data/gamesave.json |  2 +-
+ gameElements.ml    |  2 +-
+ inputProcessing.ml | 10 ++++++----
+ 3 files changed, 8 insertions(+), 6 deletions(-)
+
+commit 98cdcae856e64383486dc707a1f886ef51e41ca7
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Wed Nov 30 22:00:20 2016 -0500
+
+    fixed compile time error
+
+ inputProcessing.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 405201737ba86ccaf50589de001176a1c50e6aea
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Wed Nov 30 21:58:25 2016 -0500
+
+    Some code cleaning done
+
+ gameElements.ml    |  1 +
+ inputProcessing.ml | 89 ++++++++++++++----------------------------------------
+ 2 files changed, 23 insertions(+), 67 deletions(-)
+
+commit e73230ddce1aed6568168f0979d523342b54e7cb
+Author: Patrick Walsh <prw55@cornell.edu>
+Date:   Wed Nov 30 21:52:12 2016 -0500
+
+    Fixed weird overwriting issue in gameelements
+
+ data/game.json  | 40 ++++++++++++++++++++--------------------
+ gameElements.ml | 26 +++++++++++++++-----------
+ 2 files changed, 35 insertions(+), 31 deletions(-)
+
+commit 7672785639f79a46dce65561ea8ecdd4e582ed5d
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Wed Nov 30 17:49:53 2016 -0500
+
+    Fixed car buying when no owned roads
+
+ .gitignore         |  1 +
+ data/game.json     | 10 +++++-----
+ data/gamesave.json |  3 +--
+ inputProcessing.ml | 26 ++++++++++++++++++++++++--
+ 4 files changed, 31 insertions(+), 9 deletions(-)
+
+commit 155f8e48ca9000adc6be9446eb9d015c0ad14c96
+Author: Dan Liu <dl556@cornell.edu>
+Date:   Tue Nov 29 23:11:45 2016 -0500
+
+    added more flexible AI road creation
+
+ data/game.json     |  12 ++---
+ data/gamesave.json |   3 +-
+ gameElements.ml    |  31 ++++++------
+ inputProcessing.ml | 145 +++++++++++++++++++++++++++++++++++++++++------------
+ 4 files changed, 136 insertions(+), 55 deletions(-)
+
+commit fe8a6242d42d1f0c9e23efba841319307dc4bd11
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 29 00:24:43 2016 -0500
+
+    no ai cars
+
+ data/gamesave.json | 2 +-
+ gameGraphics.ml    | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 08b9087d47af43b292b4377fe3e47a2111884153
+Merge: 8d1aeee 904e74f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 23:34:06 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge frome remote.
+
+commit 8d1aeee2f22db3c4631f895e9efc7d88f5596fee
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 23:34:00 2016 -0500
+
+    Stop players from buying the same roads on the same frame
+
+ engine.ml | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
+
+commit 904e74f5c35ea04155f3131d521971c0e9e2278d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:51:30 2016 -0500
+
+    made change that should make roads chosen more randomly
+
+ inputProcessing.ml | 42 ++++++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
+
+commit e9fe4489bf2092ad8bfcd016c4b4baa94cefbd04
+Merge: b3d607b ef9c125
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:31:46 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit ef9c12540595884d593c88a64278950b15fde420
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:18:43 2016 -0500
+
+    Added vehicle selling functionality
+
+ data/gamesave.json |  3 +--
+ inputProcessing.ml | 15 ++++-----------
+ 2 files changed, 5 insertions(+), 13 deletions(-)
+
+commit b3d607b7fb2f6123f518029f03a60746f57b0be2
+Merge: b7daaae 925c3e2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:03:16 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit b7daaaeacd6ddb5794364ddcd5d3ae1d5dc090db
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:03:05 2016 -0500
+
+    Made prices change more rapidly
+
+ gameElements.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 925c3e2534149ca99bb883f02be00e28c4c5becc
+Merge: bd06b22 cc82824
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:02:56 2016 -0500
+
+    finished basic AI without good road building
+
+commit bd06b22cf3fe2639d7e4602dba208ed0f1685a7c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:02:04 2016 -0500
+
+    finished basic AI without good road building
+
+ data/gamesave.json |  3 ++-
+ gameElements.ml    |  2 +-
+ inputProcessing.ml | 64 ++++++++++++++++++++++++++++++++++++++++--------------
+ 3 files changed, 51 insertions(+), 18 deletions(-)
+
+commit 21f0d412bb38b736c1d627fa0251562c74d6a665
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:01:50 2016 -0500
+
+    Made production speeds increased considerably for balance
+
+ data/game.json | 52 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
+
+commit cc82824653f289d62fb5f7cd2d71ecece14a8aeb
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 22:01:22 2016 -0500
+
+    no prints
+
+ gameElements.ml | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit fc83088b444c5a41fd36525cd225333c6d7dfaaf
+Merge: c0f7e1a 924d918
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:35:52 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit c0f7e1a48b5ee28d5f1f06acec8b8eda94897f2d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:35:40 2016 -0500
+
+    Players can now successfully stop somewhere without selling their cargo
+
+ gameElements.ml | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+commit 924d918b56b0943a962283cdbc530c32e4065ee3
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:14:34 2016 -0500
+
+    comment
+
+ data/gamesave.json | 2 +-
+ gameGraphics.ml    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 03a59778d818e19ec42fc6a34c93334070c36ad7
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:07:05 2016 -0500
+
+    Stopped locations from getting negative resources ever
+
+ engine.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 09ef0cfc8327979e1a67325679822a0554593b1b
+Merge: 3115b1f 510e0bb
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:01:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 3115b1f2295ad958fecced2bce6dc77ba4625ada
+Merge: 644f7e9 84041e9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 21:00:56 2016 -0500
+
+    bug fix
+
+commit 510e0bbc3bfd80d7d632cd4c6590728483c5d0c8
+Merge: fc896a2 84041e9
+Author: Max Knutins <max@qqmx.eu>
+Date:   Mon Nov 28 20:43:51 2016 -0500
+
+    Merge fix.
+
+commit fc896a24fca1f62bff55bdddcfdbe5fd38b66150
+Author: Max Knutins <max@qqmx.eu>
+Date:   Mon Nov 28 20:43:04 2016 -0500
+
+    Setup.sh, readme update.
+
+ .gitignore  |  1 +
+ README.md   | 26 +++++++++++++++++++++++---
+ myGame.json |  1 -
+ setup.sh    |  1 +
+ 4 files changed, 25 insertions(+), 4 deletions(-)
+
+commit 644f7e9942de1b64414e420290dfec0448dc68c9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:42:50 2016 -0500
+
+    added better messages for the user after clicking on things
+
+ data/game.json     | 20 ++++++++++++++++++++
+ engine.ml          |  5 ++---
+ gameGraphics.ml    |  6 +-----
+ inputProcessing.ml | 30 ++++++++++++++++++------------
+ 4 files changed, 41 insertions(+), 20 deletions(-)
+
+commit 84041e911e6c6d55a7928793ab77dc826018a05e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:39:06 2016 -0500
+
+    AI can now buy DIFFERENT items from a location
+
+ inputProcessing.ml | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+commit 66828c39c9be4cfab516be98acf2e0af8b881795
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:37:42 2016 -0500
+
+    Clean
+
+ gameGraphics.ml | 111 +++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 66 insertions(+), 45 deletions(-)
+
+commit 9967656a76a6756a318cbd0fe641a239ed622f4f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:26:57 2016 -0500
+
+    oops
+
+ gameGraphics.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 7d70f59e5affa41d68b63b7685b2c28759c5c304
+Merge: d338eb7 1428f6f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:26:09 2016 -0500
+
+    merge
+
+commit d338eb7ac88b93e12e71f6ea964cd8f37f42a539
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:24:55 2016 -0500
+
+    print
+
+ gameGraphics.ml | 3 ++-
+ myGame.json     | 1 -
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 1428f6fad8be7d384c6ceea90738bd1bf13575b1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:24:04 2016 -0500
+
+    fixed capacity error with AI
+
+ gameElements.ml    |  1 +
+ inputProcessing.ml | 63 ++++++++++++++++++++++++++++++------------------------
+ myGame.json        |  3 ++-
+ 3 files changed, 38 insertions(+), 29 deletions(-)
+
+commit 1d0290da55797bd761aa1f199ecf30819d5d83fe
+Merge: 311b534 a25f68e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:02:36 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 311b5346818116b41ac598910fbbc0eb85d89379
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:02:23 2016 -0500
+
+    costs displayed
+
+ gameElements.ml | 15 +++++++++++++++
+ gameGraphics.ml | 12 ++++++++----
+ 2 files changed, 23 insertions(+), 4 deletions(-)
+
+commit a25f68e32b21b34fe7188ad4e4e4192046b018c4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 20:01:56 2016 -0500
+
+    No Hygiene
+
+ Makefile    | 6 +++---
+ myGame.json | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 25f95e0481a9711d223b701a0f096c753786d425
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 19:10:09 2016 -0500
+
+    Vehicles no longer go offroad when they can no longer be routed
+
+ gameElements.ml | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+commit 99628606c5a6339bc611238ae51b4f14047bca9b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 18:12:43 2016 -0500
+
+    Made some change to AI; fixed JSON files and Dijkstra's
+
+ data/game.json     |  12 +++---
+ engine.ml          |   3 +-
+ gameElements.ml    |   4 +-
+ inputProcessing.ml | 107 ++++++++++++++++++++++++++++++++++++++++++-----------
+ myGame.json        |   2 +-
+ 5 files changed, 96 insertions(+), 32 deletions(-)
+
+commit 7f244284313f6f458c865dff698a44e248a83cea
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 15:28:46 2016 -0500
+
+    Removed debug output
+
+ data/game.json  | 2 +-
+ gameGraphics.ml | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+commit 678a9123093a99a5ab86ed4679ca1ff85f288363
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:35:39 2016 -0500
+
+    GAME
+
+ gameGraphics.ml | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 1f30c8dcfb93fc1547d05171049047d6dc74e277
+Merge: 67109d8 a7bcd65
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:30:27 2016 -0500
+
+    weird commit issue
+
+commit a7bcd65aa8bc6c9dccce45c06cf3f4f530c2f471
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:29:13 2016 -0500
+
+    GAME OVER
+
+ gameGraphics.ml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+commit 67109d819617513cce1085ff28c832d020c8b465
+Merge: d368466 8ef1215
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:26:56 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote
+    .
+
+commit 8ef12157ec3852363e83a6d69a63443e0d39041a
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Mon Nov 28 01:26:56 2016 -0500
+
+    Add files via upload
+
+ images/gameover.png | Bin 0 -> 2999 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit d368466b727faf52b49e699fd20e6c605b20c106
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:26:49 2016 -0500
+
+    Improved endgame animation
+
+ data/game.json  |  2 +-
+ gameGraphics.ml | 22 ++++++++++++++--------
+ 2 files changed, 15 insertions(+), 9 deletions(-)
+
+commit 0376ce0e2762cfacbb84d28266ab8452a4518dbd
+Merge: 9321419 fd4ab3e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:25:42 2016 -0500
+
+    finished basic AI
+
+commit 932141973d5acb11ff1e1fc6ec8528f24965a4ef
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:24:16 2016 -0500
+
+    finished working AI
+
+ data/game.json     |  2 +-
+ data/gamesave.json |  2 +-
+ engine.ml          | 10 ++++--
+ inputProcessing.ml | 93 +++++++++++++++++++++++++++++++++++++-----------------
+ 4 files changed, 73 insertions(+), 34 deletions(-)
+
+commit fd4ab3e62eef28440c5b665749ea745e3e677e3b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:14:55 2016 -0500
+
+    nerfed AI starting money
+
+ data/game.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit a566df066c334b716c03d2d7e3fd96f04ad815e9
+Merge: 8f21bf0 ef3ed1f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:14:12 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 8f21bf0e986f676b8cdc1dc5bf1cb47bb2a2d3c4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:13:56 2016 -0500
+
+    End game condition added and fancy display when you win
+
+ engine.ml       |  9 +++++++++
+ gameElements.ml |  1 +
+ gameGraphics.ml | 17 ++++++++++++++++-
+ 3 files changed, 26 insertions(+), 1 deletion(-)
+
+commit ef3ed1f46c96b1cf18b2f8402818366130116a90
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 01:09:50 2016 -0500
+
+    Confirm
+
+ gameGraphics.ml | 54 +++++++++++++++++++++++++++++++++++++-----------------
+ myGame.json     |  2 +-
+ 2 files changed, 38 insertions(+), 18 deletions(-)
+
+commit 171c556ece048d5dbabfa9620dc1993de0dcf055
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Mon Nov 28 00:37:47 2016 -0500
+
+    Add files via upload
+
+ images/confirm.png | Bin 0 -> 4861 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 613b8ec2cb3857fb7da36509328e18be622dd778
+Merge: 7caba07 eb206ae
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 00:09:45 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 7caba076e0cb8d632560ad97cc4f68f9e359d5be
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 00:09:31 2016 -0500
+
+    Labels
+
+ gameGraphics.ml | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+commit eb206aead221bbcf81ced148b036f5086b0d1292
+Merge: 81ce06e bf2cba9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 00:04:30 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 81ce06e99ac7668fedb7436e119398f2235bac81
+Author: Ubuntu <ubuntu@csvm>
+Date:   Mon Nov 28 00:04:15 2016 -0500
+
+    Players can no longer be in negative money at all!
+
+ engine.ml          | 32 +++++++++++++++++++++-----------
+ gameGraphics.ml    |  2 +-
+ inputProcessing.ml |  8 +++++---
+ 3 files changed, 27 insertions(+), 15 deletions(-)
+
+commit bf2cba92c0041853e5d54bb0fcfa52e9bcdbf4eb
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 23:54:12 2016 -0500
+
+    Small
+
+ images/drugs_s.png  | Bin 0 -> 1407 bytes
+ images/elect_s.png  | Bin 0 -> 1294 bytes
+ images/fruit_s.png  | Bin 0 -> 1497 bytes
+ images/lumber_s.png | Bin 0 -> 1445 bytes
+ images/oil_s.png    | Bin 0 -> 1460 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+commit cc0628e83fdea05650822a8c3c1bf588edeac44c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:44:43 2016 -0500
+
+    Doesnt crash
+
+ gameGraphics.ml | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit b842668e92f35ec3cf10ffb393aa2f9a0b3f9494
+Merge: 11f123c b67753b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:39:59 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 11f123c218a36e66c64fbbac96ed7b3f7f2c94d6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:39:50 2016 -0500
+
+    stop players from going into negative money (still need to fix this for buying road rights
+
+ data/game.json     |  2 +-
+ data/gamesave.json |  2 +-
+ engine.ml          | 25 +++++++++++++++++++------
+ gameElements.ml    |  2 +-
+ 4 files changed, 22 insertions(+), 9 deletions(-)
+
+commit b67753b85f8e662ef1043e39e736eb234b104576
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:36:26 2016 -0500
+
+    Cargo Selctor
+
+ drugs.png        | Bin 4458 -> 0 bytes
+ gameGraphics.ml  |  52 +++++++++++++++++++++++++++++++---------------------
+ images/drugs.png | Bin 18810 -> 4458 bytes
+ 3 files changed, 31 insertions(+), 21 deletions(-)
+
+commit 1e5a51f44b3d54933995e18e55e9500645c019dd
+Merge: 2b6cef7 04fd800
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:21:11 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 2b6cef74ae42756b43efdd66c2eb9983a867c768
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:20:55 2016 -0500
+
+    NO
+
+ gameGraphics.ml               |  60 ++++++++++++++++++++++++++++++++++--------
+ fruit.png => images/fruit.png | Bin
+ myGame.json                   |   1 +
+ 3 files changed, 50 insertions(+), 11 deletions(-)
+
+commit 04fd8007666727a21bb8f66fd825720b766093b8
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 23:20:38 2016 -0500
+
+    NO
+
+ images/nodrugs.png  | Bin 0 -> 3524 bytes
+ images/nofruit.png  | Bin 0 -> 3741 bytes
+ images/nolumber.png | Bin 0 -> 3932 bytes
+ images/nooil.png    | Bin 0 -> 3218 bytes
+ images/notech.png   | Bin 0 -> 2381 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 68593beb8914adcf956f0693b786d56ff206392e
+Merge: 921fe81 5551fda
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:19:24 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 921fe810acf4fbb23eb33247ba679c01829183a2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:19:16 2016 -0500
+
+    Now location's inventory goes down correctly when a player buys resources there
+
+ inputProcessing.ml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+commit 5551fda941b7e05602640c77fca38cb29261054a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 23:06:12 2016 -0500
+
+    fixed AI error
+
+ data/game.json     | 12 +-----------
+ data/gamesave.json |  2 +-
+ inputProcessing.ml | 30 +++++++++++++++++-------------
+ 3 files changed, 19 insertions(+), 25 deletions(-)
+
+commit b656e96fe681792231d235254348eff9c30e826f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:58:50 2016 -0500
+
+    Fixed road buying to make it failproof if you buy an oponent's road
+
+ inputProcessing.ml | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+commit 4e7d1a3a767b3819bda1ab3e800e8b0c5e249450
+Merge: 5f4b477 0232a5a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:51:48 2016 -0500
+
+    finished basic AI
+
+commit 5f4b4777fcb4bf71f4050a340b73590f644c9c8e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:50:14 2016 -0500
+
+    basic AI complete
+
+ dataProcessing.ml  |  10 ++---
+ engine.ml          |   8 ----
+ gameElements.ml    |  13 +++++-
+ inputProcessing.ml | 113 ++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 4 files changed, 124 insertions(+), 20 deletions(-)
+
+commit 0232a5a689f327fe9f81be04f5d339ab12e4a06f
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 22:32:01 2016 -0500
+
+    Add files via upload
+
+ drugs.png | Bin 0 -> 4458 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 4cf3ee1368902e8d539e1a542aaebf0325725960
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:28:16 2016 -0500
+
+    You can no longer sell roads you do not own
+
+ inputProcessing.ml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+commit d4ce2189d253ab80bf89778ef1ac254e7ed2c9f8
+Merge: b74ba99 341c0a1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:25:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit b74ba99a415add9463a82a09014e5768857b2a18
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:24:22 2016 -0500
+
+    fixed vehicles going offroad when rerouting them while they are in transit
+
+ gameElements.ml    | 3 ++-
+ inputProcessing.ml | 7 +++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 341c0a12047acff01a1005488e8b0f34653dc690
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 22:22:19 2016 -0500
+
+    Add files via upload
+
+ images/drugs.png  | Bin 0 -> 18810 bytes
+ images/lumber.png | Bin 0 -> 5204 bytes
+ images/oil.png    | Bin 0 -> 4335 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit d91158629f6baecfef2bb065b0b64b2e145a1b00
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 22:21:48 2016 -0500
+
+    Add files via upload
+
+ fruit.png | Bin 0 -> 4717 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit fb7cfa2065f145d8c6a7f70813858a828a24fcd6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 22:10:20 2016 -0500
+
+    Bug fixes with the vehicle routing
+
+ engine.ml          |  1 -
+ gameElements.ml    |  9 ++++++++-
+ gameGraphics.ml    |  2 +-
+ inputProcessing.ml | 19 +++++++++----------
+ 4 files changed, 18 insertions(+), 13 deletions(-)
+
+commit 9f7cafbb3b70a8c4b0dfb781f5114cf4df628d4d
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 21:42:02 2016 -0500
+
+    Add files via upload
+
+ images/elect.png | Bin 0 -> 3512 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 57bd016e21ccf1c405ed491a105f9d647b9f3f23
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:27:03 2016 -0500
+
+    pause
+
+ gameGraphics.ml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+commit 3274de59cf5f182c4d30e643341f5a84e23c33f6
+Merge: 12ef492 b635ba2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:23:02 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit b635ba25500da3b550ae601ee018d9e52f75d135
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:22:39 2016 -0500
+
+    roads can be sold
+
+ engine.ml       | 9 ++-------
+ gameGraphics.ml | 4 ++--
+ 2 files changed, 4 insertions(+), 9 deletions(-)
+
+commit 12ef492b3e647637aba92d543071afdce91b11e9
+Merge: 3888776 baf1cd1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:22:07 2016 -0500
+
+    Some or None
+
+commit 3888776c9c13ebb13a582b3dae8d2b66f17407dc
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:15:53 2016 -0500
+
+    merge
+
+ gameGraphics.ml | 47 +++++++++++++++++++++++++++++++++--------------
+ main.ml         |  2 +-
+ myGame.json     |  1 -
+ 3 files changed, 34 insertions(+), 16 deletions(-)
+
+commit baf1cd1ba77ad3efb0a55f6fb414b008d267c1d5
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:15:24 2016 -0500
+
+    Temp changes
+
+ engine.ml          | 5 +++++
+ gameGraphics.ml    | 3 +--
+ inputProcessing.ml | 4 ++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+commit 62aec87b0709c564c99258d1e28be90521ba0203
+Merge: 30f773d a0213d2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 21:06:18 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote
+    .
+
+commit a0213d202e4d98e6c05cd3470cf728c2285a1eaa
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sun Nov 27 17:18:30 2016 -0500
+
+    Add files via upload
+
+ images/cancel.png | Bin 0 -> 5001 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 9c7226bd83b6b9888544a602fd0426621098a1e8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 16:38:00 2016 -0500
+
+    Roads now reflect ownership
+
+ gameElements.ml |  2 +-
+ gameGraphics.ml | 18 ++++++++++++------
+ myGame.json     |  2 +-
+ 3 files changed, 14 insertions(+), 8 deletions(-)
+
+commit ca3254203b8e69decd2a09df44b4a913969a508d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 16:12:54 2016 -0500
+
+    Color labels
+
+ gameGraphics.ml | 20 ++++++++++++++------
+ myGame.json     |  2 +-
+ 2 files changed, 15 insertions(+), 7 deletions(-)
+
+commit 8465f0df894d9139bc6013870a6fe2504ce189cf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 15:36:12 2016 -0500
+
+    Colors for 6 players
+
+ data/gamesave.json |  2 +-
+ gameGraphics.ml    | 32 ++++++++++++++++++++++----------
+ myGame.json        |  2 +-
+ 3 files changed, 24 insertions(+), 12 deletions(-)
+
+commit 30f773d6d160169b2d0ed8e3fc688102b5f3dfdc
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sun Nov 27 00:03:52 2016 -0500
+
+    CARS CAN BE ROUTED AND GOODS CAN BE BOUGHT... IF THEY ARE OIL
+
+ engine.ml          |  5 +++--
+ gameGraphics.ml    | 15 +++++++++------
+ inputProcessing.ml | 39 ++++++++++++++++++++++++++-------------
+ 3 files changed, 38 insertions(+), 21 deletions(-)
+
+commit 766fe22df2d06a38c15226fda373c992c261bbb4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 23:24:59 2016 -0500
+
+    Moved a house I was covering
+
+ data/game.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 5b7d9f9d8a5928a555da4ecf40df25232a439818
+Merge: 9921a9a 7ec00b3
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 23:21:52 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 7ec00b3963992125911942d5b224734f48a21681
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 23:15:56 2016 -0500
+
+    Sell Auto
+
+ gameGraphics.ml                     |  16 +++++++++++++---
+ sellauto.png => images/sellauto.png | Bin
+ myGame.json                         |   2 +-
+ 3 files changed, 14 insertions(+), 4 deletions(-)
+
+commit 052ff7192ae3445c41520c492b20014cb91e1d5d
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 23:11:28 2016 -0500
+
+    Add files via upload
+
+ sellauto.png | Bin 0 -> 5097 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ccc2241e99ea70653f7ac18a3c7b7d9f8c659d1c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 23:09:12 2016 -0500
+
+    Find vehicle
+
+ gameGraphics.ml | 119 ++++++++++++++++++++++++++++++++++----------------------
+ myGame.json     |   2 +-
+ 2 files changed, 74 insertions(+), 47 deletions(-)
+
+commit 9921a9a379bad352237201ee9b51132e3bfda900
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:58:32 2016 -0500
+
+    more input to processing functions
+
+ inputProcessing.ml | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+commit a8b43341eb89869f8539dc7b324b6a6f1f386a1f
+Merge: 100bc05 8e59d9e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:45:52 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 8e59d9eb04d3254f1fea03881f5f8fff4bb64546
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:44:15 2016 -0500
+
+    MORE BUTTONS
+
+ gameGraphics.ml | 32 ++++++++++++++++++++++++++++++--
+ myGame.json     |  2 +-
+ 2 files changed, 31 insertions(+), 3 deletions(-)
+
+commit 100bc0547b31a6428a21b442de2323506cff5ed6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:43:41 2016 -0500
+
+    added two human input -> process functions, but not tested yet, buttons still needed
+
+ inputProcessing.ml | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+
+commit 91e115b4a87016c4759f6e0d69511955c8c263c4
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 22:32:54 2016 -0500
+
+    Buttons
+
+ images/addcargo.png | Bin 0 -> 5197 bytes
+ images/moveauto.png | Bin 0 -> 5204 bytes
+ images/sellroad.png | Bin 0 -> 5131 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f62dd496af0b59b00b8779979f99ead0eeef277a
+Merge: fd0bfb9 db54497
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:30:31 2016 -0500
+
+    Merge
+
+commit fd0bfb900ab0ddbb3f150056ea88e0a677e78a3e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 22:29:24 2016 -0500
+
+    Mouse click bug
+
+ gameGraphics.ml | 3 ++-
+ myGame.json     | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit db54497adc8b23be8fd11ab3fcd1e559365d0598
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 21:51:53 2016 -0500
+
+    Roads can now be built!
+
+ engine.ml          | 17 +----------------
+ gameGraphics.ml    |  6 +++---
+ inputProcessing.ml | 16 +++++++++++++++-
+ 3 files changed, 19 insertions(+), 20 deletions(-)
+
+commit 583c9efb6299f5d33ca2b0e6b3c70499bc60451f
+Merge: 527680d a678259
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 21:40:45 2016 -0500
+
+    resolved merge conflicts
+
+commit 527680df481119d34282ba12c159c288d164ad91
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 21:39:04 2016 -0500
+
+    Interfaced graphical user input with process creation and process creation with handling in engine
+
+ engine.ml          | 29 +++++++++++++----------------
+ gameGraphics.ml    | 31 ++++++++++++++++++-------------
+ inputProcessing.ml | 18 ++++++++++++++++++
+ 3 files changed, 49 insertions(+), 29 deletions(-)
+
+commit a678259828111d8edc45c351ab0dfbec86da8821
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:52:04 2016 -0500
+
+    Save button now saves
+
+ gameGraphics.ml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 85afdb8126cd0cf02f00239003fb1294d7b27fb3
+Merge: 021709e 7c5bfee
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:46:09 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 021709e90c0d871b2c8042701e326de8c46ac1dd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:45:46 2016 -0500
+
+    Save
+
+ engine.ml       |  4 ++--
+ gameGraphics.ml | 17 +++++++++++------
+ main.ml         | 12 ++++++------
+ 3 files changed, 19 insertions(+), 14 deletions(-)
+
+commit 7c5bfee5f10037db9ca649f740e6d94662d3cacc
+Merge: d64dd35 5a197d9
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 26 20:44:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit d64dd35f3153f0c9f02a84439c0d629f62d3506f
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 26 20:44:06 2016 -0500
+
+    DataProcessing phase 2: saving done.
+
+ .gitignore                         |   4 +-
+ .ocamlinit                         |  30 ++++++++
+ data/gamesave.json                 |   1 +
+ data/gamestate_full.json           |  72 ------------------
+ data/loadtest.json                 | 134 +++++++++++++++++++++++++++++++++
+ dataProcessing.ml                  |  37 +++++++++-
+ engine.ml                          |   6 +-
+ interfaces/dataProcessing.mli      |   6 +-
+ piqi/Makefile                      |   1 +
+ piqi/_build/PiqiObjects.mlpack     |   1 -
+ piqi/_build/_digests               |  35 ++++-----
+ piqi/_build/_log                   |   6 +-
+ piqi/_build/dataProcessing.cmi     | Bin 1370 -> 1624 bytes
+ piqi/_build/dataProcessing.cmo     | Bin 4539 -> 6826 bytes
+ piqi/_build/dataProcessing.ml      |  39 ++++++++--
+ piqi/_build/gS_piqi.ml             | 147 -------------------------------------
+ piqi/_build/gS_piqi.ml.depends     |   1 -
+ piqi/_build/gameElements.cmi       | Bin 12731 -> 12742 bytes
+ piqi/_build/gameElements.cmo       | Bin 46103 -> 46160 bytes
+ piqi/_build/gameElements.ml        |  23 +++---
+ piqi/_build/gamestate_piqi.cmi     | Bin 5759 -> 5759 bytes
+ piqi/_build/gamestate_piqi.cmo     | Bin 27881 -> 27881 bytes
+ piqi/_build/gamestate_piqi_ext.cmi | Bin 6262 -> 6262 bytes
+ piqi/_build/gamestate_piqi_ext.cmo | Bin 28402 -> 28402 bytes
+ piqi/_build/piqirun_custom.cmi     | Bin 2765 -> 3555 bytes
+ piqi/_build/piqirun_custom.cmo     | Bin 17387 -> 24426 bytes
+ piqi/_build/piqirun_custom.ml      |  94 ++++++++++++++++++++++--
+ piqi/_build/player.ml              |   5 +-
+ piqi/dataProcessing.ml             |  31 --------
+ piqi/piqirun_custom.ml             |  94 ++++++++++++++++++++++--
+ 30 files changed, 447 insertions(+), 320 deletions(-)
+
+commit c11d440537e5cd9e78215ec5005a144cbed6dd10
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:40:59 2016 -0500
+
+    Added first init function for processes with human input
+
+ engine.ml       | 19 +++++++++++++++++++
+ gameElements.ml |  9 ++++++++-
+ 2 files changed, 27 insertions(+), 1 deletion(-)
+
+commit 5a197d98d81865f23f06d7a80ccd7bac5a77cba0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:19:12 2016 -0500
+
+    Instructions
+
+ main.ml | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+commit df7c4068d056fd83b873af6626e02effc8ba6c72
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 20:07:01 2016 -0500
+
+    Push my Buttons
+
+ gameGraphics.ml | 47 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 21 deletions(-)
+
+commit bf519c9661c61f71c116863794bfa7ef71e70b66
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 19:04:36 2016 -0500
+
+    More font for 2416$
+
+ gameGraphics.ml | 57 +++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 43 insertions(+), 14 deletions(-)
+
+commit 3b641cc17ee9b5d85d0962512472a2c83e6027ea
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 18:59:27 2016 -0500
+
+    Money Font
+
+ font/dollar.png | Bin 0 -> 591 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 5256ad59f01ed56a33865939149e16443283cf4a
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 18:41:48 2016 -0500
+
+    Add files via upload
+
+ font/P.png     | Bin 0 -> 563 bytes
+ font/colon.png | Bin 0 -> 510 bytes
+ font/dot.png   | Bin 0 -> 511 bytes
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6a2e3f9f92f06d28e28ef5b257c0846027295b2c
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 18:36:34 2016 -0500
+
+    added function that checks whether it is possible to go from one location to another
+
+ gameElements.ml    | 14 --------------
+ inputProcessing.ml | 38 +++++++++++++++++++++++++-------------
+ 2 files changed, 25 insertions(+), 27 deletions(-)
+
+commit 1318cf3c6c975ce06e836240a80d6fc54fb0d477
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 18:28:04 2016 -0500
+
+    Add files via upload
+
+ images/buyroad.png | Bin 0 -> 5076 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 931219e860517df5e06e5d251206f7abaa249ae8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:52:13 2016 -0500
+
+    made some changes to AI
+
+ gameElements.ml    |  81 ++++++--------------------------
+ inputProcessing.ml | 132 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 145 insertions(+), 68 deletions(-)
+
+commit f1e943f4b8b8fc58d9803e7ee8c2c0c3947f1abe
+Merge: 8de1a11 9ce9f93
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:48:06 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 8de1a11ff35ccd52279e2c230e432947651d8e35
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:47:51 2016 -0500
+
+    Starting to add cars
+
+ engine.ml       | 2 +-
+ gameGraphics.ml | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+commit 9ce9f93caf6b225459e13129a2684c9758b0654d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:35:36 2016 -0500
+
+    fixed minimum cap for goods prices
+
+ gameElements.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 493103d67491a98a1d289ff690961248c6698d46
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:28:33 2016 -0500
+
+    Maybe I didn't push
+
+ gameGraphics.ml     |  64 ++++++++++++++++++++++++++++++++++++----------------
+ images/buytruck.png | Bin 134741 -> 0 bytes
+ 2 files changed, 45 insertions(+), 19 deletions(-)
+
+commit efa4d796e4be08811a8fc847ed99f6522a268c58
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 17:19:32 2016 -0500
+
+    worked on default json
+
+ data/game.json | 505 +++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 435 insertions(+), 70 deletions(-)
+
+commit 759a4dfc417e6b6ccf0b66644c2f3aeb74f8a66d
+Merge: 76ecb8b 57225fd
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 26 16:16:04 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 76ecb8b06aabd79e5c631c01e26a2eccf0cafd66
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 26 16:16:01 2016 -0500
+
+    DataProcessing save phase complete.
+
+ #setup.sh#                                         |  17 -
+ .gitignore                                         |   3 +
+ .omakedb.lock                                      |   1 -
+ Makefile                                           |   5 +-
+ data/_build/_digests                               |  37 ---
+ data/_build/_log                                   |  52 ---
+ data/_build/dataProcessing.cmi                     | Bin 1211 -> 0 bytes
+ data/_build/dataProcessing.cmo                     | Bin 4123 -> 0 bytes
+ data/_build/dataProcessing.ml                      |  37 ---
+ data/_build/dataProcessing.ml.depends              |   1 -
+ data/_build/gameElements.cmi                       | Bin 8550 -> 0 bytes
+ data/_build/gameElements.cmo                       | Bin 13325 -> 0 bytes
+ data/_build/gameElements.ml                        | 106 ------
+ data/_build/gameElements.ml.depends                |   1 -
+ data/_build/gameelements_piqi.cmi                  | Bin 9147 -> 0 bytes
+ data/_build/gameelements_piqi.cmo                  | Bin 64827 -> 0 bytes
+ data/_build/gameelements_piqi_ext.cmi              | Bin 8545 -> 0 bytes
+ data/_build/gameelements_piqi_ext.cmo              | Bin 40931 -> 0 bytes
+ data/_build/gamestate_piqi.cmi                     | Bin 5193 -> 0 bytes
+ data/_build/gamestate_piqi.cmo                     | Bin 24046 -> 0 bytes
+ data/_build/gamestate_piqi_ext.cmi                 | Bin 5507 -> 0 bytes
+ data/_build/gamestate_piqi_ext.cmo                 | Bin 24699 -> 0 bytes
+ data/_build/piqirun_custom.cmi                     | Bin 2738 -> 0 bytes
+ data/_build/piqirun_custom.cmo                     | Bin 16686 -> 0 bytes
+ data/_build/player.cmi                             | Bin 459 -> 0 bytes
+ data/_build/player.ml                              |  13 -
+ data/_build/player_piqi.cmi                        | Bin 2123 -> 0 bytes
+ data/_build/player_piqi.cmo                        | Bin 11187 -> 0 bytes
+ data/_build/player_piqi_ext.cmo                    | Bin 8998 -> 0 bytes
+ data/dataProcessing.ml                             |  37 ---
+ data/game.json                                     | 134 ++++++++
+ data/gameElements.ml                               | 106 ------
+ dataProcessing.ml                                  |  31 ++
+ engine.ml                                          | 117 +------
+ gameElements.ml                                    |  20 +-
+ main.ml                                            |   4 +-
+ myocamlbuild.ml                                    |  13 +
+ {data => piqi}/.ocamlinit                          |   0
+ {data => piqi}/.ocamlinit_backup                   |   0
+ {data => piqi}/Makefile                            |   4 +-
+ {data => piqi}/Makefile_manual                     |   0
+ piqi/_build/PiqiObjects.mlpack                     |   1 +
+ piqi/_build/_digests                               |  40 +++
+ piqi/_build/_log                                   |  52 +++
+ piqi/_build/dataProcessing.cmi                     | Bin 0 -> 1370 bytes
+ piqi/_build/dataProcessing.cmo                     | Bin 0 -> 4539 bytes
+ piqi/_build/dataProcessing.ml                      |  31 ++
+ piqi/_build/dataProcessing.ml.depends              |   1 +
+ piqi/_build/gS_piqi.ml                             | 147 +++++++++
+ piqi/_build/gS_piqi.ml.depends                     |   1 +
+ piqi/_build/gameElements.cmi                       | Bin 0 -> 12731 bytes
+ piqi/_build/gameElements.cmo                       | Bin 0 -> 46103 bytes
+ piqi/_build/gameElements.ml                        | 355 +++++++++++++++++++++
+ piqi/_build/gameElements.ml.depends                |   1 +
+ piqi/_build/gameelements_piqi.cmi                  | Bin 0 -> 9156 bytes
+ piqi/_build/gameelements_piqi.cmo                  | Bin 0 -> 65678 bytes
+ {data => piqi/_build}/gameelements_piqi.ml         |  59 ++--
+ {data => piqi}/_build/gameelements_piqi.ml.depends |   0
+ piqi/_build/gameelements_piqi_ext.cmi              | Bin 0 -> 8484 bytes
+ piqi/_build/gameelements_piqi_ext.cmo              | Bin 0 -> 40854 bytes
+ {data => piqi}/_build/gameelements_piqi_ext.ml     |  22 +-
+ .../_build/gameelements_piqi_ext.ml.depends        |   0
+ piqi/_build/gamestate_piqi.cmi                     | Bin 0 -> 5759 bytes
+ piqi/_build/gamestate_piqi.cmo                     | Bin 0 -> 27881 bytes
+ {data => piqi/_build}/gamestate_piqi.ml            |  38 ++-
+ {data => piqi}/_build/gamestate_piqi.ml.depends    |   0
+ piqi/_build/gamestate_piqi_ext.cmi                 | Bin 0 -> 6262 bytes
+ piqi/_build/gamestate_piqi_ext.cmo                 | Bin 0 -> 28402 bytes
+ {data => piqi}/_build/gamestate_piqi_ext.ml        |  16 +
+ .../_build/gamestate_piqi_ext.ml.depends           |   0
+ {data => piqi}/_build/graph_piqi.cmi               | Bin 5521 -> 5521 bytes
+ {data => piqi}/_build/graph_piqi.cmo               | Bin 35452 -> 35452 bytes
+ {data => piqi}/_build/graph_piqi.ml                |   0
+ {data => piqi}/_build/graph_piqi.ml.depends        |   0
+ {data => piqi}/_build/graph_piqi_ext.cmi           | Bin 4921 -> 4921 bytes
+ {data => piqi}/_build/graph_piqi_ext.cmo           | Bin 23039 -> 23039 bytes
+ {data => piqi}/_build/graph_piqi_ext.ml            |   0
+ {data => piqi}/_build/graph_piqi_ext.ml.depends    |   0
+ {data => piqi}/_build/ocamlc.where                 |   0
+ piqi/_build/piqirun_custom.cmi                     | Bin 0 -> 2765 bytes
+ piqi/_build/piqirun_custom.cmo                     | Bin 0 -> 17387 bytes
+ {data => piqi/_build}/piqirun_custom.ml            |  42 ++-
+ {data => piqi}/_build/piqirun_custom.ml.depends    |   0
+ piqi/_build/player.cmi                             | Bin 0 -> 467 bytes
+ {data => piqi}/_build/player.cmo                   | Bin 2037 -> 2039 bytes
+ {data => piqi/_build}/player.ml                    |   2 +-
+ {data => piqi}/_build/player.ml.depends            |   0
+ piqi/_build/player_piqi.cmi                        | Bin 0 -> 3348 bytes
+ piqi/_build/player_piqi.cmo                        | Bin 0 -> 15763 bytes
+ {data => piqi}/_build/player_piqi.ml               |  34 +-
+ {data => piqi}/_build/player_piqi.ml.depends       |   0
+ {data => piqi}/_build/player_piqi_ext.cmi          | Bin 1994 -> 1994 bytes
+ piqi/_build/player_piqi_ext.cmo                    | Bin 0 -> 8998 bytes
+ {data => piqi}/_build/player_piqi_ext.ml           |   0
+ {data => piqi}/_build/player_piqi_ext.ml.depends   |   0
+ piqi/dataProcessing.ml                             |  31 ++
+ piqi/game.json                                     | 134 ++++++++
+ {data => piqi}/gameelements.piqi                   |  16 +-
+ {data/_build => piqi}/gameelements_piqi.ml         |  59 ++--
+ {data => piqi}/gameelements_piqi_ext.ml            |  22 +-
+ {data => piqi}/gamestate.json                      |   0
+ {data => piqi}/gamestate.piqi                      |  17 +
+ piqi/gamestate_full.json                           |  72 +++++
+ {data/_build => piqi}/gamestate_piqi.ml            |  38 ++-
+ {data => piqi}/gamestate_piqi_ext.ml               |  16 +
+ {data => piqi}/graph.piqi                          |   0
+ {data => piqi}/graph_piqi.ml                       |   0
+ {data => piqi}/graph_piqi_ext.ml                   |   0
+ {data/_build => piqi}/piqirun_custom.ml            |  42 ++-
+ {data => piqi}/player.piqi                         |   2 +-
+ {data => piqi}/player_piqi.ml                      |  34 +-
+ {data => piqi}/player_piqi_ext.ml                  |   0
+ 112 files changed, 1385 insertions(+), 679 deletions(-)
+
+commit 57225fd07124d09c6075a18175878674f9f893fc
+Merge: 1262cc8 854591b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 15:39:07 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 1262cc8e979233e84a9cdcaefa36b21a9df7a05b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 15:38:45 2016 -0500
+
+    Quit works, pause semi-works, functions for other two buttons are unimplemented
+
+ gameGraphics.ml | 42 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 39 insertions(+), 3 deletions(-)
+
+commit 854591bd0884ffffc85127cdc486bc049aeedc80
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 15:18:25 2016 -0500
+
+    SetVehicleCargo process handling
+
+ engine.ml                      | 36 +++++++++++++++++++++++++++++++++---
+ inputProcessing.ml             |  2 +-
+ interfaces/inputProcessing.mli |  2 +-
+ 3 files changed, 35 insertions(+), 5 deletions(-)
+
+commit 3d19590ced599f52973506b92e16926da0a849e2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 14:11:51 2016 -0500
+
+    fixed good pricing
+
+ gameElements.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit f8085d8d2c1bdf83e7ec0aba28a8e8aff7bd0930
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 14:04:14 2016 -0500
+
+    added process collection skeleton code, added new setvehiclecargo process
+
+ engine.ml                      | 14 ++++++++++++--
+ inputProcessing.ml             |  4 +---
+ interfaces/inputProcessing.mli |  4 +---
+ 3 files changed, 14 insertions(+), 8 deletions(-)
+
+commit c27132494c85da2f736f13dcb397636f9b02dbed
+Merge: 190c082 2611d5f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 03:10:45 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 190c082602743b307bd0b913912cf0c4ad3d0c72
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 03:10:07 2016 -0500
+
+    Updated main
+
+ engine.ml       |  6 +++---
+ gameGraphics.ml | 10 ++++------
+ main.ml         | 29 ++++++++++++++++++++++++++---
+ 3 files changed, 33 insertions(+), 12 deletions(-)
+
+commit 2611d5fdba1920a99a5cb9dd1d9287fe6b89bd47
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 02:30:23 2016 -0500
+
+    added some AI functionality, added possibility of Dijkstra's
+
+ README.md       |  6 +++-
+ gameElements.ml | 92 +++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ player.ml       |  5 +++-
+ 3 files changed, 99 insertions(+), 4 deletions(-)
+
+commit b4a2d0eda71fd52ea38ba6e1ddfe3ce023ebd05f
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 02:27:59 2016 -0500
+
+    Add files via upload
+
+ images/start.png | Bin 209226 -> 218103 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 5545e18001382e843ad86911be2c423cef28820d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 02:09:56 2016 -0500
+
+    You want scores? I'll give you scores
+
+ 0.png => font/0.png | Bin
+ 2.png => font/2.png | Bin
+ 3.png => font/3.png | Bin
+ 4.png => font/4.png | Bin
+ 5.png => font/5.png | Bin
+ 6.png => font/6.png | Bin
+ 7.png => font/7.png | Bin
+ 8.png => font/8.png | Bin
+ 9.png => font/9.png | Bin
+ gameGraphics.ml     |  34 +++++++++++++++++++++++++++++-----
+ main.ml             |   6 +++---
+ 11 files changed, 32 insertions(+), 8 deletions(-)
+
+commit f41ce671a9087544d7e1bb99afee7d22a2538813
+Merge: 9f888fb 33950fb
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:49:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 33950fb4b335bdba334a1a46b9aa8302a5194a3c
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 01:48:58 2016 -0500
+
+    Yay, numbers
+
+ 0.png | Bin 0 -> 593 bytes
+ 2.png | Bin 0 -> 577 bytes
+ 3.png | Bin 0 -> 581 bytes
+ 4.png | Bin 0 -> 562 bytes
+ 5.png | Bin 0 -> 569 bytes
+ 6.png | Bin 0 -> 589 bytes
+ 7.png | Bin 0 -> 557 bytes
+ 8.png | Bin 0 -> 577 bytes
+ 9.png | Bin 0 -> 590 bytes
+ 9 files changed, 0 insertions(+), 0 deletions(-)
+
+commit ea946a5cce9e314df9c566a76539a084c9e8317e
+Merge: 5a38125 8f2eae1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:40:11 2016 -0500
+
+    Resolving merge conflict
+
+commit 5a3812567787c2fcac4b89e121419c1ea2e0a608
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:38:00 2016 -0500
+
+    Implemented all non-checking process handling/processing code
+
+ engine.ml       | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ gameElements.ml |  3 ++-
+ 2 files changed, 68 insertions(+), 1 deletion(-)
+
+commit 9f888fb10d55122b73e9e3a6d64ef8114ee8c967
+Merge: da1a955 8f2eae1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:32:02 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit da1a955a666142e7277db3cf652149e8c5cccf31
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:31:51 2016 -0500
+
+    stash
+
+ 1.png => font/1.png | Bin
+ gameGraphics.ml     |   5 +++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 8f2eae1b119e7a86ee70e40890bf70731885cc23
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 01:29:44 2016 -0500
+
+    Add files via upload
+
+ 1.png | Bin 549 -> 545 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 8977b0aefaee92d1ca8390e5a13e21655766186c
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 01:24:56 2016 -0500
+
+    Add files via upload
+
+ 1.png | Bin 550 -> 549 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 599b0b980dc28d3f62add29bd7bc83e08e2d696b
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 01:22:54 2016 -0500
+
+    Add files via upload
+
+commit 87d1aa73125e54786b0da3b79620f5d570219d41
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Sat Nov 26 01:18:26 2016 -0500
+
+    Add files via upload
+
+ 1.png | Bin 0 -> 550 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit be897954ce2bf92d187099e918565749999d4f24
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:16:52 2016 -0500
+
+    Fixed oops
+
+ gameGraphics.ml | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+commit 75b01da3a14963bcc886727e96abe35c097ebca0
+Merge: 3fe3588 ad9d8bd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:13:16 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 3fe35886552e2dd7621f739ac69ed700b7016b74
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 01:12:59 2016 -0500
+
+    Handmade Font it is
+
+ engine.ml       |  5 +++--
+ gameGraphics.ml | 30 +++++++++++++++++-------------
+ 2 files changed, 20 insertions(+), 15 deletions(-)
+
+commit bad0838729628422fdae9b4f31356340e7d91b27
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 26 00:28:07 2016 -0500
+
+    SetVehicleDestination process handling
+
+ engine.ml | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+commit 6c6b7df76c7fdad61c526a332e0887ecc53325ab
+Author: Ubuntu <ubuntu@csvm>
+Date:   Fri Nov 25 20:02:20 2016 -0500
+
+    Started handling processes
+
+ engine.ml          | 162 +++++++++++++----------------------------------------
+ inputProcessing.ml |  17 ++++++
+ 2 files changed, 56 insertions(+), 123 deletions(-)
+
+commit ad9d8bd69a599d2488f98cd313db7b80c8698288
+Merge: 7f783ad f25655e
+Author: Max Knutins <max@qqmx.eu>
+Date:   Fri Nov 25 12:32:18 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 7f783ad8ea51c53e0e3f2bc1903ae66014e6dbd2
+Author: Max Knutins <max@qqmx.eu>
+Date:   Fri Nov 25 12:32:12 2016 -0500
+
+    DataProcessing loading done, but not incorporated into the main game yet; currently lives in its own data folder.
+
+ .gitignore                             |    3 +-
+ data/._d/gameelements_piqi.d           |    2 -
+ data/._d/gameelements_piqi_ext.d       |    2 -
+ data/._d/gamestate_piqi.d              |    4 -
+ data/._d/gamestate_piqi_ext.d          |    4 -
+ data/._d/graph_piqi.d                  |    2 -
+ data/._d/graph_piqi_ext.d              |    2 -
+ data/._d/piqirun_custom.d              |    2 -
+ data/._d/player_piqi.d                 |    2 -
+ data/._d/player_piqi_ext.d             |    2 -
+ data/.ocamlinit                        |    6 +-
+ data/Makefile                          |    4 +-
+ data/OCamlMakefile                     | 1281 --------------------------------
+ data/_build/_digests                   |   62 +-
+ data/_build/_log                       |  100 +--
+ data/_build/dataProcessing.cmi         |  Bin 1025 -> 1211 bytes
+ data/_build/dataProcessing.cmo         |  Bin 3937 -> 4123 bytes
+ data/_build/gameElements.cmi           |  Bin 1769 -> 8550 bytes
+ data/_build/gameElements.cmo           |  Bin 3967 -> 13325 bytes
+ data/_build/gameElements.ml            |   48 +-
+ data/_build/gameElements.ml.depends    |    2 +-
+ data/_build/gameelements_piqi.cmi      |  Bin 9168 -> 9147 bytes
+ data/_build/gameelements_piqi.cmo      |  Bin 66669 -> 64827 bytes
+ data/_build/gameelements_piqi.ml       |   52 +-
+ data/_build/gameelements_piqi_ext.cmi  |  Bin 8512 -> 8545 bytes
+ data/_build/gameelements_piqi_ext.cmo  |  Bin 40894 -> 40931 bytes
+ data/_build/gamestate_piqi.cmi         |  Bin 4513 -> 5193 bytes
+ data/_build/gamestate_piqi.cmo         |  Bin 20995 -> 24046 bytes
+ data/_build/gamestate_piqi.ml          |   17 +-
+ data/_build/gamestate_piqi_ext.cmi     |  Bin 4615 -> 5507 bytes
+ data/_build/gamestate_piqi_ext.cmo     |  Bin 20188 -> 24699 bytes
+ data/_build/gamestate_piqi_ext.ml      |   16 +
+ data/_build/graph_piqi.cmi             |  Bin 5516 -> 5521 bytes
+ data/_build/graph_piqi.cmo             |  Bin 35422 -> 35452 bytes
+ data/_build/graph_piqi.ml              |   14 +-
+ data/_build/graph_piqi_ext.cmi         |  Bin 4922 -> 4921 bytes
+ data/_build/graph_piqi_ext.cmo         |  Bin 23031 -> 23039 bytes
+ data/_build/piqirun_custom.cmi         |  Bin 1273 -> 2738 bytes
+ data/_build/piqirun_custom.cmo         |  Bin 7227 -> 16686 bytes
+ data/_build/piqirun_custom.ml          |  189 +++--
+ data/_build/piqirun_custom.ml.depends  |    2 +-
+ data/custom-types/._d/example_piqi.d   |    2 -
+ data/custom-types/._d/piqirun_custom.d |    2 -
+ data/custom-types/._d/skvl_piqi.d      |    2 -
+ data/custom-types/Makefile             |   44 --
+ data/custom-types/OCamlMakefile        | 1281 --------------------------------
+ data/custom-types/README               |    6 -
+ data/custom-types/a.out                |  Bin 666368 -> 0 bytes
+ data/custom-types/example.piqi         |   70 --
+ data/custom-types/example_piqi.cmi     |  Bin 4586 -> 0 bytes
+ data/custom-types/example_piqi.cmx     |  Bin 4374 -> 0 bytes
+ data/custom-types/example_piqi.ml      |   99 ---
+ data/custom-types/example_piqi.o       |  Bin 12656 -> 0 bytes
+ data/custom-types/piqirun_custom.cmi   |  Bin 5121 -> 0 bytes
+ data/custom-types/piqirun_custom.cmx   |  Bin 2122 -> 0 bytes
+ data/custom-types/piqirun_custom.ml    |   63 --
+ data/custom-types/piqirun_custom.o     |  Bin 5060 -> 0 bytes
+ data/custom-types/skvl.piqi            |   20 -
+ data/custom-types/skvl_piqi.cmi        |  Bin 2085 -> 0 bytes
+ data/custom-types/skvl_piqi.cmx        |  Bin 1672 -> 0 bytes
+ data/custom-types/skvl_piqi.ml         |   56 --
+ data/custom-types/skvl_piqi.o          |  Bin 6104 -> 0 bytes
+ data/exp/._d/exp_piqi.d                |    2 -
+ data/exp/._d/piqirun_custom.d          |    2 -
+ data/exp/._d/use_piqi.d                |    2 -
+ data/exp/Makefile                      |   44 --
+ data/exp/OCamlMakefile                 | 1281 --------------------------------
+ data/exp/a.out                         |  Bin 658480 -> 0 bytes
+ data/exp/exp.ml                        |   15 -
+ data/exp/exp.piqi                      |   36 -
+ data/exp/exp_piqi.cmi                  |  Bin 2263 -> 0 bytes
+ data/exp/exp_piqi.cmx                  |  Bin 1722 -> 0 bytes
+ data/exp/exp_piqi.ml                   |   98 ---
+ data/exp/exp_piqi.o                    |  Bin 8488 -> 0 bytes
+ data/exp/exp_piqi_ext.ml               |   43 --
+ data/exp/piqirun_custom.cmi            |  Bin 1111 -> 0 bytes
+ data/exp/piqirun_custom.cmx            |  Bin 653 -> 0 bytes
+ data/exp/piqirun_custom.ml             |   30 -
+ data/exp/piqirun_custom.o              |  Bin 1852 -> 0 bytes
+ data/exp/use.piqi                      |   19 -
+ data/exp/use_piqi.cmi                  |  Bin 1604 -> 0 bytes
+ data/exp/use_piqi.cmx                  |  Bin 1379 -> 0 bytes
+ data/exp/use_piqi.ml                   |   45 --
+ data/exp/use_piqi.o                    |  Bin 5080 -> 0 bytes
+ data/exp/use_piqi_ext.ml               |   44 --
+ data/gameElements.ml                   |   48 +-
+ data/gameelements.piqi                 |   22 +-
+ data/gameelements_piqi.ml              |   52 +-
+ data/gamestate.json                    |   67 +-
+ data/gamestate.piqi                    |    2 +-
+ data/gamestate_piqi.ml                 |   17 +-
+ data/gamestate_piqi_ext.ml             |   16 +
+ data/graph.piqi                        |    4 +-
+ data/graph_piqi.ml                     |   14 +-
+ data/io_json_xml_pb                    |  Bin 2103400 -> 0 bytes
+ data/piqirun_custom.ml                 |  189 +++--
+ 96 files changed, 597 insertions(+), 4958 deletions(-)
+
+commit f25655ebe4d5dbf33930c977e3d2d239123f3005
+Merge: 46bc6d0 4f1cfd3
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 23:45:02 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote
+    .
+
+commit 4f1cfd30cf04e90065c2906a64816e12b98fada0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 23:42:28 2016 -0500
+
+    Try this
+
+ Makefile        |  5 +----
+ engine.ml       |  1 -
+ gameGraphics.ml | 52 ++++++++++++++++++++++++++++++++++------------------
+ main.ml         |  2 +-
+ 4 files changed, 36 insertions(+), 24 deletions(-)
+
+commit 46bc6d0f4c46b8810e75f254e53fd07f8839b7d8
+Merge: 834fda6 a07dc75
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 23:26:07 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote
+    .
+
+commit 834fda63497dc2d2eeee6cd149db5502f0279f11
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 23:12:57 2016 -0500
+
+    Removed debug code, fixed bug with cargo unloading.
+
+ engine.ml       |  9 ++++++---
+ gameElements.ml | 15 ++++-----------
+ 2 files changed, 10 insertions(+), 14 deletions(-)
+
+commit a2d69e67cbfe93abe6325eb65284cd6680ff9d8a
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 23:06:13 2016 -0500
+
+    Cargo unloading of vehicles
+
+ #setup.sh#      | 17 +++++++++++
+ engine.ml       | 24 ++++++++-------
+ gameElements.ml | 92 +++++++++++++++++++++++++++++++++++++++------------------
+ gameGraphics.ml |  4 +--
+ player.ml       |  2 +-
+ 5 files changed, 97 insertions(+), 42 deletions(-)
+
+commit a07dc7509876fbb14362ac9e944d87c24ace5dc1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 22:00:21 2016 -0500
+
+    Popups, the good kind
+
+ gameGraphics.ml | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
+
+commit a1cc71aadaf5f873384502b6a66cabd904aadc5f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 19:00:46 2016 -0500
+
+    Roads adn Houses
+
+ gameGraphics.ml |  12 +++++++-----
+ house.png       | Bin 1278 -> 0 bytes
+ 2 files changed, 7 insertions(+), 5 deletions(-)
+
+commit b4d842137a9d30ae130fa2fb28048e37afbe8f6f
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 16:16:29 2016 -0500
+
+    Add files via upload
+
+ images/house.png | Bin 0 -> 4899 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ead7f3816db28491447a42b622516cf4e642fc00
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 16:09:59 2016 -0500
+
+    Add files via upload
+
+ house.png | Bin 0 -> 1278 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 8eecb1d63b66234e078bd7543ba653ba39c4624f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 15:55:46 2016 -0500
+
+    Buttons and transparency
+
+ Makefile            |   2 +-
+ gameGraphics.ml     |  33 ++++++++++++++++++++-------------
+ images/buytruck.jpg | Bin 45068 -> 0 bytes
+ main.ml             |  25 +++++++++++++------------
+ setup.sh            |   6 ++++--
+ 5 files changed, 38 insertions(+), 28 deletions(-)
+
+commit f205ef0ee1e025068953af6e8074ff0f1b119886
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 15:51:22 2016 -0500
+
+    Add files via upload
+
+ images/carbutt.png   | Bin 0 -> 5051 bytes
+ images/pausebutt.png | Bin 0 -> 5003 bytes
+ images/savebutt.png  | Bin 0 -> 5334 bytes
+ images/truckbutt.png | Bin 3511 -> 5058 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 344b5a7187e9d18120fc6aa4a59cfda628209935
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 15:40:29 2016 -0500
+
+    Add files via upload
+
+ images/truckbutt.png | Bin 33204 -> 3511 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit e37ad6bc4d74dfaf9dcd039bf5bcebbd4521700b
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 15:33:58 2016 -0500
+
+    Add files via upload
+
+ images/truckbutt.png | Bin 0 -> 33204 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 383a3dccf5e4710b8e6dbdf11f3b8fbb54ca610f
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 15:29:07 2016 -0500
+
+    Add files via upload
+
+ images/buytruck.jpg | Bin 0 -> 45068 bytes
+ images/buytruck.png | Bin 9828 -> 134741 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f9b78d034652ddf8e7b3f407e98689771a614de6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 14:30:24 2016 -0500
+
+    New makefile
+
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 976f743b44f744f8aee3b064032c5a73eb8499e2
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 13:33:02 2016 -0500
+
+    WE'VE GOT PICTURES
+
+ engine.ml                     |   5 ++--
+ gameGraphics.ml               |  55 ++++++++++++++++++++++++++----------------
+ images/buycar.png             | Bin 12307 -> 0 bytes
+ images/pause.png              | Bin 12089 -> 0 bytes
+ images/save.png               | Bin 13493 -> 0 bytes
+ start.png => images/start.png | Bin
+ main.ml                       |   1 +
+ 7 files changed, 37 insertions(+), 24 deletions(-)
+
+commit cb2ffaf24b5b0f62fa3609834affe636eb38af73
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 13:01:18 2016 -0500
+
+    Add files via upload
+
+ start.png | Bin 0 -> 209226 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2bc2e82d3dce78fed2bdf63aa22c9e5e03dd898b
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 12:02:41 2016 -0500
+
+    Add files via upload
+
+ images/bg.png | Bin 0 -> 1055384 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit f0a0dcbb83ebd7f91f2c471b1d2eb756b9396464
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 01:58:28 2016 -0500
+
+    Add files via upload
+
+ images/buytruck.png | Bin 12182 -> 9828 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2151ba87864f16b5c369f41e1d74592740413895
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 01:55:36 2016 -0500
+
+    Image folder
+
+ Makefile                            |   2 +-
+ engine.ml                           |   5 +++--
+ gameGraphics.ml                     |  24 +++++++++++++++---------
+ Cars.png => images/Cars.png         | Bin
+ buycar.png => images/buycar.png     | Bin
+ buytruck.png => images/buytruck.png | Bin
+ car.png => images/car.png           | Bin
+ pause.png => images/pause.png       | Bin
+ save.png => images/save.png         | Bin
+ truck.png => images/truck.png       | Bin
+ 10 files changed, 19 insertions(+), 12 deletions(-)
+
+commit d0749accfda6793ae30b9296b1c832652a8d1a9e
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 01:35:19 2016 -0500
+
+    Buttons
+
+ buycar.png   | Bin 0 -> 12307 bytes
+ buytruck.png | Bin 0 -> 12182 bytes
+ pause.png    | Bin 0 -> 12089 bytes
+ save.png     | Bin 0 -> 13493 bytes
+ 4 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 7c1aab11fd139c06c092c1b199e9a3b69bcf1294
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 24 01:03:46 2016 -0500
+
+    Images baby!
+
+ .omakedb.lock   |   1 +
+ Makefile        |   2 +-
+ car.bmp         | Bin 4864 -> 0 bytes
+ gameGraphics.ml |  20 ++++++++++++--------
+ setup.sh        |   2 ++
+ 5 files changed, 16 insertions(+), 9 deletions(-)
+
+commit fe9bd207fc148ebbb2c322a2b22f3faef7257858
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 00:25:07 2016 -0500
+
+    cars
+
+ car.png | Bin 6911 -> 6630 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 15dbfd1b238726c97ec96391fd61f2e944104329
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Thu Nov 24 00:16:34 2016 -0500
+
+    Truck
+
+ truck.png | Bin 0 -> 4836 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit ca6719d4a7585e61f7526573dfa37e4cee7e83b0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 16:55:28 2016 -0500
+
+    small change to hardcoded demo to have a location that both accepts and produces goods
+
+ engine.ml | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit 3e5501adb5f48786ff88b3f20c193489e034e0f6
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 16:51:40 2016 -0500
+
+    update locations in each frame, including their good_profiles for accepting and producing goods, also modifies the graph in between frames
+
+ engine.ml       | 14 ++++++++++++--
+ gameElements.ml | 32 ++++++++++++++++++++++++++------
+ 2 files changed, 38 insertions(+), 8 deletions(-)
+
+commit aedbfebc4de6eec74f7bf9691bd48a78e30223aa
+Merge: f0ee12c 0ce2163
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 14:56:41 2016 -0500
+
+    Buttons
+
+commit f0ee12cb2ff6b633c357aeec8903dc7e17ea6406
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 14:54:16 2016 -0500
+
+    Concept Buttons and Game Over replaces error on close
+
+ engine.ml       | 45 ++++++++++++++++++++++++++-------------------
+ gameElements.ml |  4 ++--
+ gameGraphics.ml | 19 ++++++++++++++++++-
+ main.ml         |  5 ++++-
+ 4 files changed, 50 insertions(+), 23 deletions(-)
+
+commit 0ce216309c16c49adf33c986f5a70a5d7420b890
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 14:51:51 2016 -0500
+
+    multiple destination vehicle movement, until the final destination has been reached (requires a list of destinations, dikstra's still needs implemented/interfaced
+
+ engine.ml       |  6 +++---
+ gameElements.ml | 13 +++++++------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
+
+commit fc98cc9ba29890dc3bb5d5e14a16ec8ff355e7eb
+Merge: 458473e 8f17465
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 14:22:59 2016 -0500
+
+    resolved merge conflicts
+
+commit 458473eb278ba29ab7827c177b9cde485c65b35d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Nov 23 14:12:29 2016 -0500
+
+    Vehicles can now break down
+
+ engine.ml       |  8 ++++----
+ gameElements.ml | 35 +++++++++++++++++++++++++----------
+ 2 files changed, 29 insertions(+), 14 deletions(-)
+
+commit 8f17465ecf54adcbfcaa2770b7660b3d7809fb2c
+Merge: cc214e3 2159fda
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 17 12:12:31 2016 -0500
+
+    Merge
+
+commit cc214e3e6516a068657616421add5b72676e317b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 17 12:10:09 2016 -0500
+
+    Scalable display size
+
+ Makefile        |   2 +-
+ engine.ml       |  17 +++---
+ gameGraphics.ml |  58 ++++++++++++---------
+ graph.ml        | 158 --------------------------------------------------------
+ main.ml         |   8 ++-
+ 5 files changed, 49 insertions(+), 194 deletions(-)
+
+commit 2159fdae421dec62e0d139e15dc49ac7482a67a8
+Author: Dan Liu dl556 <ubuntu@csvm>
+Date:   Tue Nov 15 19:31:51 2016 -0500
+
+    added functions that buy vehicles; sell goods at a location
+
+ engine.ml                   | 17 ++++++------
+ gameElements.ml             | 64 ++++++++++++++++++++++++++++++++++++---------
+ interfaces/gameElements.mli |  1 +
+ 3 files changed, 62 insertions(+), 20 deletions(-)
+
+commit 906ace0ba59581c87b3a8114c76fe92328c565fb
+Merge: 427e095 59bedd9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 19:13:46 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 59bedd9c2a8dc8196681c590120939a064ead3d8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 19:13:12 2016 -0500
+
+    Vehicle movement fix
+
+ engine.ml       | 49 +++++++++++++++++++++++++++++++++++++++++++++----
+ gameElements.ml | 13 ++++---------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
+
+commit 5553c6d18043ee26538e06b27ffa5c28f8f451f9
+Merge: 7ecb7b3 1588b41
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:54:25 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote
+    .
+
+commit 7ecb7b31e12a34184bff66227719c21f77710121
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:53:55 2016 -0500
+
+    No meaningful progress, push for merging
+
+ gameElements.ml | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+commit 427e095ada9631a675e8902e12eae5fd2dffab0f
+Merge: 36e05f0 1588b41
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:44:30 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 1588b41080245632bcab5c25f760d0a9246903e5
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Tue Nov 15 18:43:47 2016 -0500
+
+    Add files via upload
+
+ car.png | Bin 0 -> 6911 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c5a58d47f9a393a49d6b8a6570291ef0109c6c12
+Merge: 547f985 90a4723
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:42:48 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    merge from remote.
+
+commit 547f985ec0f06b25145bd252f4e9cc1e9a64c2bf
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:42:33 2016 -0500
+
+    Changed types to float in vehicle, connectin, and location, added basic movement code which still needs fixed
+
+ engine.ml                  |  20 +++++----
+ gameElements.ml            |  45 ++++++++++++++-----
+ gameGraphics.ml            |  12 +++--
+ interfaces/gameElements.ml | 106 ---------------------------------------------
+ 4 files changed, 55 insertions(+), 128 deletions(-)
+
+commit 36e05f09366087b20e6b2f58bbc1e2439f8c5281
+Merge: 12e7049 90a4723
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 18:33:55 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 90a47237e4183a0efec949dfd883ad718b69bb0a
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Tue Nov 15 18:33:37 2016 -0500
+
+    Add files via upload
+
+ car.bmp | Bin 0 -> 4864 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 12e704997675303e916a6668160d04da8d880864
+Merge: ff19058 ae0f89d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 17:31:51 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit ae0f89da1d2fd4e28f53ad38f2d19df441d9595e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 17:31:00 2016 -0500
+
+    Fixed old merge conflict in mli file, removed predicted travel time from vehicle
+
+ engine.ml                   | 3 +--
+ gameElements.ml             | 1 -
+ interfaces/gameElements.mli | 5 +----
+ 3 files changed, 2 insertions(+), 7 deletions(-)
+
+commit ff1905820b3ee2e9d398499e2a059917ed93cf74
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 17:28:31 2016 -0500
+
+    Pulling
+
+ graph.ml | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 158 insertions(+)
+
+commit 3f10bd3869de4301517fb409a591518f48356a93
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 15 17:28:08 2016 -0500
+
+    Fixed location code change, tested vehicle drawing (just a circle)
+
+ engine.ml       | 27 ++++++++++++++++++++++-----
+ gameElements.ml | 12 +++---------
+ 2 files changed, 25 insertions(+), 14 deletions(-)
+
+commit ef162aa7573e5aca4af0d9e75eadf9155b4288f0
+Author: Max Knutins <max@qqmx.eu>
+Date:   Tue Nov 15 00:20:25 2016 -0500
+
+    DataProcessing: Phase 1 done, created Piqi schema files, some example conversion functions, and aliases to convert to native types.
+
+ data/._d/gameelements_piqi.d                 |    2 +
+ data/._d/gameelements_piqi_ext.d             |    2 +
+ data/._d/gamestate_piqi.d                    |    4 +
+ data/._d/gamestate_piqi_ext.d                |    4 +
+ data/._d/graph_piqi.d                        |    2 +
+ data/._d/graph_piqi_ext.d                    |    2 +
+ data/._d/piqirun_custom.d                    |    2 +
+ data/._d/player_piqi.d                       |    2 +
+ data/._d/player_piqi_ext.d                   |    2 +
+ data/.ocamlinit                              |   26 +
+ data/.ocamlinit_backup                       |   21 +
+ data/Makefile                                |    8 +
+ data/Makefile_manual                         |   44 +
+ data/OCamlMakefile                           | 1281 ++++++++++++++++++++++++++
+ data/_build/_digests                         |   37 +
+ data/_build/_log                             |   52 ++
+ data/_build/dataProcessing.cmi               |  Bin 0 -> 1025 bytes
+ data/_build/dataProcessing.cmo               |  Bin 0 -> 3937 bytes
+ data/_build/dataProcessing.ml                |   37 +
+ data/_build/dataProcessing.ml.depends        |    1 +
+ data/_build/gameElements.cmi                 |  Bin 0 -> 1769 bytes
+ data/_build/gameElements.cmo                 |  Bin 0 -> 3967 bytes
+ data/_build/gameElements.ml                  |   64 ++
+ data/_build/gameElements.ml.depends          |    1 +
+ data/_build/gameelements_piqi.cmi            |  Bin 0 -> 9168 bytes
+ data/_build/gameelements_piqi.cmo            |  Bin 0 -> 66669 bytes
+ data/_build/gameelements_piqi.ml             |  401 ++++++++
+ data/_build/gameelements_piqi.ml.depends     |    1 +
+ data/_build/gameelements_piqi_ext.cmi        |  Bin 0 -> 8512 bytes
+ data/_build/gameelements_piqi_ext.cmo        |  Bin 0 -> 40894 bytes
+ data/_build/gameelements_piqi_ext.ml         |  187 ++++
+ data/_build/gameelements_piqi_ext.ml.depends |    1 +
+ data/_build/gamestate_piqi.cmi               |  Bin 0 -> 4513 bytes
+ data/_build/gamestate_piqi.cmo               |  Bin 0 -> 20995 bytes
+ data/_build/gamestate_piqi.ml                |  111 +++
+ data/_build/gamestate_piqi.ml.depends        |    1 +
+ data/_build/gamestate_piqi_ext.cmi           |  Bin 0 -> 4615 bytes
+ data/_build/gamestate_piqi_ext.cmo           |  Bin 0 -> 20188 bytes
+ data/_build/gamestate_piqi_ext.ml            |   94 ++
+ data/_build/gamestate_piqi_ext.ml.depends    |    1 +
+ data/_build/graph_piqi.cmi                   |  Bin 0 -> 5516 bytes
+ data/_build/graph_piqi.cmo                   |  Bin 0 -> 35422 bytes
+ data/_build/graph_piqi.ml                    |  216 +++++
+ data/_build/graph_piqi.ml.depends            |    1 +
+ data/_build/graph_piqi_ext.cmi               |  Bin 0 -> 4922 bytes
+ data/_build/graph_piqi_ext.cmo               |  Bin 0 -> 23031 bytes
+ data/_build/graph_piqi_ext.ml                |  108 +++
+ data/_build/graph_piqi_ext.ml.depends        |    1 +
+ data/_build/ocamlc.where                     |    1 +
+ data/_build/piqirun_custom.cmi               |  Bin 0 -> 1273 bytes
+ data/_build/piqirun_custom.cmo               |  Bin 0 -> 7227 bytes
+ data/_build/piqirun_custom.ml                |   73 ++
+ data/_build/piqirun_custom.ml.depends        |    1 +
+ data/_build/player.cmi                       |  Bin 0 -> 459 bytes
+ data/_build/player.cmo                       |  Bin 0 -> 2037 bytes
+ data/_build/player.ml                        |   13 +
+ data/_build/player.ml.depends                |    1 +
+ data/_build/player_piqi.cmi                  |  Bin 0 -> 2123 bytes
+ data/_build/player_piqi.cmo                  |  Bin 0 -> 11187 bytes
+ data/_build/player_piqi.ml                   |   77 ++
+ data/_build/player_piqi.ml.depends           |    1 +
+ data/_build/player_piqi_ext.cmi              |  Bin 0 -> 1994 bytes
+ data/_build/player_piqi_ext.cmo              |  Bin 0 -> 8998 bytes
+ data/_build/player_piqi_ext.ml               |   43 +
+ data/_build/player_piqi_ext.ml.depends       |    1 +
+ data/custom-types/._d/example_piqi.d         |    2 +
+ data/custom-types/._d/piqirun_custom.d       |    2 +
+ data/custom-types/._d/skvl_piqi.d            |    2 +
+ data/custom-types/Makefile                   |   44 +
+ data/custom-types/OCamlMakefile              | 1281 ++++++++++++++++++++++++++
+ data/custom-types/README                     |    6 +
+ data/custom-types/a.out                      |  Bin 0 -> 666368 bytes
+ data/custom-types/example.piqi               |   70 ++
+ data/custom-types/example_piqi.cmi           |  Bin 0 -> 4586 bytes
+ data/custom-types/example_piqi.cmx           |  Bin 0 -> 4374 bytes
+ data/custom-types/example_piqi.ml            |   99 ++
+ data/custom-types/example_piqi.o             |  Bin 0 -> 12656 bytes
+ data/custom-types/piqirun_custom.cmi         |  Bin 0 -> 5121 bytes
+ data/custom-types/piqirun_custom.cmx         |  Bin 0 -> 2122 bytes
+ data/custom-types/piqirun_custom.ml          |   63 ++
+ data/custom-types/piqirun_custom.o           |  Bin 0 -> 5060 bytes
+ data/custom-types/skvl.piqi                  |   20 +
+ data/custom-types/skvl_piqi.cmi              |  Bin 0 -> 2085 bytes
+ data/custom-types/skvl_piqi.cmx              |  Bin 0 -> 1672 bytes
+ data/custom-types/skvl_piqi.ml               |   56 ++
+ data/custom-types/skvl_piqi.o                |  Bin 0 -> 6104 bytes
+ data/dataProcessing.ml                       |   37 +
+ data/exp/._d/exp_piqi.d                      |    2 +
+ data/exp/._d/piqirun_custom.d                |    2 +
+ data/exp/._d/use_piqi.d                      |    2 +
+ data/exp/Makefile                            |   44 +
+ data/exp/OCamlMakefile                       | 1281 ++++++++++++++++++++++++++
+ data/exp/a.out                               |  Bin 0 -> 658480 bytes
+ data/exp/exp.ml                              |   15 +
+ data/exp/exp.piqi                            |   36 +
+ data/exp/exp_piqi.cmi                        |  Bin 0 -> 2263 bytes
+ data/exp/exp_piqi.cmx                        |  Bin 0 -> 1722 bytes
+ data/exp/exp_piqi.ml                         |   98 ++
+ data/exp/exp_piqi.o                          |  Bin 0 -> 8488 bytes
+ data/exp/exp_piqi_ext.ml                     |   43 +
+ data/exp/piqirun_custom.cmi                  |  Bin 0 -> 1111 bytes
+ data/exp/piqirun_custom.cmx                  |  Bin 0 -> 653 bytes
+ data/exp/piqirun_custom.ml                   |   30 +
+ data/exp/piqirun_custom.o                    |  Bin 0 -> 1852 bytes
+ data/exp/use.piqi                            |   19 +
+ data/exp/use_piqi.cmi                        |  Bin 0 -> 1604 bytes
+ data/exp/use_piqi.cmx                        |  Bin 0 -> 1379 bytes
+ data/exp/use_piqi.ml                         |   45 +
+ data/exp/use_piqi.o                          |  Bin 0 -> 5080 bytes
+ data/exp/use_piqi_ext.ml                     |   44 +
+ data/gameElements.ml                         |   64 ++
+ data/gameelements.piqi                       |  189 ++++
+ data/gameelements_piqi.ml                    |  401 ++++++++
+ data/gameelements_piqi_ext.ml                |  187 ++++
+ data/gamestate.json                          |   95 ++
+ data/gamestate.piqi                          |   66 ++
+ data/gamestate_full.json                     |   72 ++
+ data/gamestate_piqi.ml                       |  111 +++
+ data/gamestate_piqi_ext.ml                   |   94 ++
+ data/graph.piqi                              |  104 +++
+ data/graph_piqi.ml                           |  216 +++++
+ data/graph_piqi_ext.ml                       |  108 +++
+ data/io_json_xml_pb                          |  Bin 0 -> 2103400 bytes
+ data/piqirun_custom.ml                       |   73 ++
+ data/player.ml                               |   13 +
+ data/player.piqi                             |   25 +
+ data/player_piqi.ml                          |   77 ++
+ data/player_piqi_ext.ml                      |   43 +
+ gameElements.ml                              |    4 +-
+ planar.ml                                    |    4 +-
+ 130 files changed, 8213 insertions(+), 4 deletions(-)
+
+commit 16b6c9785f2ec99d64e9210c570f754dabf23fa5
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 22:53:12 2016 -0500
+
+    Tested drawing  a graph in the engine
+
+ engine.ml       | 28 ++++++++++++++++++++++++----
+ gameGraphics.ml |  6 +++---
+ 2 files changed, 27 insertions(+), 7 deletions(-)
+
+commit 733b1c94af8ceaa3d0f707a792dafe45a11e3aae
+Merge: d6e96d7 e3e0f33
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 22:33:03 2016 -0500
+
+    merge conflicts and connection and location drawing fixes
+
+commit d6e96d7c4694f88fb1aa75f73025ebc7ef9a5fe7
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 22:12:42 2016 -0500
+
+    Drawing game state additions
+
+ _build/_digests                |  14 --
+ _build/_log                    |  20 ---
+ _build/engine.ml               | 151 --------------------
+ _build/engine.ml.depends       |   1 -
+ _build/gameElements.cmi        | Bin 8235 -> 0 bytes
+ _build/gameElements.cmo        | Bin 12863 -> 0 bytes
+ _build/gameElements.ml         |  93 -------------
+ _build/gameElements.ml.depends |   1 -
+ _build/main.ml                 |   7 -
+ _build/main.ml.depends         |   1 -
+ _build/ocamlc.where            |   1 -
+ _build/planar.byte             | Bin 5207550 -> 0 bytes
+ _build/planar.cmi              | Bin 14488 -> 0 bytes
+ _build/planar.cmo              | Bin 64062 -> 0 bytes
+ _build/planar.ml               | 309 -----------------------------------------
+ _build/planar.ml.depends       |   1 -
+ _build/player.cmi              | Bin 459 -> 0 bytes
+ _build/player.cmo              | Bin 1995 -> 0 bytes
+ _build/player.ml               |  13 --
+ _build/player.ml.depends       |   1 -
+ engine.ml                      |  20 +--
+ gameElements.ml                |  34 +++--
+ gameGraphics.ml                |  28 ++--
+ main.ml                        |   6 +-
+ planar.byte                    |   1 -
+ 25 files changed, 48 insertions(+), 654 deletions(-)
+
+commit e3e0f33d69ad0dc892a6faa1ec7c4805d6aeee42
+Author: Dan Liu dl556 <ubuntu@csvm>
+Date:   Sat Nov 12 22:04:36 2016 -0500
+
+    added gameElements.ml; created functions related to basic gameplay; changed some other .mli files (to fix later)
+
+ .gitignore                     |   1 +
+ graph1.ml                      |   2 +-
+ interfaces/engine.mli          |   5 +-
+ interfaces/gameElements.ml     | 106 +++++++++++++++++++++++++++++++++++++++++
+ interfaces/gameElements.mli    |  91 ++++++++---------------------------
+ interfaces/gameGraphics.mli    |   2 +-
+ interfaces/inputProcessing.mli |   2 -
+ interfaces/main.mli            |   3 +-
+ interfaces/player.mli          |   6 +--
+ 9 files changed, 138 insertions(+), 80 deletions(-)
+
+commit 293c36737e737b53a2cde9835384ef530262e5c8
+Merge: af239bd a372044
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 20:48:29 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+    
+    Merge from remote.
+
+commit af239bd1256107044063baa809fa946a2f1f0eda
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 20:48:10 2016 -0500
+
+    rough main loop of engine, partial skeleton of gameElements and player
+
+ Makefile                       |   4 +
+ _build/_digests                |  14 ++
+ _build/_log                    |  20 +++
+ _build/engine.ml               | 151 ++++++++++++++++++++
+ _build/engine.ml.depends       |   1 +
+ _build/gameElements.cmi        | Bin 0 -> 8235 bytes
+ _build/gameElements.cmo        | Bin 0 -> 12863 bytes
+ _build/gameElements.ml         |  93 +++++++++++++
+ _build/gameElements.ml.depends |   1 +
+ _build/main.ml                 |   7 +
+ _build/main.ml.depends         |   1 +
+ _build/ocamlc.where            |   1 +
+ _build/planar.byte             | Bin 0 -> 5207550 bytes
+ _build/planar.cmi              | Bin 0 -> 14488 bytes
+ _build/planar.cmo              | Bin 0 -> 64062 bytes
+ _build/planar.ml               | 309 +++++++++++++++++++++++++++++++++++++++++
+ _build/planar.ml.depends       |   1 +
+ _build/player.cmi              | Bin 0 -> 459 bytes
+ _build/player.cmo              | Bin 0 -> 1995 bytes
+ _build/player.ml               |  13 ++
+ _build/player.ml.depends       |   1 +
+ engine.ml                      |  39 +++++-
+ gameElements.ml                |  93 +++++++++++++
+ interfaces/engine.mli          |   2 +-
+ interfaces/gameElements.mli    |   6 +-
+ interfaces/player.mli          |   2 +-
+ main.ml                        |   7 +
+ planar.byte                    |   1 +
+ player.ml                      |  13 ++
+ 29 files changed, 774 insertions(+), 6 deletions(-)
+
+commit a372044da7731e63c119c5b8e97ffc5eda5fbe0d
+Merge: a1589c9 08f3605
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 20:30:13 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit a1589c947b974f93d1bfe72cf616216a0ea4a759
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 20:29:49 2016 -0500
+
+    Added gameGraphics.ml
+
+ _build/_digests          |   9 --
+ _build/_log              |  15 ---
+ _build/engine.cmi        | Bin 2388 -> 0 bytes
+ _build/engine.cmo        | Bin 7954 -> 0 bytes
+ _build/engine.ml         | 114 -----------------
+ _build/engine.ml.depends |   1 -
+ _build/game.ml           | 321 -----------------------------------------------
+ _build/game.ml.depends   |   1 -
+ _build/ocamlc.where      |   1 -
+ _build/planar.byte       | Bin 5207540 -> 0 bytes
+ _build/planar.cmi        | Bin 14488 -> 0 bytes
+ _build/planar.cmo        | Bin 64052 -> 0 bytes
+ _build/planar.ml         | 309 ---------------------------------------------
+ _build/planar.ml.depends |   1 -
+ planar.byte              |   1 -
+ 15 files changed, 773 deletions(-)
+
+commit 6d1be731da82ef76dfe47d09fc3eee9f602a0f5b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 20:29:39 2016 -0500
+
+    Added gameGraphics.ml
+
+ Makefile                 |   3 +
+ _build/_digests          |   9 ++
+ _build/_log              |  15 +++
+ _build/engine.cmi        | Bin 0 -> 2388 bytes
+ _build/engine.cmo        | Bin 0 -> 7954 bytes
+ _build/engine.ml         | 114 +++++++++++++++++
+ _build/engine.ml.depends |   1 +
+ _build/game.ml           | 321 +++++++++++++++++++++++++++++++++++++++++++++++
+ _build/game.ml.depends   |   1 +
+ _build/ocamlc.where      |   1 +
+ _build/planar.byte       | Bin 0 -> 5207540 bytes
+ _build/planar.cmi        | Bin 0 -> 14488 bytes
+ _build/planar.cmo        | Bin 0 -> 64052 bytes
+ _build/planar.ml         | 309 +++++++++++++++++++++++++++++++++++++++++++++
+ _build/planar.ml.depends |   1 +
+ gameGraphics.ml          |  51 ++++++++
+ planar.byte              |   1 +
+ 17 files changed, 827 insertions(+)
+
+commit 08f360528a74acf769516c587c9baddb09f12669
+Merge: e78aeb5 a1c5d10
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 12 19:32:10 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit e78aeb5f02382fa226cfe735f54d690d3768ef23
+Author: Max Knutins <max@qqmx.eu>
+Date:   Sat Nov 12 19:32:05 2016 -0500
+
+    Added gitignore.
+
+ .gitignore | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+commit a1c5d10578d52cd23825e94bbd6c1aa5f5db65b4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 12 19:07:33 2016 -0500
+
+    add route
+
+ planar.ml | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
+
+commit 1abc6cd94ba990956a00e25be6a173532149921f
+Merge: 95f3ed8 b3fdd65
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Nov 10 14:27:11 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit 95f3ed806ab203a0348443da1d06029e993dbfa0
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 18:02:13 2016 -0500
+
+    make
+
+ planar.byte | 1 -
+ planar.ml   | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+
+commit b3fdd65f137845d02e4bc2236614e9693c9f770f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 18:01:31 2016 -0500
+
+    Changed main mli file to make it more clear
+
+ interfaces/main.mli   | 2 +-
+ interfaces/player.mli | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+commit b115244b5b2d181fe0cba0df8ba0f4b6c257e000
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:58:44 2016 -0500
+
+    fixed 80 line limit issue
+
+ interfaces/engine.mli | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
+
+commit 6f2c0928f7e3bfcac5de9cc66094f244e008cd84
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:54:40 2016 -0500
+
+    Added processes
+
+ interfaces/inputProcessing.mli | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+commit 2affe1ce1b062e2b1308dac455d2f9239c59f3dd
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:38:13 2016 -0500
+
+    Changed module structure by adding gameElements
+
+ interfaces/connection.mli   |  18 --------
+ interfaces/gameElements.mli | 100 ++++++++++++++++++++++++++++++++++++++++++++
+ interfaces/good.mli         |  22 ----------
+ interfaces/location.mli     |  22 ----------
+ interfaces/vehicle.mli      |  32 --------------
+ 5 files changed, 100 insertions(+), 94 deletions(-)
+
+commit 6d02733d6a6ec81c36319bbb8904d8d54f53eb7a
+Merge: a3a54e2 f872f91
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:02:55 2016 -0500
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit a3a54e25df23d3d733cddc446b440df3a03f918d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:02:46 2016 -0500
+
+    Pulling
+
+ _build/_digests          |   4 -
+ _build/_log              |   8 --
+ _build/ocamlc.where      |   1 -
+ _build/planar.byte       | Bin 5204148 -> 0 bytes
+ _build/planar.cmi        | Bin 14382 -> 0 bytes
+ _build/planar.cmo        | Bin 60469 -> 0 bytes
+ _build/planar.ml         | 290 -----------------------------------------------
+ _build/planar.ml.depends |   1 -
+ planar.byte              |   1 -
+ 9 files changed, 305 deletions(-)
+
+commit 97ae867ca22a43657e8cbee62a1d666a2bdeac3b
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Nov 8 17:02:35 2016 -0500
+
+    Pulling
+
+ _build/_digests          |   4 +
+ _build/_log              |   8 ++
+ _build/ocamlc.where      |   1 +
+ _build/planar.byte       | Bin 0 -> 5204148 bytes
+ _build/planar.cmi        | Bin 0 -> 14382 bytes
+ _build/planar.cmo        | Bin 0 -> 60469 bytes
+ _build/planar.ml         | 290 +++++++++++++++++++++++++++++++++++++++++++++++
+ _build/planar.ml.depends |   1 +
+ planar.byte              |   1 +
+ planar.ml                |  17 ++-
+ 10 files changed, 312 insertions(+), 10 deletions(-)
+
+commit f872f91170502291a017cc07e78aba2c972aae56
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 18:59:15 2016 -0400
+
+    Renamed InputProcessor module to inputProcessing
+
+ interfaces/{inputProcessor.mli => inputProcessing.mli} | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit fc1fa7abc0c8eb2b0f829a0197f2d4581a17ba9e
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 18:32:09 2016 -0400
+
+    Fixed some typos in the interfaces, minor changes
+
+ interfaces/connection.mli     |  6 ++++--
+ interfaces/engine.mli         |  2 +-
+ interfaces/gameGraphics.mli   | 11 ++++++-----
+ interfaces/good.mli           | 10 +++++-----
+ interfaces/inputProcessor.mli | 14 +++++++-------
+ interfaces/location.mli       | 10 ++++++++--
+ 6 files changed, 31 insertions(+), 22 deletions(-)
+
+commit aabb78db2628dfb5f754571c3e8c3d3678037dc8
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 18:08:30 2016 -0400
+
+    Made interfaces for remaining modules needed
+
+ interfaces/connection.mli     | 16 ++++++++++++++++
+ interfaces/gameGraphics.mli   |  5 +++++
+ interfaces/good.mli           | 22 ++++++++++++++++++++++
+ interfaces/inputProcessor.mli | 20 ++++++++++++++++++++
+ interfaces/main.mli           |  2 ++
+ interfaces/player.mli         | 19 +++++++++++++++++++
+ interfaces/vehicle.mli        | 32 ++++++++++++++++++++++++++++++++
+ 7 files changed, 116 insertions(+)
+
+commit 6f980e7d64314db7ff9c12c09454c11cc0b0afdf
+Merge: 618855c 1f3a2d4
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 17:58:57 2016 -0400
+
+    Fixed merge conflict
+
+commit 618855c6d51623d532162ae505b8e88a156af435
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Nov 5 17:57:39 2016 -0400
+
+    Added some interfaces
+
+ _build/_digests               |   7 ++++---
+ _build/_log                   |   6 +++---
+ _build/planar.byte            | Bin 5203849 -> 5203859 bytes
+ _build/planar.cmo             | Bin 60219 -> 60229 bytes
+ interfaces/dataProcessing.mli |  14 ++++++++++++++
+ interfaces/engine.mli         |  22 ++++++++++++++++++++++
+ interfaces/location.mli       |  16 ++++++++++++++++
+ planar.byte                   |   2 +-
+ 8 files changed, 60 insertions(+), 7 deletions(-)
+
+commit 1f3a2d445f00cb1c4d0bdb748e897d708295001f
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Oct 29 19:10:07 2016 -0400
+
+    Planar adds route
+
+ _build/_digests          |   8 --
+ _build/_log              |   8 --
+ _build/ocamlc.where      |   1 -
+ _build/ograph.byte       | Bin 4864126 -> 0 bytes
+ _build/ograph.cmi        | Bin 11416 -> 0 bytes
+ _build/ograph.cmo        | Bin 59462 -> 0 bytes
+ _build/ograph.ml         | 299 -----------------------------------------------
+ _build/ograph.ml.depends |   1 -
+ _build/planar.byte       | Bin 5203849 -> 0 bytes
+ _build/planar.cmi        | Bin 14297 -> 0 bytes
+ _build/planar.cmo        | Bin 60219 -> 0 bytes
+ _build/planar.ml         | 288 ---------------------------------------------
+ _build/planar.ml.depends |   1 -
+ ograph.byte              |   1 -
+ planar.byte              |   1 -
+ planar.ml                |  70 +++++------
+ 16 files changed, 36 insertions(+), 642 deletions(-)
+
+commit ec033286b15d2ec6997feabce2c4417b4d817655
+Merge: c0b527f 91ea795
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Oct 29 18:08:17 2016 -0400
+
+    Merge branch 'master' of https://github.coecis.cornell.edu/jtg98/CS3110_Final
+
+commit c0b527feef88edce48c78957fadb06eebd159058
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Oct 29 18:07:57 2016 -0400
+
+    Planar graph example
+
+ Makefile                 |   5 +
+ _build/_digests          |   8 ++
+ _build/_log              |   8 ++
+ _build/ocamlc.where      |   1 +
+ _build/ograph.byte       | Bin 0 -> 4864126 bytes
+ _build/ograph.cmi        | Bin 0 -> 11416 bytes
+ _build/ograph.cmo        | Bin 0 -> 59462 bytes
+ _build/ograph.ml         | 299 +++++++++++++++++++++++++++++++++++++++++++++++
+ _build/ograph.ml.depends |   1 +
+ _build/planar.byte       | Bin 0 -> 5203849 bytes
+ _build/planar.cmi        | Bin 0 -> 14297 bytes
+ _build/planar.cmo        | Bin 0 -> 60219 bytes
+ _build/planar.ml         | 288 +++++++++++++++++++++++++++++++++++++++++++++
+ _build/planar.ml.depends |   1 +
+ graph.ml => graph1.ml    |  62 ++++++----
+ ograph.byte              |   1 +
+ ograph.ml                | 299 +++++++++++++++++++++++++++++++++++++++++++++++
+ planar.byte              |   1 +
+ planar.ml                | 288 +++++++++++++++++++++++++++++++++++++++++++++
+ 19 files changed, 1240 insertions(+), 22 deletions(-)
+
+commit 91ea7955f09789c4254d05cad7b33bee5c75cbdd
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Tue Oct 25 18:12:47 2016 -0400
+
+    Add files via upload
+
+ Cars.png | Bin 0 -> 72506 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2d20edc45e6b5b76c0507b16a14bcae5868c5c62
+Author: Ubuntu <ubuntu@csvm>
+Date:   Tue Oct 25 17:04:13 2016 -0400
+
+    Basic types and skeleton for main_loop changes
+
+ engine.ml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 22556f46af66f7c0dbf8b22733277da7600e09d9
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Oct 22 14:11:05 2016 -0400
+
+    Added basic skeleton for updating locations in each time step and implemented a first edition of price fluctuation simulation for resources
+
+ engine.ml | 50 +++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 13 deletions(-)
+
+commit 4511f1a34a6898ccc3ba6cff18774b84cafe3f65
+Author: Ubuntu <ubuntu@csvm>
+Date:   Sat Oct 22 00:02:17 2016 -0400
+
+    Added Engine Module, first draft of types needed (which may move to different modules), main_loop at its most basic level created
+
+ engine.ml | 90 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
+
+commit 3ed0a1ff14c064ba5a5a617335c49ace7ef82354
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Oct 20 16:55:57 2016 -0400
+
+    Ineractive Road Creation
+
+ graph.ml | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
+
+commit 12500d2088e0d5734afa868e5691c077f19990d1
+Author: Ubuntu <ubuntu@csvm>
+Date:   Thu Oct 20 02:53:17 2016 -0400
+
+    Ability to manually add roads
+
+ graph.ml | 90 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 81 insertions(+), 9 deletions(-)
+
+commit 058de5e3d34b554183539a80e4e37201d41bd42d
+Author: Ubuntu <ubuntu@csvm>
+Date:   Wed Oct 19 01:51:14 2016 -0400
+
+    Initial Commit
+
+ graph.ml | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+
+commit 2992e22f50364fa330414a2d9771c5fc3b3f8867
+Author: Jonathon Gibson <jtg98@cornell.edu>
+Date:   Tue Oct 18 21:43:57 2016 -0400
+
+    Initial commit
+
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)

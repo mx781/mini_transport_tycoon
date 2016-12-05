@@ -34,9 +34,7 @@ print_endline " Done!";;
 #load "gameGraphics.cmo";;
 #load "engine.cmo";;
 
-
-
-(* load dataProcessing for convenience *)
+(* open modules for testing *)
 open DataProcessing;;
 open GameElements;;
 open Player;;
