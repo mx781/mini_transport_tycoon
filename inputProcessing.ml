@@ -170,7 +170,6 @@ let get_new_dest graph_access curr_loc =
  *corresponding to how the vehicle should act, or an empty list if the
  *vehicle should wait and do nothing.*)
 let make_vehicle_move vehicle c_connections graph curr_m c_id =
-  (*Create a new graph with only these connections.*)
   let empty = Map.empty in
   let new_graph = add_edges empty c_connections in
   let cur_loc =
@@ -389,15 +388,12 @@ let make_c_move (state: game_state) c_id =
       (f (List.hd only_c_connections)).l_id
     else (-1) in
   let total_capacity = get_vehicle_capacity c_vehicles 0 in
-  (*First, check for waiting vehicles and activate them.*)
   let vehicle_processes =
     match activate_vehicles c_vehicles with
     |Some v -> make_vehicle_move v c_connections state.graph
       c_money c_id
     |None -> [] in
-  (*Determine whether to buy roads or not*)
   let buy_road = buy_c_road state.graph c_player_info in
-  (*Determine whether it's OK to sell roads + vehicles*)
   let sell_road_value = sell_c_roads only_c_connections in
   let sell_vehicle_value = sell_c_vehicles c_vehicles in
   if sell_road_value +. sell_vehicle_value +. c_money >= win_condition then
