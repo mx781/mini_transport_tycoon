@@ -132,13 +132,6 @@ end
 (*module for Dijkstra's algorithm with our custom ConnectionWeight module*)
 module Dijkstra = Graph.Path.Dijkstra(Map)(ConnectionWeight)
 
-(* module (for ocamlgraph) to check if a path is in the graph and where the path
- * goes*)
-module PathCheck = Graph.Path.Check(Map)
-
-module Connected = Graph.Traverse.Bfs(Map)
-
-
 (* The below constants are all used for a variety of rules that change the
  * gameplay. They are almost all exactly what their name states, and are
  * clarified when there is ambiguity*)
@@ -170,26 +163,15 @@ let medium_ai_level = 4
 let hard_ai_level = 20
 let brutal_ai_level = 400
 
-(*Gets a location from an id *)
+(* Using a location ID and a graph, get_loc returns the location details.
+ * Precondition: A location in the graph has the specific location ID.
+ * *)
 let get_loc id graph =
   let vertex_lst = Map.fold_vertex
     (fun v lst -> if v.l_id = id then v :: lst else lst) graph [] in
   match vertex_lst with
   |h :: t -> h
   |[] -> failwith "trying to get a vertex that doesn't exist"
-
-(*Forms a new connection based on location*)
-let form_connection map player_id loc1 loc2 =
-  let new_connect =
-    {c_owner_id = player_id; l_start = loc1.l_id; l_end = loc2.l_id;
-     c_age = 0; c_speed = 1.0; length = 5.0} in
-  Map.add_edge_e map (loc1, new_connect, loc2)
-
-(* Routes a vehicle, that is, sets a vehicle's destination, based on the
- * location to route it to, the vehicle, and the list of vehicles.*)
-let route_vehicle l v v_list =
-  let new_v = {v with destination = [l.l_id]} in
-  List.map (fun x -> if x.v_owner_id = v.v_owner_id then new_v else x) v_list
 
 
 (* returns new player list updated for sold cargo. Cargo is emptied in calling
