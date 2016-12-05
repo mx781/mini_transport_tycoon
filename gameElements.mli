@@ -82,11 +82,13 @@ module Connection : sig
   val default : t
 end
 
-
+(*The module pertaining to the graph containing locations as vertices and
+ *a triple containing two locations and a connection as an edge*)
 module Map : (Graph.Sig.P with type V.t = Location.t and
   type V.label = Location.t and type E.t = Location.t * Connection.t *Location.t
   and type E.label = Connection.t)
 
+(*All the necessary information pertaining to the game*)
 type game_state = {
   vehicles : vehicle list;
   graph: Map.t;
@@ -135,22 +137,39 @@ val medium_ai_level : int
 val hard_ai_level : int
 val brutal_ai_level : int
 
-(*Returns the cost of the road based on two locations. The cost
- *of the road changes depending on whether it exists.*)
+
+(* [calculate_buy_road_cost start_l end_l] returns the money that a player will
+ * pay to buy a road with start location start_l and end location end_l in
+ * graph graph, whether this would involve building it from scratch or buying it
+ * if it is public.*)
 val calculate_buy_road_cost : location -> location -> Map.t -> float
 
-(*Returns the money earned from selling a road*)
+(* [calculate_sell_road_cost start_l end_l] returns the money that a player will
+ * earn from selling a given road with start location start_l and end location
+ * end_l*)
 val calculate_sell_road_cost : location -> location -> float
 
-(*Returns a location's info based on its ID*)
+(*Returns a location's info based on its ID given a graph.*)
+(*Precondition: the graph contains the location ID *)
 val get_loc : int -> Map.t -> location
 
-(*Updates vehicle movement*)
+(* pre: players is a list of players in the game and contains a player with id
+ *        corresponding to the v_owner_id of v,
+ *      graph is a valid graph with at least two locations and one edge,
+ *      v_lst is a list of vehicle records, exactly the vehicle list in st,
+ *      st is a valid game state, that is, there are no duplicate
+ *        location or player ids in the player list or graph.
+ * post: [update_vehicles v_lst graph players st] updates all vehicles in v_lst
+ *       for one frame of the game, based on its current status, location,
+ *       cargo, etc.
+ *)
 val update_vehicles : vehicle list -> Map.t -> player list-> game_state ->
   vehicle list
 
-(*Updates location info (Mainly in terms of price fluctuations *)
+(* [update_location age l] takes in an individual age (game_age) and location l
+ * and updates the location accordingly (i.e. their good profiles)*)
 val update_locations : Map.t -> int -> Map.t
 
-(*Ensures that all AI have the set difficulty*)
+(* [set_game_difficulty gd st] sets the game difficulty based on a game
+ * difficulty gd and a game state st*)
 val set_game_difficulty : ai_game_difficulty -> game_state -> game_state

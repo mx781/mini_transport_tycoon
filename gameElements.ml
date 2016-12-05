@@ -43,7 +43,6 @@ type v_status =
   | Waiting
   | Driving
   | Broken (*Equivalent to waiting but inaccessible*)
-  (* | ToDrop Selling something *)
 
 type vehicle = {
   v_owner_id: int;
@@ -63,7 +62,7 @@ type vehicle = {
 }
 
 type connection = {
-  (*IF THE OWNER IS -1 then that means there is no owner*)
+  (*If the owner is -1 then that means there is no owner*)
   c_owner_id: int;
   l_start: int;
   l_end: int;
