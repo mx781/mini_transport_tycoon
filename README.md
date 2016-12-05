@@ -1,5 +1,3 @@
-# CS3110_Final
-
 Mini Transport Tycoon
 =====================
 
@@ -55,7 +53,7 @@ Gameplay
 ----------------------
 
 Once you have successfully compiled the game, it should launch automatically. If
-running natively on macOS, it might take a few second to power up XQuartz. The
+running natively on macOS, it might take a few seconds to power up XQuartz. The
 game can be manually launched by running `./main.byte`. 
 
 Please make sure that both the Terminal and the main game Window is visible on 
@@ -73,4 +71,4 @@ resolutions:
 
 A quickstart for how to play is displayed on the Terminal if you want to jump 
 right in. Detailed instructions and gameplay strategies can be found in 
-*Mini Transport Tycoon Instructions.docx*.
+*game_instructions.pdf*.

@@ -10,7 +10,6 @@ open Player_piqi.Player
 open Graph_piqi.Graph
 open Graph_piqi.Metadata
 
-(*TODO: use global helpers, remove dupes *)
 let f (x, _, _) = x
 let s (_,y,_) = y
 let t (_,_,z) = z

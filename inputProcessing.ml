@@ -158,21 +158,8 @@ let get_new_dest graph_access curr_loc =
     else y) graph_access None
 
 
-(*Gets the number of locations connected to elements in a loc_list; ideally used
- *to determine if an AI is buying a road that only connects two locations...*)
-(*let rec get_graph_islands graph loc_list num_connected c_id=
-  let new_num_connected = ref num_connected in
-  let () = print_endline (string_of_int (num_connected)) in
-  match loc_list with
-  |h :: t ->
-    let connected_s = (!size_connected) h c_id in
-    if connected_s = 0 then
-      (Connected.iter_component(fun x -> incr new_num_connected) graph h;
-      get_graph_islands graph t !new_num_connected c_id)
-    else
-      get_graph_islands graph t connected_s c_id
-  |[] -> num_connected *)
-
+(*Identifies the behavior of a waiting vehicle. It returns a process
+ * corresponding to how the vehicle should act. *)
 let make_vehicle_move vehicle c_connections graph curr_m c_id =
   (*Create a new graph with only these connections.*)
   let empty = Map.empty in
