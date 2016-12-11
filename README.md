@@ -1,10 +1,27 @@
 Mini Transport Tycoon
 =====================
 
-Installation: 3110 VM
-----------------------
+Overview
+---------------------
+Mini Transport Tycoon (MTT) is a small, fast-paced RTS game built in OCaml
+as the final project for the CS3110 course at Cornell University in Fall 2016.
+It is heavily inspired by [openTTD](http://www.openttd.org/en/) and [Mini Metro](http://dinopoloclub.com/minimetro/).
+It was built by Dan Liu, Jonathan Gibson, Maksis Knutins, and Patrick Walsh.
 
-Mini Transport Tycoon (MTT) depends on GTK+ and various image libraries 
+The main objective of the game is to earn $2,500 by transporting goods between
+locations on the map. In addition to buying cars, trucks and cargo, you can
+build new roads, or privatize existing public roads. The game is single player,
+and you compete against 4 other AI players.
+
+
+Installation: Ubuntu (CS3110 VM)
+--------------------------------
+
+**As the game was primarily built for the CS3110 course, it assumes that ocaml
+and opam is installed, and initialized on your machine. If you are not running
+on the staff-provided VM, you should follow these [instructions](http://www.cs.cornell.edu/Courses/cs3110/2016fa/install.html).**
+
+MTT depends on GTK+ and various image libraries 
 associated with it, as well as the camlgraphics, ocamlgraph, camlimages,
 lablgtk and piqi libraries for OCaml.
 
@@ -36,6 +53,9 @@ and we will get back to you ASAP.
 Installation: macOS
 -------------------
 
+**Like for Ubuntu, this assumes you have ocaml and opam installed, and
+initialized. See [instructions]([setup](http://www.cs.cornell.edu/Courses/cs3110/2016fa/install.html).**
+
 If you want to run MTT natively on macOS, you may additionally need to install
 X11/XQuartz for Graphics support. If you installed ocaml with homebrew, it can
 be done by running
@@ -52,7 +72,7 @@ should then be able to compile by running `make`.
 Gameplay
 --------
 
-Once you have successfully compiled the game, it should launch automatically. If
+If `make` completes successfully, the game should launch automatically. If
 running natively on macOS, it might take a few seconds to power up XQuartz. The
 game can be manually launched by running `./main.byte`. 
 
